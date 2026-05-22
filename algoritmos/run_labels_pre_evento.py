@@ -14,8 +14,6 @@ def setup_logger(level: str):
     logging.basicConfig(level=lvl, format="%(asctime)s | %(levelname)s | %(message)s", datefmt="%H:%M:%S")
 def load_events(path):
     p=Path(path)
-    print("#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n")
-    print(p)
     logging.info(f"Lendo eventos: {p}")
     if p.suffix.lower()=='.xlsx':
         ev=pd.read_excel(p, engine='openpyxl')

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-import argparse, sys, re, time, os
+import argparse, re, time
 from pathlib import Path
 import pandas as pd, numpy as np
 import logging
@@ -53,6 +53,12 @@ def read_all_xlsx(raw_dir: Path) -> pd.DataFrame:
                     logging.debug(f"[VAZIO] {f}::{sheet_name} sem dados")
                     continue
                 df.columns = [str(c).strip() for c in df.columns]
+                _dc = find_col(df.columns, [r'^DATA\b', r'^Data$'])
+                _hc = find_col(df.columns, [r'^HORA', r'^Hora UTC$'])
+                _rn = {}
+                if _dc and _dc != 'DATA (YYYY-MM-DD)': _rn[_dc] = 'DATA (YYYY-MM-DD)'
+                if _hc and _hc != 'HORA (UTC)': _rn[_hc] = 'HORA (UTC)'
+                if _rn: df = df.rename(columns=_rn)
                 df['_file'] = str(f)
                 df['_sheet'] = str(sheet_name)
                 total_rows += len(df)
@@ -73,8 +79,10 @@ def clean_and_unify_xlsx(raw_dir: Path) -> pd.DataFrame:
     logging.info(f"Coluna DATA: {data_col} | Coluna HORA: {hora_col}")
     if data_col is None or hora_col is None:
         raise KeyError("Esperadas colunas tipo 'DATA' e 'HORA (UTC)'.")
-    df[data_col] = df[data_col].astype(str).str.strip()
+    df[data_col] = df[data_col].astype(str).str.strip().str.replace('/', '-', regex=False)
     h = df[hora_col].astype(str).str.strip()
+    h = h.str.replace(r'\s*UTC$', '', regex=True)
+    h = h.str.replace(r'^(\d{2})(\d{2})$', r'\1:\2', regex=True)
     h = h.str.replace(r'^\s*$', '00:00', regex=True)
     h = h.str.replace(r'^\d{1}$', lambda m: m.group(0).zfill(2)+':00', regex=True)
     h = h.str.replace(r'^\d{2}$', lambda m: m.group(0)+':00', regex=True)
@@ -90,6 +98,7 @@ def clean_and_unify_xlsx(raw_dir: Path) -> pd.DataFrame:
         'PRESSÃO ATMOSFERICA MAX.NA HORA ANT. (AUT) (mB)',
         'PRESSÃO ATMOSFERICA MIN. NA HORA ANT. (AUT) (mB)',
         'RADIACAO GLOBAL (KJ/m²)',
+        'RADIACAO GLOBAL (Kj/m²)',
         'TEMPERATURA DO AR - BULBO SECO, HORARIA (°C)',
         'TEMPERATURA DO PONTO DE ORVALHO (°C)',
         'TEMPERATURA MÁXIMA NA HORA ANT. (AUT) (°C)',
@@ -114,6 +123,10 @@ def clean_and_unify_xlsx(raw_dir: Path) -> pd.DataFrame:
         df.loc[(df[ur_col] < 0) | (df[ur_col] > 100), ur_col] = np.nan
         after = df[ur_col].isna().sum()
         logging.info(f"UR sanitizada: NaN antes={before:,} → depois={after:,}")
+    _str_cols = {'timestamp', data_col, hora_col, '_file', '_sheet', 'Unnamed: 19'}
+    for col in df.select_dtypes(include='object').columns:
+        if col not in _str_cols:
+            df[col] = pd.to_numeric(df[col], errors='coerce')
     before_rows = len(df)
     df = df.dropna(subset=['timestamp']).sort_values('timestamp').reset_index(drop=True)
     logging.info(f"Linhas com timestamp válido: {len(df):,} (descartadas {before_rows-len(df):,})")
