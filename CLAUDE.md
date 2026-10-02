@@ -94,6 +94,7 @@ Execute em sequência, sem pedir confirmação entre os itens.
   - os testes passam.
   Se algo falhar, corrija o `.gitignore` ou o código e siga.
 - Push permitido apenas na branch `tg2-v2`. Nunca force push, nunca reescrever histórico, nunca commitar ou fazer merge na main. O merge é decisão do Victor com o Gustavo.
+- Ate o merge, NUNCA use `git add -A` nem `git commit -a` neste repositorio. So `git add` com caminhos explicitos da v2 (pipeline_v2/, app_v2/, reports/v2/, requirements*.txt, DECISOES.md, CLAUDE.md, .gitignore). Motivo: o HEAD herdado do Gustavo versiona a v1 sob `algoritmos/` e `resultados_*` com um working tree divergente (v1 reorganizada como `pipeline/`, `data/`, `models/`); um add amplo arrastaria essa divergencia da v1 congelada. Nao tocar na v1.
 
 ## 7. Rigor científico (inegociável)
 

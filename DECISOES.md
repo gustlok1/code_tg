@@ -149,6 +149,19 @@ Formato: data, decisão, motivo, alternativa descartada.
   Claude-in-Chrome ou dados abertos da ONS). O harness exp4_outros_reservatorios.py ja aceita qualquer
   reservatorio; falta so a coleta.
 
+## 2026-10-02 — Reprodutibilidade e regra de git (item 12, fechamento)
+- Decisao do Victor: o item 12 fica encerrado pela reproducao 33/33 (venv limpo a partir do
+  requirements.txt reproduz exatamente as configs, thresholds e metricas do teste). Nao relancar o
+  run_all. A reproducao foi registrada em reports/v2/final/teste_aberto.log como REPRODUCAO do
+  resultado congelado, sem nova abertura do teste (o modelo congelado nao muda).
+- Estado do repo (herdado, pre-existente): o HEAD do Gustavo versiona a v1 sob `algoritmos/` e
+  `resultados_*`, com um working tree divergente (v1 como `pipeline/`, `data/`, `models/`). Isso nao foi
+  causado pela v2 e nao sera tocado (v1 congelada; reconciliar ou remover dados pesados reescreveria
+  historico, decisao do Victor com o Gustavo).
+- REGRA DE GIT ate o merge: nunca `git add -A` nem `git commit -a`; so `git add` com caminhos
+  explicitos da v2. Evita arrastar a divergencia da v1 para os commits. (Registrada tambem no CLAUDE.md
+  secao 6.)
+
 ## 2026-10-02 — Atibainha: explicacao do -106,8% e leitura da cascata (item 14)
 - Fato (data/raw_v2/sar_cantareira_diario.csv): o minimo de volume util do Atibainha e -106,8% em
   2014-12-29, correspondente a volume util de -102,81 hm3 (capacidade util ~100 hm3). Nao e artefato de

@@ -1,1 +1,2 @@
 TESTE ABERTO em 2026-10-02T12:07:17 (teste_inicio=2023-01-01; congelado_em=2026-10-02T12:06:40)
+REPRODUCAO do resultado congelado em 2026-10-02T15:41:23: venv limpo a partir do requirements.txt; 33/33 itens identicos (configs, thresholds e metricas do teste). NAO e nova abertura do teste; o modelo congelado nao muda. Detalhes em reports/v2/final/reproducao.md.
