@@ -77,3 +77,25 @@ Formato: data, decisão, motivo, alternativa descartada.
   construído (Exp 1 a 3 + LSTM) mais o sintético concluído.
 - Nota: `data/`, `models/` e `reports/v1_*`/`v2_threshold_otimizado/` pesados já estão no HEAD (commits
   do Gustavo). Não são tocados; a remoção do `.venv` do índice fica para o item 8 (higiene).
+
+## 2026-10-02 — Congelamento e abertura do teste (03)
+- Decisão: duas fases. Fase 1 grava `reports/v2/final/congelamento.json` (conjunto CLIMA_ESTADO +
+  SPI/SPEI + anomalias; XGBRes por horizonte; thresholds de alerta B3/XGBRes nos limiares 40 e 30,
+  escolhidos por F1 na validação) e é commitada ANTES de abrir o teste. Fase 2 (`--abrir-teste`) abre
+  o teste 2023+ uma única vez, registra em `teste_aberto.log`, e nada mais muda.
+- Motivo: rigor (seção 7). Separar congelamento de abertura garante que o commit trava as escolhas.
+- Alternativa descartada: 03 abrir o teste direto sem flag; menos auditável.
+
+## 2026-10-02 — Resultado do teste (2023+), modelos congelados
+- Fato (arquivos `reports/v2/final/metricas_teste.csv` e `antecedencia_teste.csv`):
+  - Regressão do volume: o XGBRes SUPERA o B3 no teste, skill_B3 = +0,240 (h30), +0,229 (h60),
+    +0,167 (h90). MAE XGBRes 2,24 / 3,75 / 5,22 vs B3 2,95 / 4,87 / 6,27.
+  - PR-AUC de entrada (limiar 40): B3 0,98 / 0,98 / 0,98; XGBRes 0,97 / 0,91 / 0,95 (ambos altos).
+  - Crise de 2025-26 (episódio iniciando 2025-08-06, limiar 40): o XGBRes antecipa o alerta
+    +6 d (h30: 25 vs 19), +8 d (h60: 48 vs 40) e +11 d (h90: 75 vs 64) sobre o B3, com 0 falso-alarme
+    no teste (exceto h60, 2 falso-alarmes do XGBRes).
+- Interpretação (muda a narrativa, relatado ao Victor): na VALIDAÇÃO (2003-2022, 4 folds) o XGBRes
+  EMPATAVA com o B3; no TESTE (2023-2026, período único com a forte depleção de 2025-26) ele SUPERA o
+  B3 e antecipa mais. Não é contradição do plano: a validação robusta (20 anos) mostrou empate; o teste
+  (um período) mostrou vantagem na crise recente. Caveat honesto: é uma única realização de teste; não
+  reabrir nem re-selecionar nada (teste já gasto). H1/H2 recebem apoio parcial no teste.
