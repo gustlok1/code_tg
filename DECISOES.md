@@ -123,3 +123,23 @@ Formato: data, decisão, motivo, alternativa descartada.
   congelado continua sendo o oficial do teste.)
 - Antecedência e falso-alarme no teste (limiares 40 e 30, inclui o episódio jun-set/2026) também em
   teste_diagnostico.csv.
+
+## 2026-10-02 — Exp 4 (item 5, H4): o mesmo pipeline em outros reservatorios (time-boxed)
+- Decisão: demonstrar H4 (portabilidade) rodando o pipeline nos 4 reservatorios INDIVIDUAIS do
+  Cantareira (Jaguari-Jacarei 808 hm3, Cachoeira 70, Atibainha 96, Paiva Castro 8), que sao
+  reservatorios distintos com series e climas proprios ja baixados (sem download novo).
+- Motivo (time-box, 1 dia): os reservatorios FORA do Cantareira (Nordeste `/sar0/Medicao` e SIN
+  `/sar0/MedicaoSin`) servem a serie por AJAX com estado de sessao; o HTML estatico traz so o
+  cabecalho (0 <td>), ao contrario do `/sar0/MedicaoCantareira`, que e renderizado no servidor.
+  `ExportarExcel` e stateful (erro 500 "source null") e `GraficoVolume` tambem e AJAX. Caminhos para
+  depois (registrados): endpoint AJAX interno, Claude-in-Chrome dirigindo a pagina, ou dados abertos
+  da ONS. O harness `exp4_outros_reservatorios.py` ja aceita qualquer reservatorio; falta so a coleta.
+- Resultado (reports/v2/exp4/exp4_skill.csv), skill vs B3 na validacao (h30/60/90):
+  - Jaguari-Jacarei: +0,113 / +0,049 / +0,005 (o maior; positivo, como o sistema agregado).
+  - Cachoeira: -0,032 / +0,043 / +0,006 (empate).
+  - Atibainha: -0,409 / -0,431 / -0,300 (pior que o B3).
+  - Paiva Castro: -0,181 / -0,080 / -0,210 (pior que o B3).
+- Interpretacao honesta: o pipeline e portavel (roda inalterado em 4 reservatorios), mas a utilidade
+  depende da dinamica: empata/supera o B3 nos maiores e mais estaveis, e fica abaixo nos pequenos e
+  volateis. Nota de dado: o "volume util %" dos pequenos vai a valores extremos (Atibainha min -106,8%),
+  o que torna a serie ruidosa e dificil; vale tratar/entender esse % antes de usar esses reservatorios.
