@@ -16,3 +16,5 @@
 | 12 | `fig_12_teste_skill_ic.png` | Resultado do teste com IC95% e por periodo | Skill +0,240 [0,132;0,372] (h30) e +0,229 [0,079;0,420] (h60) significativos; h90 cruza zero. A vantagem aparece em 2023-2024 e 2025-2026. |
 | 13 | `fig_13_teste_backtest_2025_26.png` | Previsao no teste da crise de 2025-26 | No teste, a 90 dias, o XGBRes acompanha a queda melhor que o B3; antecipa o alerta em ~11 dias. |
 | 14 | `fig_14_exp4_reservatorios.png` | Generalizacao para outros reservatorios (Exp 4) | O pipeline roda inalterado. Skill vs B3: Jaguari +0,11 (h30), Cachoeira ~0, Atibainha -0,41, Paiva Castro -0,18. |
+| 15 | `fig_15_app_situacao_atual.png` | Aplicacao: situacao atual e previsao | Renderizacao da tela inicial do app. Volume em 2026-10-01 de 40.9% (faixa Atenção); previsao 40,8%/44,4%/48,7% com faixa de incerteza. |
+| 16 | `fig_16_app_retrospectiva_2025_26.png` | Aplicacao: retrospectiva da crise de 2025-26 | Renderizacao da pagina de retrospectiva. A 90 dias, o XGBRes acompanha a queda melhor que o B3 e antecipa o alerta da crise de 2025-26 (teste, modelo congelado). |

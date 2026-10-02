@@ -148,3 +148,23 @@ Formato: data, decisão, motivo, alternativa descartada.
   TRABALHO FUTURO: a coleta depende de acessar os endpoints AJAX/sessao do SAR (via endpoint interno,
   Claude-in-Chrome ou dados abertos da ONS). O harness exp4_outros_reservatorios.py ja aceita qualquer
   reservatorio; falta so a coleta.
+
+## 2026-10-02 — Atibainha: explicacao do -106,8% e leitura da cascata (item 14)
+- Fato (data/raw_v2/sar_cantareira_diario.csv): o minimo de volume util do Atibainha e -106,8% em
+  2014-12-29, correspondente a volume util de -102,81 hm3 (capacidade util ~100 hm3). Nao e artefato de
+  parsing: durante a crise de 2014-2015 o reservatorio foi puxado cerca de 103 hm3 ABAIXO do minimo util
+  (uso profundo da reserva tecnica/volume morto). Foram 296 dias com volume negativo, 184 abaixo de -50%.
+- Teste de massa (deltaV diario contra afluencia menos defluencia do SAR): nos TRES reservatorios
+  testados a correlacao e so 0,49 (Jaguari), 0,54 (Atibainha) e 0,40 (Paiva Castro), e o residuo nao
+  explicado tem magnitude parecida com a da propria variacao (residuo/|deltaV| ~ 1,0 a 1,6). Logo, a
+  AFLUENCIA E A DEFLUENCIA DO SAR NAO INCLUEM AS VAZOES DOS TUNEIS entre reservatorios: elas capturam a
+  afluencia natural e a liberacao controlada pelo rio, nao as transferencias operacionais (tuneis e
+  bombeamento) que dominam a operacao do Cantareira.
+- Conclusao: a leitura de que o resultado ruim do Atibainha vem da CASCATA SE SUSTENTA. O volume do
+  Atibainha (e dos reservatorios pequenos/jusante) e governado pelas transferencias por tunel, que sao
+  nao medidas e dirigidas por politica, nao pela chuva local. As features do modelo (clima local, vol em
+  t, e a afluencia/defluencia PARCIAIS) nao capturam o driver dominante, entao o modelo fica abaixo ate
+  do B3. Isso tambem explica por que o agregado do SISTEMA funciona melhor (Exp 2/3): no sistema as
+  transferencias entre os 4 reservatorios sao internas e se cancelam, sobrando o balanco liquido do
+  sistema. Implicacao para o texto e para trabalho futuro: para modelar reservatorios individuais do
+  Cantareira seria preciso obter as vazoes de tunel/transferencia (dados de operacao da Sabesp/ANA).
