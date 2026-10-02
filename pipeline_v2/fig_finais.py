@@ -29,12 +29,12 @@ RES = ROOT / "reports" / "v2" / "resultados"
 SINT = ROOT / "reports" / "v2" / "sintetico"
 EXP4 = ROOT / "reports" / "v2" / "exp4"
 FINAL = ROOT / "reports" / "v2" / "final"
-DF_DAILY = ROOT / "data" / "features" / "inmet_sp_daily.parquet"
-DF_FEAT = ROOT / "data" / "features" / "inmet_sp_daily_features.parquet"
-DF_LAB = ROOT / "data" / "features" / "inmet_sp_daily_labels.parquet"
-DF_HOUR = ROOT / "data" / "interim" / "inmet_sp_hourly_clean.parquet"
+DF_DAILY = ROOT / "legado_v1" / "data" / "features" / "inmet_sp_daily.parquet"
+DF_FEAT = ROOT / "legado_v1" / "data" / "features" / "inmet_sp_daily_features.parquet"
+DF_LAB = ROOT / "legado_v1" / "data" / "features" / "inmet_sp_daily_labels.parquet"
+DF_HOUR = ROOT / "legado_v1" / "data" / "interim" / "inmet_sp_hourly_clean.parquet"
 DS = ROOT / "data" / "processed_v2" / "dataset_diario.parquet"
-COMP = ROOT / "reports" / "v2_threshold_otimizado"
+COMP = ROOT / "legado_v1" / "reports" / "threshold_otimizado"
 
 FAIXAS = [("Normal", 60, 100, "#2ca02c"), ("Atencao", 40, 60, "#bcbd22"),
           ("Alerta", 30, 40, "#ff7f0e"), ("Restricao", 20, 30, "#d62728"),

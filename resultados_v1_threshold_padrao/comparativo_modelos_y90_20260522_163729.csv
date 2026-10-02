@@ -1,4 +1,0 @@
-Modelo,F1 (teste),AUC-ROC (teste),F1 (CV médio),F1 (CV desvio)
-DecisionTree,0.0,0.5,0.0,0.0
-RandomForest,0.0,0.4646,0.0,0.0
-XGBoost,0.0,0.5918,0.0,0.0

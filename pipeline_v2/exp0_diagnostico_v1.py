@@ -27,11 +27,11 @@ import matplotlib.pyplot as plt
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "reports" / "v2" / "exp0"
-DAILY = ROOT / "data" / "features" / "inmet_sp_daily.parquet"
-FEAT = ROOT / "data" / "features" / "inmet_sp_daily_features.parquet"
-LABELS = ROOT / "data" / "features" / "inmet_sp_daily_labels.parquet"
-HOURLY = ROOT / "data" / "interim" / "inmet_sp_hourly_clean.parquet"
-COMPARATIVO = ROOT / "reports" / "v2_threshold_otimizado"
+DAILY = ROOT / "legado_v1" / "data" / "features" / "inmet_sp_daily.parquet"
+FEAT = ROOT / "legado_v1" / "data" / "features" / "inmet_sp_daily_features.parquet"
+LABELS = ROOT / "legado_v1" / "data" / "features" / "inmet_sp_daily_labels.parquet"
+HOURLY = ROOT / "legado_v1" / "data" / "interim" / "inmet_sp_hourly_clean.parquet"
+COMPARATIVO = ROOT / "legado_v1" / "reports" / "threshold_otimizado"
 
 
 def _utf8():

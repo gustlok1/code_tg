@@ -42,6 +42,9 @@ data/processed_v2/
 # Auditoria temporária (venv de trabalho, reproduções) — não versionar
 _auditoria_tmp/
 
+# Dados pesados da v1 congelada (INMET 2003-2024). Fora do git; ver legado_v1/README.md
+legado_v1/data/
+
 # Segredos
 .env
 .env.*
