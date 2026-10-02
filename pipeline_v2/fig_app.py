@@ -47,18 +47,18 @@ def fig15(df):
     for n, lo, hi, cor in FAIXAS:
         ax_.axhspan(lo, hi, color=cor, alpha=0.08)
     ax_.plot(hist["data"], hist["vol_pct"], color="#1f3b73", lw=1.6, label="volume observado (%)")
-    ax_.plot(prev["data_alvo"], prev["vol_previsto"], "o-", color="#d1495b", ms=9, label="previsao")
+    ax_.plot(prev["data_alvo"], prev["vol_previsto"], "o-", color="#d1495b", ms=9, label="previsão")
     ax_.fill_between(prev["data_alvo"], prev["lo"], prev["hi"], color="#d1495b", alpha=0.2,
                      label="faixa de incerteza")
     for _, r in prev.iterrows():
         ax_.annotate(f"{r.vol_previsto:.0f}%", (r.data_alvo, r.vol_previsto),
                      textcoords="offset points", xytext=(0, 10), ha="center", fontsize=9)
-    ax_.set_ylabel("Volume util (%)"); ax_.set_xlabel("Data"); ax_.legend(loc="upper left")
-    ax_.set_title(f"Aplicacao, situacao atual: volume {vol_atual:.1f}% (faixa {nome}) e previsao "
+    ax_.set_ylabel("Volume útil (%)"); ax_.set_xlabel("Data"); ax_.legend(loc="upper left")
+    ax_.set_title(f"Aplicação, situação atual: volume {vol_atual:.1f}% (faixa {nome}) e previsão "
                   f"a 30, 60 e 90 dias")
-    _salvar(fig, 15, "app_situacao_atual", "Aplicacao: situacao atual e previsao",
-            f"Renderizacao da tela inicial do app. Volume em {pd.Timestamp(atual_data).date()} de "
-            f"{vol_atual:.1f}% (faixa {nome}); previsao 40,8%/44,4%/48,7% com faixa de incerteza.")
+    _salvar(fig, 15, "app_situacao_atual", "Aplicação: situação atual e previsão",
+            f"Renderização da tela inicial do app. Volume em {pd.Timestamp(atual_data).date()} de "
+            f"{vol_atual:.1f}% (faixa {nome}); previsão 40,8%/44,4%/48,7% com faixa de incerteza.")
 
 
 def fig16(df):
@@ -71,14 +71,14 @@ def fig16(df):
     for n, lo, hi, cor in FAIXAS:
         ax_.axhspan(lo, hi, color=cor, alpha=0.08)
     ax_.plot(d["alvo"], d["real"], color="#1f3b73", lw=2, label="real (vol t+90)")
-    ax_.plot(d["alvo"], d["vol_t"], color="#7f7f7f", ls=":", label="B1 (persistencia)")
+    ax_.plot(d["alvo"], d["vol_t"], color="#7f7f7f", ls=":", label="B1 (persistência)")
     ax_.plot(d["alvo"], d["B3"], color="#ff7f0e", ls="--", label="B3")
     ax_.plot(d["alvo"], d["XGBRes"], color="#d1495b", label="XGBRes (congelado)")
     ax_.axhline(40, color="#d62728", ls="dotted")
-    ax_.set_ylabel("Volume util (%)"); ax_.set_xlabel("Data alvo (t+90)"); ax_.legend(loc="upper left")
-    ax_.set_title("Aplicacao, retrospectiva da crise de 2025-26: previsao a 90 dias (modelo congelado)")
-    _salvar(fig, 16, "app_retrospectiva_2025_26", "Aplicacao: retrospectiva da crise de 2025-26",
-            "Renderizacao da pagina de retrospectiva. A 90 dias, o XGBRes acompanha a queda melhor que o "
+    ax_.set_ylabel("Volume útil (%)"); ax_.set_xlabel("Data alvo (t+90)"); ax_.legend(loc="upper left")
+    ax_.set_title("Aplicação, retrospectiva da crise de 2025-26: previsão a 90 dias (modelo congelado)")
+    _salvar(fig, 16, "app_retrospectiva_2025_26", "Aplicação: retrospectiva da crise de 2025-26",
+            "Renderização da página de retrospectiva. A 90 dias, o XGBRes acompanha a queda melhor que o "
             "B3 e antecipa o alerta da crise de 2025-26 (teste, modelo congelado).")
 
 

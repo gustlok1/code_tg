@@ -36,9 +36,9 @@ DF_HOUR = ROOT / "legado_v1" / "data" / "interim" / "inmet_sp_hourly_clean.parqu
 DS = ROOT / "data" / "processed_v2" / "dataset_diario.parquet"
 COMP = ROOT / "legado_v1" / "reports" / "threshold_otimizado"
 
-FAIXAS = [("Normal", 60, 100, "#2ca02c"), ("Atencao", 40, 60, "#bcbd22"),
-          ("Alerta", 30, 40, "#ff7f0e"), ("Restricao", 20, 30, "#d62728"),
-          ("Reserva tecnica", -30, 20, "#7f0000")]
+FAIXAS = [("Normal", 60, 100, "#2ca02c"), ("Atenção", 40, 60, "#bcbd22"),
+          ("Alerta", 30, 40, "#ff7f0e"), ("Restrição", 20, 30, "#d62728"),
+          ("Reserva técnica", -30, 20, "#7f0000")]
 
 INDICE = []  # (num, arquivo, titulo, leitura)
 
@@ -72,11 +72,11 @@ def fig01():
     a1.set_ylabel("Chuva anual agregada (mm)", color="#1f77b4"); a1.set_xlabel("Ano")
     a2 = a1.twinx(); a2.grid(False)
     a2.plot(chuva.index, est.reindex(chuva.index).values, color="#d62728", marker="o", lw=2)
-    a2.set_ylabel("Numero de estacoes empilhadas", color="#d62728")
-    a1.set_title("v1: a chuva agregada cresce com o numero de estacoes, nao com o clima")
-    salvar(fig, 1, "v1_chuva_vs_estacoes", "Chuva agregada da v1 contra numero de estacoes",
-           "A chuva somada vai de 3.438 mm (3,9 estacoes, 2003) a 50.476 mm (41,5 estacoes, 2019): "
-           "media um artefato de agregacao, nao o clima.")
+    a2.set_ylabel("Número de estações empilhadas", color="#d62728")
+    a1.set_title("v1: a chuva agregada cresce com o número de estações, não com o clima")
+    salvar(fig, 1, "v1_chuva_vs_estacoes", "Chuva agregada da v1 contra número de estações",
+           "A chuva somada vai de 3.438 mm (3,9 estações, 2003) a 50.476 mm (41,5 estações, 2019): "
+           "média um artefato de agregação, não o clima.")
 
 
 def fig02():
@@ -86,9 +86,9 @@ def fig02():
     fig, ax_ = plt.subplots(figsize=(9, 5))
     cores = ["#d62728" if a >= 2020 else "#2ca02c" for a in rad.index]
     ax_.bar(rad.index, rad.values, color=cores)
-    ax_.set_ylabel("RAD_SUM media diaria (kJ/m2)"); ax_.set_xlabel("Ano")
-    ax_.set_title("v1: RAD_SUM fica zerada em todo o periodo de teste (2020-2024)")
-    salvar(fig, 2, "v1_rad_zerada", "Radiacao zerada no teste da v1",
+    ax_.set_ylabel("RAD_SUM média diária (kJ/m2)"); ax_.set_xlabel("Ano")
+    ax_.set_title("v1: RAD_SUM fica zerada em todo o período de teste (2020-2024)")
+    salvar(fig, 2, "v1_rad_zerada", "Radiação zerada no teste da v1",
            "Por troca de grafia da coluna, RAD_SUM vale zero em 2020-2024 (teste) e fica inflada no treino.")
 
 
@@ -100,10 +100,10 @@ def fig03():
     ax_.bar([f"fold {i+1}" for i in range(5)], pos, color=["#d62728" if p == 0 else "#2ca02c" for p in pos])
     for i, p in enumerate(pos):
         ax_.text(i, p + 0.2, str(p), ha="center")
-    ax_.set_ylabel("Positivos no fold de validacao (y90)")
+    ax_.set_ylabel("Positivos no fold de validação (y90)")
     ax_.set_title("v1: 4 de 5 folds do TimeSeriesSplit sem nenhum positivo")
     salvar(fig, 3, "v1_folds_sem_positivo", "Folds sem positivo na v1",
-           "Os positivos por fold sao [0,0,0,15,0]: o threshold degenera e o F1 do CV e zero.")
+           "Os positivos por fold são [0,0,0,15,0]: o threshold degenera e o F1 do CV é zero.")
 
 
 def fig04():
@@ -144,10 +144,10 @@ def fig05():
     ax_.axhline(30, color="#d62728", ls="--", lw=0.8)
     for _, e in ep.iterrows():
         ax_.axvspan(pd.Timestamp(e["inicio"]), pd.Timestamp(e["fim"]), color="#d62728", alpha=0.18)
-    ax_.set_ylabel("Volume util (%)"); ax_.set_xlabel("Ano")
-    ax_.set_title("Volume util do Sistema Cantareira (1984-2026): faixas ANA/DAEE e episodios < 30%")
-    salvar(fig, 5, "eda_volume_faixas", "Volume do sistema com faixas e episodios",
-           "O sistema chega a -23,2% em 2015 (reserva tecnica). Cinco episodios < 30%: 1986, 2003-04, "
+    ax_.set_ylabel("Volume útil (%)"); ax_.set_xlabel("Ano")
+    ax_.set_title("Volume útil do Sistema Cantareira (1984-2026): faixas ANA/DAEE e episódios < 30%")
+    salvar(fig, 5, "eda_volume_faixas", "Volume do sistema com faixas e episódios",
+           "O sistema chega a -23,2% em 2015 (reserva técnica). Cinco episódios < 30%: 1986, 2003-04, "
            "2013-16, 2021-22 e 2025-26.")
 
 
@@ -162,14 +162,14 @@ def fig06():
     ax_.bar(x - w / 2, g["ERA5"], w, label="ERA5", color="#1f77b4")
     ax_.bar(x + w / 2, g["POWER"], w, label="NASA POWER", color="#ff7f0e")
     ax_.set_xticks(x); ax_.set_xticklabels(g.index, rotation=90, fontsize=7)
-    ax_.set_ylabel("Chuva anual media da bacia (mm)"); ax_.set_xlabel("Ano"); ax_.legend()
+    ax_.set_ylabel("Chuva anual média da bacia (mm)"); ax_.set_xlabel("Ano"); ax_.legend()
     if 1999 in g.index:
         xi = list(g.index).index(1999)
         ax_.annotate("anomalia POWER 1999", xy=(xi, g.loc[1999, "POWER"]), xytext=(xi, g["POWER"].max()),
                      arrowprops=dict(arrowstyle="->", color="#d62728"), color="#d62728", fontsize=9)
     ax_.set_title("Chuva anual da bacia: ERA5 contra NASA POWER (anomalia do POWER em 1999)")
     salvar(fig, 6, "eda_chuva_era5_vs_power", "Chuva anual ERA5 contra POWER",
-           "As fontes concordam, menos em 1999, quando o POWER tem um pico anomalo (~3.380 mm vs ~1.600 do ERA5).")
+           "As fontes concordam, menos em 1999, quando o POWER tem um pico anômalo (~3.380 mm vs ~1.600 do ERA5).")
 
 
 # ---------------- 4.3 Sintetico ----------------
@@ -193,30 +193,30 @@ def fig07():
     ax_.axhline(band[2], color="#d62728", lw=1.2, label="skill real (Exp 2/3, h=90)")
     ax_.axvline(cal.phi_real, color="black", ls="--", lw=1.5, label=f"phi real = {cal.phi_real:.2f}")
     ax_.scatter(gem.phi_ef_medio, gem.skill_90_medio, marker="*", s=360, c="#9467bd", edgecolor="k",
-                lw=0.6, zorder=6, label="gemeo calibrado")
+                lw=0.6, zorder=6, label="gêmeo calibrado")
     ax_.axhline(0, color="#555", ls=":", lw=0.8)
-    ax_.set_xlabel("phi_ef (persistencia efetiva da chuva)"); ax_.set_ylabel("skill vs B3 (h=90)")
+    ax_.set_xlabel("phi_ef (persistência efetiva da chuva)"); ax_.set_ylabel("skill vs B3 (h=90)")
     ax_.legend(fontsize=8, loc="upper left")
-    ax_.set_title("Sintetico: o ganho sobre o B3 cresce com a persistencia da chuva (phi_ef) e com N")
-    salvar(fig, 7, "sintetico_skill_phief", "Skill sintetico por persistencia efetiva",
-           "DADOS SINTETICOS. O Cantareira real esta em phi ~ 0; o gemeo calibrado (estrela) ainda supera "
-           "o B3 em h90, limitacao discutida no texto.")
+    ax_.set_title("Sintético: o ganho sobre o B3 cresce com a persistência da chuva (phi_ef) e com N")
+    salvar(fig, 7, "sintetico_skill_phief", "Skill sintético por persistência efetiva",
+           "DADOS SINTÉTICOS. O Cantareira real está em phi ~ 0; o gêmeo calibrado (estrela) ainda supera "
+           "o B3 em h90, limitação discutida no texto.")
 
 
 def fig08():
     san = pd.read_csv(SINT / "sanidade_sintetico.csv", index_col=0)
     fig, ax_ = plt.subplots(figsize=(7, 5))
-    nomes = ["real (modelo)", "embaralhado", "oraculo"]
+    nomes = ["real (modelo)", "embaralhado", "oráculo"]
     vals = [san.loc["normal", "skill"], san.loc["shuffle", "skill"], san.loc["oraculo", "skill"]]
     ax_.bar(nomes, vals, color=["#2ca02c", "#7f7f7f", "#9467bd"])
     ax_.axhline(0, color="#d62728", ls="--")
     for i, v in enumerate(vals):
         ax_.text(i, v + (0.01 if v >= 0 else -0.03), f"{v:.3f}", ha="center")
     ax_.set_ylabel("skill vs B3 (h=90)")
-    ax_.set_title("Sintetico: embaralhado zera o skill; o oraculo (chuva futura) o maximiza")
-    salvar(fig, 8, "sintetico_sanidade", "Sanidade do sintetico",
-           "DADOS SINTETICOS. Embaralhado skill -0,00; oraculo +0,62: o teto e a informacao sobre a chuva "
-           "futura, nao o algoritmo.")
+    ax_.set_title("Sintético: embaralhado zera o skill;\no oráculo (chuva futura) o maximiza")
+    salvar(fig, 8, "sintetico_sanidade", "Sanidade do sintético",
+           "DADOS SINTÉTICOS. Embaralhado skill -0,00; oráculo +0,62: o teto é a informação sobre a chuva "
+           "futura, não o algoritmo.")
 
 
 # ---------------- 4.4 Exp 2 ----------------
@@ -230,18 +230,18 @@ def fig09():
         ys = [r[(r.conjunto == conj) & (r.modelo == mod) & (r.horizonte == h)]["skill_B1"].mean() for h in hs]
         rot = {"B3_persist_sazonal": "B3"}.get(mod, mod)
         ax_.plot(hs, ys, marker="o", color=cor, ls=ls, label=f"{conj}/{rot}")
-    ax_.axhline(0, color="#d62728", ls="--", label="B1 (persistencia)")
-    ax_.set_xlabel("Horizonte (dias)"); ax_.set_ylabel("skill vs B1 (persistencia)"); ax_.set_xticks(hs)
+    ax_.axhline(0, color="#d62728", ls="--", label="B1 (persistência)")
+    ax_.set_xlabel("Horizonte (dias)"); ax_.set_ylabel("skill vs B1 (persistência)"); ax_.set_xticks(hs)
     ax_.legend()
-    ax_.set_title("Exp 2: clima sozinho nao preve o nivel; com o estado, empata com o B3")
+    ax_.set_title("Exp 2: clima sozinho não prevê o nível; com o estado, empata com o B3")
     salvar(fig, 9, "exp2_skill_horizonte", "Clima contra clima e estado (Exp 2)",
-           "CLIMA sozinho tem skill negativo; CLIMA_ESTADO fica junto do B3 (skill vs B1 ~0,3), sem supera-lo.")
+           "CLIMA sozinho tem skill negativo; CLIMA_ESTADO fica junto do B3 (skill vs B1 ~0,3), sem superá-lo.")
 
 
 # ---------------- 4.5 Exp 3 ----------------
 def fig10():
     sc = pd.read_csv(RES / "skill_condicional.csv")
-    paineis = [("geral", "Geral"), ("seca", "Seca (SPI-12 < -1)"), ("pre_episodio", "Pre-episodio")]
+    paineis = [("geral", "Geral"), ("seca", "Seca (SPI-12 < -1)"), ("pre_episodio", "Pré-episódio")]
     hs = [30, 60, 90]
     fig, axs = plt.subplots(1, 3, figsize=(12, 4.3), sharey=True)
     for a, (sub, tit) in zip(axs, paineis):
@@ -250,10 +250,10 @@ def fig10():
         a.errorbar(d.horizonte, d.skill_B3, yerr=yerr, marker="o", capsize=4, color="#2ca02c")
         a.axhline(0, color="#d62728", ls="--"); a.set_title(tit); a.set_xticks(hs); a.set_xlabel("Horizonte")
     axs[0].set_ylabel("skill vs B3 (IC95%)")
-    fig.suptitle("Exp 3: o modelo residual nao supera o B3 de forma confiavel (IC95% cruza zero)",
+    fig.suptitle("Exp 3: o modelo residual não supera o B3 de forma confiável (IC95% cruza zero)",
                  fontweight="bold")
     salvar(fig, 10, "exp3_skill_condicional", "Skill condicional do residual (Exp 3)",
-           "Em geral, seca e pre-episodio, todos os IC95% do XGBRes cruzam zero: nao supera o B3 onde importa.")
+           "Em geral, seca e pré-episódio, todos os IC95% do XGBRes cruzam zero: não supera o B3 onde importa.")
 
 
 def fig11():
@@ -266,11 +266,12 @@ def fig11():
     for _, r in d.iterrows():
         ax_.annotate(f"p={r.wilcoxon_p:g}", (r.horizonte, r.mediana_dif), textcoords="offset points",
                      xytext=(8, 8), fontsize=9)
-    ax_.set_xlabel("Horizonte (dias)"); ax_.set_ylabel("Antecedencia XGBRes - B3 (dias)"); ax_.set_xticks([30, 60, 90])
-    ax_.set_title("Exp 3: o XGBRes antecipa o alerta mais que o B3 (limiar 40), com significancia em h30 e h60")
-    salvar(fig, 11, "exp3_antecedencia_pareada", "Antecedencia pareada (Exp 3)",
-           "Mediana da diferenca: +6,5 d (h30, p=0,039), +19 d (h60, p=0,002), +7 d (h90, p=0,10). "
-           "Custo: 3-4 episodios de falso-alarme em 20 anos contra zero do B3.")
+    ax_.set_xlabel("Horizonte (dias)"); ax_.set_ylabel("Antecedência XGBRes - B3 (dias)"); ax_.set_xticks([30, 60, 90])
+    ax_.set_title("Exp 3: o XGBRes antecipa o alerta mais que o B3 (limiar 40),\n"
+                  "com significância em h30 e h60")
+    salvar(fig, 11, "exp3_antecedencia_pareada", "Antecedência pareada (Exp 3)",
+           "Mediana da diferença: +6,5 d (h30, p=0,039), +19 d (h60, p=0,002), +7 d (h90, p=0,10). "
+           "Custo: 3-4 episódios de falso-alarme em 20 anos contra zero do B3.")
 
 
 # ---------------- 4.6 Teste ----------------
@@ -290,10 +291,10 @@ def fig12():
         s = per[per.chave == rot].sort_values("horizonte")
         a2.plot(s.horizonte, s["valor"].astype(float), marker="o", color=cor, label=rot)
     a2.axhline(0, color="#555", ls="--"); a2.set_xticks(hs); a2.set_xlabel("Horizonte")
-    a2.set_ylabel("skill vs B3"); a2.set_title("Skill por periodo"); a2.legend()
-    fig.suptitle("Exp 3 (teste): o XGBRes supera o B3; significativo em h30 e h60, presente nos dois periodos",
+    a2.set_ylabel("skill vs B3"); a2.set_title("Skill por período"); a2.legend()
+    fig.suptitle("Exp 3 (teste): o XGBRes supera o B3; significativo em h30 e h60, presente nos dois períodos",
                  fontweight="bold")
-    salvar(fig, 12, "teste_skill_ic", "Resultado do teste com IC95% e por periodo",
+    salvar(fig, 12, "teste_skill_ic", "Resultado do teste com IC95% e por período",
            "Skill +0,240 [0,132;0,372] (h30) e +0,229 [0,079;0,420] (h60) significativos; h90 cruza zero. "
            "A vantagem aparece em 2023-2024 e 2025-2026.")
 
@@ -310,13 +311,13 @@ def fig13():
     for nome, lo, hi, cor in FAIXAS:
         ax_.axhspan(lo, hi, color=cor, alpha=0.08)
     ax_.plot(d["alvo"], d["real"], color="#1f3b73", lw=2, label="real (vol t+90)")
-    ax_.plot(d["alvo"], d["vol_t"], color="#7f7f7f", ls=":", label="B1 (persistencia)")
+    ax_.plot(d["alvo"], d["vol_t"], color="#7f7f7f", ls=":", label="B1 (persistência)")
     ax_.plot(d["alvo"], d["B3"], color="#ff7f0e", ls="--", label="B3")
     ax_.plot(d["alvo"], d["XGBRes"], color="#d1495b", label="XGBRes (congelado)")
     ax_.axhline(40, color="#d62728", ls="dotted")
-    ax_.set_ylabel("Volume util (%)"); ax_.set_xlabel("Data alvo (t+90)"); ax_.legend()
-    ax_.set_title("Teste: previsao a 90 dias na crise de 2025-26 (modelo congelado)")
-    salvar(fig, 13, "teste_backtest_2025_26", "Previsao no teste da crise de 2025-26",
+    ax_.set_ylabel("Volume útil (%)"); ax_.set_xlabel("Data alvo (t+90)"); ax_.legend()
+    ax_.set_title("Teste: previsão a 90 dias na crise de 2025-26 (modelo congelado)")
+    salvar(fig, 13, "teste_backtest_2025_26", "Previsão no teste da crise de 2025-26",
            "No teste, a 90 dias, o XGBRes acompanha a queda melhor que o B3; antecipa o alerta em ~11 dias.")
 
 
@@ -328,10 +329,10 @@ def fig14():
         d = e[e.reservatorio == nome].sort_values("horizonte")
         ax_.plot(d.horizonte, d.skill_vs_B3, marker="o", label=nome)
     ax_.axhline(0, color="#d62728", ls="--", label="B3")
-    ax_.set_xlabel("Horizonte (dias)"); ax_.set_ylabel("skill vs B3 (validacao)"); ax_.set_xticks([30, 60, 90])
+    ax_.set_xlabel("Horizonte (dias)"); ax_.set_ylabel("skill vs B3 (validação)"); ax_.set_xticks([30, 60, 90])
     ax_.legend()
-    ax_.set_title("Exp 4: o mesmo pipeline nos 4 reservatorios; util nos maiores, fraco nos pequenos")
-    salvar(fig, 14, "exp4_reservatorios", "Generalizacao para outros reservatorios (Exp 4)",
+    ax_.set_title("Exp 4: o mesmo pipeline nos 4 reservatórios;\nsó o Jaguari supera o B3, e só em h30")
+    salvar(fig, 14, "exp4_reservatorios", "Generalização para outros reservatórios (Exp 4)",
            "O pipeline roda inalterado. Skill vs B3: Jaguari +0,11 (h30), Cachoeira ~0, Atibainha -0,41, "
            "Paiva Castro -0,18.")
 
