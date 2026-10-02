@@ -9,7 +9,7 @@
 | 5 | `fig_05_eda_volume_faixas.png` | Volume do sistema com faixas e episódios | O sistema chega a -23,2% em 2015 (reserva técnica). Cinco episódios < 30%: 1986, 2003-04, 2013-16, 2021-22 e 2025-26. |
 | 6 | `fig_06_eda_chuva_era5_vs_power.png` | Chuva anual ERA5 contra POWER | As fontes concordam, menos em 1999, quando o POWER tem um pico anômalo (~3.380 mm vs ~1.600 do ERA5). |
 | 7 | `fig_07_sintetico_skill_phief.png` | Skill sintético por persistência efetiva | DADOS SINTÉTICOS. O Cantareira real está em phi ~ 0; o gêmeo calibrado (estrela) ainda supera o B3 em h90, limitação discutida no texto. |
-| 8 | `fig_08_sintetico_sanidade.png` | Sanidade do sintético | DADOS SINTÉTICOS. Embaralhado skill -0,00; oráculo +0,62: o teto é a informação sobre a chuva futura, não o algoritmo. |
+| 8 | `fig_08_sintetico_sanidade.png` | Sanidade do sintético | DADOS SINTÉTICOS. Embaralhado skill -0,01; oráculo +0,62: o teto é a informação sobre a chuva futura, não o algoritmo. |
 | 9 | `fig_09_exp2_skill_horizonte.png` | Clima contra clima e estado (Exp 2) | CLIMA sozinho tem skill negativo; CLIMA_ESTADO fica junto do B3 (skill vs B1 ~0,3), sem superá-lo. |
 | 10 | `fig_10_exp3_skill_condicional.png` | Skill condicional do residual (Exp 3) | Em geral, seca e pré-episódio, todos os IC95% do XGBRes cruzam zero: não supera o B3 onde importa. |
 | 11 | `fig_11_exp3_antecedencia_pareada.png` | Antecedência pareada (Exp 3) | Mediana da diferença: +6,5 d (h30, p=0,039), +19 d (h60, p=0,002), +7 d (h90, p=0,10). Custo: 3-4 episódios de falso-alarme em 20 anos contra zero do B3. |

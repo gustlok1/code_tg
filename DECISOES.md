@@ -217,3 +217,22 @@ Formato: data, decisão, motivo, alternativa descartada.
   (shuffle skill -0,0014). O working tree foi restaurado a essa versao.
 - Para trabalho futuro: fixar a semente do shuffle por indice do fold (sem `hash()`) para reproducao
   bit a bit. Registrar como limitacao na secao 4.3 do capitulo 4.
+
+## 2026-10-02 — Encerra o caveat do shuffle: semente fixa, sanidade reprodutivel (item 15)
+- Encerra o caveat registrado no commit 40228fc4. A derivacao da semente do embaralhamento deixou de
+  usar `hash(nome_do_fold)` (randomizado por processo) e passou a usar `shuffle_seed_base + indice do
+  fold`, com `shuffle_seed_base` em `config.yaml` (secao `sintetico`). Mudanca so na linha do modo
+  shuffle de `modelar_sintetico` (sintetico_v2.py).
+- Portao (confirmado): rodando a sanidade em dois processos separados (PYTHONHASHSEED diferente), as
+  linhas `normal` (skill 0,3315; pr_auc 0,8826) e `oraculo` (skill 0,6165; pr_auc 0,9758) ficaram
+  IDENTICAS as commitadas; so a `shuffle` mudou, e o valor novo se repetiu nas duas execucoes.
+  sanidade_sintetico.csv e barras_sanidade.png ficaram byte a byte iguais em duas escritas seguidas.
+- Valor novo (deterministico): shuffle skill -0,0114, pr_auc de entrada 0,7694 (prevalencia 0,1577,
+  inalterada). Antes oscilava (-0,0014, -0,0114, -0,0224...). A conclusao da sanidade nao muda: o
+  embaralhamento leva o skill vs B3 a ~0; a pr_auc de entrada cai de 0,88 para 0,77 mas fica acima da
+  prevalencia porque a previsao ainda e B3 mais ruido e o B3 ja antecipa a entrada.
+- Atualizados: sanidade_sintetico.csv, barras_sanidade.png, fig_08 (leitura -0,00 -> -0,01),
+  indice_figuras.md e resumo_exp1.md. Teste novo: test_shuffle_deterministico_semente_do_config
+  (duas chamadas dao o mesmo skill; mudar shuffle_seed_base muda o resultado). 27 testes verdes.
+- Nota: isto nao reabre o teste de 2023+ nem altera o congelamento (que nao usam `hash()`); a
+  verificacao de reproducao do congelamento segue valida.

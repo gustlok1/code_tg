@@ -10,9 +10,13 @@ muda com o número de crises N. Código: `pipeline_v2/sintetico_v2.py`, `04_expe
 φ ≈ 0: a chuva não tem persistência mensal.
 
 ## Resultados
-- Sanidade (`barras_sanidade.png`): com o alvo embaralhado o skill vs B3 ≈ 0 (−0,005) e um score
-  aleatório dá PR-AUC ≈ prevalência (0,15 vs 0,16); o oráculo (chuva futura t..t+h) dá skill +0,62.
-  Conclusão: o teto é a informação sobre a chuva futura, não o algoritmo.
+- Sanidade (`sanidade_sintetico.csv`, `barras_sanidade.png`): com o alvo embaralhado o skill vs B3 ≈ 0
+  (−0,0114); a PR-AUC de entrada cai de 0,88 (modelo normal) para 0,77, mas fica acima da prevalência
+  (0,16) porque a previsão ainda é B3 mais ruído e o próprio B3 já antecipa a entrada em crise; o
+  oráculo (chuva futura t..t+h) dá skill +0,62. Conclusão: o teto é a informação sobre a chuva futura,
+  não o algoritmo. O valor do embaralhamento agora é reprodutível bit a bit (semente fixa derivada do
+  índice do fold, `sintetico.shuffle_seed_base` no config; antes vinha de `hash()` randomizado por
+  processo).
 - Persistência efetiva (`skill_vs_phief.png`): o skill vs B3 cresce com φ_ef e com N. φ_param=0 com N=0
   dá φ_ef = 0,015 (≈ real); as secas injetadas inflam φ_ef (N=30 → 0,37). O ganho salta em φ alto
   (φ=0,95 → skill ~0,43 em h=90).

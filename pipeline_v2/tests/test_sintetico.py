@@ -36,6 +36,24 @@ def test_conservacao_de_massa():
     assert np.max(np.abs(dV - bal)) < 1e-6, "balanço hídrico não conserva massa"
 
 
+def test_shuffle_deterministico_semente_do_config():
+    # O modo shuffle da sanidade deriva a semente de shuffle_seed_base + índice do fold
+    # (não de hash() de string, que é randomizado por processo). Duas chamadas no mesmo
+    # processo têm de dar exatamente o mesmo skill (reprodução bit a bit).
+    cfg = yaml.safe_load(CONFIG.read_text(encoding="utf-8"))
+    assert "sintetico" in cfg and "shuffle_seed_base" in cfg["sintetico"], \
+        "shuffle_seed_base ausente do config.yaml"
+    base, _ = sv.gerar_cenario(0.8, 10, seed=0, clim=CLIM_FAKE)
+    ds = sv.construir_dataset(base, cfg)
+    s1, _ = sv.modelar_sintetico(ds, cfg, 90, modo="shuffle")
+    s2, _ = sv.modelar_sintetico(ds, cfg, 90, modo="shuffle")
+    assert s1 == s2, "o modo shuffle não é determinístico"
+    # mudar a base da semente muda a permutação (logo, o skill)
+    cfg2 = dict(cfg); cfg2["sintetico"] = {"shuffle_seed_base": cfg["sintetico"]["shuffle_seed_base"] + 1}
+    s3, _ = sv.modelar_sintetico(ds, cfg2, 90, modo="shuffle")
+    assert s3 != s1, "shuffle_seed_base não afeta o embaralhamento"
+
+
 @pytest.mark.skipif(not REAL.exists(), reason="dataset real ainda não gerado")
 def test_schema_identico_ao_real():
     cfg = yaml.safe_load(CONFIG.read_text(encoding="utf-8"))

@@ -287,7 +287,8 @@ def modelar_sintetico(dataset, cfg, h, modo="normal", seed=0):
         p = dataset["era5_precip_mm"].values
         precip_fut = np.array([np.sum(p[i + 1:i + 1 + h]) if i + 1 + h <= len(p) else np.nan
                                for i in range(len(p))])
-    for fo in folds:
+    base_shuffle = int(cfg.get("sintetico", {}).get("shuffle_seed_base", 12345))
+    for k, fo in enumerate(folds):
         trm, vam = mv.mascaras_fold(dataset["data"], fo["ini"], fo["fim"], h)
         X, cols = _features(dataset, trm)
         if modo == "oraculo":
@@ -301,7 +302,8 @@ def modelar_sintetico(dataset, cfg, h, modo="normal", seed=0):
         b3_va = mv.prever_B3(dataset[va_ok], h, delta)
         r_tr = dataset.loc[tr_ok, alvo].values - b3_tr
         if modo == "shuffle":
-            r_tr = np.random.default_rng(seed + hash(fo["nome"]) % 997).permutation(r_tr)
+            # semente fixa derivada do índice do fold (reprodução bit a bit, sem hash())
+            r_tr = np.random.default_rng(seed + base_shuffle + k).permutation(r_tr)
         mod = XGBRegressor(**XGB_PARAMS); mod.fit(X[tr_ok], r_tr)
         pred_vol = b3_va + mod.predict(X[va_ok])
         real = dataset.loc[va_ok, alvo].values

@@ -215,7 +215,7 @@ def fig08():
     ax_.set_ylabel("skill vs B3 (h=90)")
     ax_.set_title("Sintético: embaralhado zera o skill;\no oráculo (chuva futura) o maximiza")
     salvar(fig, 8, "sintetico_sanidade", "Sanidade do sintético",
-           "DADOS SINTÉTICOS. Embaralhado skill -0,00; oráculo +0,62: o teto é a informação sobre a chuva "
+           "DADOS SINTÉTICOS. Embaralhado skill -0,01; oráculo +0,62: o teto é a informação sobre a chuva "
            "futura, não o algoritmo.")
 
 

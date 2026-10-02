@@ -40,6 +40,13 @@ caminhos:
   era5_pontos: "data/raw_v2/openmeteo_pontos_diario.csv"
   power_pontos: "data/raw_v2/nasapower_pontos_diario.csv"
 
+# Experimento sintético (Exp 1). Semente fixa do embaralhamento da sanidade
+# (modo "shuffle"): a permutação do resíduo de treino usa shuffle_seed_base + índice
+# do fold, para reprodução bit a bit. Antes derivava de hash() de string, que é
+# randomizado por processo (PYTHONHASHSEED) e não reproduzia o valor exato.
+sintetico:
+  shuffle_seed_base: 12345
+
 # Faixas operacionais indicativas do Sistema Cantareira (volume útil %), usadas
 # apenas para sombrear a figura de EDA. Valores aproximados das bandas ANA/DAEE.
 faixas_ana_daee:
