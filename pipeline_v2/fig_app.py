@@ -20,6 +20,18 @@ import yaml
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+from matplotlib.ticker import ScalarFormatter
+
+
+class _FmtVirgula(ScalarFormatter):
+    """Ticks com virgula decimal, sem depender do locale do sistema."""
+    def __call__(self, x, pos=None):
+        return super().__call__(x, pos).replace(".", ",")
+
+
+def _virg(x, nd):
+    return f"{x:.{nd}f}".replace(".", ",")
+
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "app_v2"))
 import utils_v2 as u  # noqa: E402
@@ -27,7 +39,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import analise_exp3 as ax  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
-FIG = ROOT / "reports" / "v2" / "final" / "figuras"
+FIG = ROOT / "reports_v2" / "final" / "figuras"
 INDICE = FIG / "indice_figuras.md"
 FAIXAS = u.FAIXAS
 
@@ -54,7 +66,7 @@ def fig15(df):
         ax_.annotate(f"{r.vol_previsto:.0f}%", (r.data_alvo, r.vol_previsto),
                      textcoords="offset points", xytext=(0, 10), ha="center", fontsize=9)
     ax_.set_ylabel("Volume útil (%)"); ax_.set_xlabel("Data"); ax_.legend(loc="upper left")
-    ax_.set_title(f"Aplicação, situação atual: volume {vol_atual:.1f}% (faixa {nome}) e previsão "
+    ax_.set_title(f"Aplicação, situação atual: volume {_virg(vol_atual, 1)}% (faixa {nome}) e previsão "
                   f"a 30, 60 e 90 dias")
     _salvar(fig, 15, "app_situacao_atual", "Aplicação: situação atual e previsão",
             f"Renderização da tela inicial do app. Volume em {pd.Timestamp(atual_data).date()} de "
@@ -63,7 +75,7 @@ def fig15(df):
 
 def fig16(df):
     cfg = yaml.safe_load((Path(__file__).resolve().parent / "config.yaml").read_text(encoding="utf-8"))
-    cong = json.loads((ROOT / "reports" / "v2" / "final" / "congelamento.json").read_text(encoding="utf-8"))
+    cong = json.loads((ROOT / "reports_v2" / "final" / "congelamento.json").read_text(encoding="utf-8"))
     oof = ax.testar_residual(df, cfg, 90, cong["modelos"]["XGBRes"]["90"]["config"])
     oof["alvo"] = pd.to_datetime(oof["data"]) + pd.to_timedelta(90, "D")
     d = oof[oof["alvo"] >= pd.Timestamp("2025-01-01")].sort_values("alvo")
@@ -83,6 +95,8 @@ def fig16(df):
 
 
 def _salvar(fig, num, nome, titulo, leitura):
+    for a in fig.axes:  # virgula decimal no eixo y (o x e de datas, fica intocado)
+        a.yaxis.set_major_formatter(_FmtVirgula())
     arq = f"fig_{num:02d}_{nome}.png"
     fig.tight_layout(); fig.savefig(FIG / arq, dpi=300); plt.close(fig)
     _append_indice(num, arq, titulo, leitura)

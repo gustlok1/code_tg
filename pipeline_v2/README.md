@@ -40,9 +40,9 @@ python pipeline_v2/run_all.py --coleta   # coleta + dataset + experimentos (vali
 
 ## Dados (fora do git)
 `data/raw_v2/`, `data/processed_v2/` e `data/sintetico/` não são versionados (ver `.gitignore`).
-São reproduzíveis por `run_all.py --coleta`. Figuras, tabelas e resumos finais em `reports/v2/`.
+São reproduzíveis por `run_all.py --coleta`. Figuras, tabelas e resumos finais em `reports_v2/`.
 
 ## Rigor
 Teste aberto uma única vez pelo `03`, depois do congelamento; nada muda depois. Nenhuma estatística de
 série inteira fora de `transformadores.py` (fit no treino). Baselines sempre reportados; skill contra
-o B3 é a régua. Dado sintético sempre rotulado "DADOS SINTÉTICOS". Ver `reports/v2/final/ficha_tecnica.md`.
+o B3 é a régua. Dado sintético sempre rotulado "DADOS SINTÉTICOS". Ver `reports_v2/final/ficha_tecnica.md`.

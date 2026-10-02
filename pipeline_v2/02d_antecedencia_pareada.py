@@ -6,7 +6,7 @@ limiares 40 e 30, h = 30/60/90: mediana da diferença, IC95% (bootstrap sobre ep
 Wilcoxon pareado; mais a taxa e o número absoluto de falso-alarme na validação.
 Não abre o teste 2023+.
 
-Saída: reports/v2/resultados/antecedencia_pareada.csv (+ _por_episodio.csv)
+Saída: reports_v2/resultados/antecedencia_pareada.csv (+ _por_episodio.csv)
 """
 import logging
 import sys

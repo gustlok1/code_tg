@@ -53,7 +53,7 @@ Execute em sequência, sem pedir confirmação entre os itens.
 1. Sintético: φ_ef, cenários com N = 0 e gêmeo calibrado (prompt já enviado).
 2. Versionamento: branch `tg2-v2` e commits por etapa (regras na seção 6).
 3. `03_congelar_e_testar.py`:
-   - grava em `reports/v2/final/congelamento.json` os conjuntos, modelos, hiperparâmetros e thresholds escolhidos na validação (B3 e XGBRes, limiares 40 e 30);
+   - grava em `reports_v2/final/congelamento.json` os conjuntos, modelos, hiperparâmetros e thresholds escolhidos na validação (B3 e XGBRes, limiares 40 e 30);
    - faz commit desse arquivo;
    - só então abre o teste uma única vez, com `--abrir-teste` e registro em `teste_aberto.log`;
    - relatório do teste com destaque para a crise de 2025-26: antecedência de cada modelo, alarmes falsos e skill contra B3.
@@ -67,13 +67,13 @@ Execute em sequência, sem pedir confirmação entre os itens.
    - atualização por API;
    - remover a menção à estação A701.
 7. Material para o texto:
-   - figuras e tabelas finais em `reports/v2/final/`;
-   - um resumo em Markdown por experimento (`reports/v2/final/resumo_expN.md`), com números, figuras e interpretação;
+   - figuras e tabelas finais em `reports_v2/final/`;
+   - um resumo em Markdown por experimento (`reports_v2/final/resumo_expN.md`), com números, figuras e interpretação;
    - o dicionário de dados.
 8. Higiene: `run_all.py`, README da v2 e remoção do `.venv` do índice do git.
-9. Figuras finais para o texto, em `reports/v2/final/figuras/`: PNG a 300 dpi, rótulos em português, título que diz o achado, mesmo estilo em todas, numeradas na ordem do capítulo 4. Inclua um `indice_figuras.md` com número, arquivo, título e uma frase de leitura de cada uma.
-10. Rascunho do capítulo 4 (Análise e Resultados) em `reports/v2/final/capitulo4_rascunho.md`: 4.1 Diagnóstico da v1 (Exp 0); 4.2 Compreensão dos dados (EDA); 4.3 Experimento sintético (Exp 1, com a limitação do gêmeo); 4.4 Clima contra clima e estado (Exp 2); 4.5 Modelos contra a régua B3 (Exp 3: geral, condicional, LSTM, antecedência pareada); 4.6 Resultado no teste e diagnósticos pós-hoc; 4.7 Generalização (Exp 4); 4.8 Aplicação web. Cada subseção: o que foi feito, figura ou tabela, números exatos dos CSVs e interpretação. Resultado negativo contado como é, com leitura em três frentes (estatística, hidrológica, metodológica) quando um modelo falha. Português, sem travessão, frases curtas.
-11. `reports/v2/final/valores_capitulo3.md` com os valores exatos da metodologia: número final de testes, pontos da bacia e coordenadas, grades e hiperparâmetros escolhidos por modelo e horizonte, parâmetros do LSTM, versões das bibliotecas, hashes dos commits de congelamento e de abertura do teste.
+9. Figuras finais para o texto, em `reports_v2/final/figuras/`: PNG a 300 dpi, rótulos em português, título que diz o achado, mesmo estilo em todas, numeradas na ordem do capítulo 4. Inclua um `indice_figuras.md` com número, arquivo, título e uma frase de leitura de cada uma.
+10. Rascunho do capítulo 4 (Análise e Resultados) em `reports_v2/final/capitulo4_rascunho.md`: 4.1 Diagnóstico da v1 (Exp 0); 4.2 Compreensão dos dados (EDA); 4.3 Experimento sintético (Exp 1, com a limitação do gêmeo); 4.4 Clima contra clima e estado (Exp 2); 4.5 Modelos contra a régua B3 (Exp 3: geral, condicional, LSTM, antecedência pareada); 4.6 Resultado no teste e diagnósticos pós-hoc; 4.7 Generalização (Exp 4); 4.8 Aplicação web. Cada subseção: o que foi feito, figura ou tabela, números exatos dos CSVs e interpretação. Resultado negativo contado como é, com leitura em três frentes (estatística, hidrológica, metodológica) quando um modelo falha. Português, sem travessão, frases curtas.
+11. `reports_v2/final/valores_capitulo3.md` com os valores exatos da metodologia: número final de testes, pontos da bacia e coordenadas, grades e hiperparâmetros escolhidos por modelo e horizonte, parâmetros do LSTM, versões das bibliotecas, hashes dos commits de congelamento e de abertura do teste.
 
 ## 5. Autonomia
 
@@ -94,7 +94,7 @@ Execute em sequência, sem pedir confirmação entre os itens.
   - os testes passam.
   Se algo falhar, corrija o `.gitignore` ou o código e siga.
 - Push permitido apenas na branch `tg2-v2`. Nunca force push, nunca reescrever histórico, nunca commitar ou fazer merge na main. O merge é decisão do Victor com o Gustavo.
-- Ate o merge, NUNCA use `git add -A` nem `git commit -a` neste repositorio. So `git add` com caminhos explicitos da v2 (pipeline_v2/, app_v2/, reports/v2/, requirements*.txt, DECISOES.md, CLAUDE.md, .gitignore). Motivo: o HEAD herdado do Gustavo versiona a v1 sob `algoritmos/` e `resultados_*` com um working tree divergente (v1 reorganizada como `pipeline/`, `data/`, `models/`); um add amplo arrastaria essa divergencia da v1 congelada. Nao tocar na v1.
+- Ate o merge, NUNCA use `git add -A` nem `git commit -a` neste repositorio. So `git add` com caminhos explicitos da v2 (pipeline_v2/, app_v2/, reports_v2/, requirements*.txt, DECISOES.md, CLAUDE.md, .gitignore). Motivo: o HEAD herdado do Gustavo versiona a v1 sob `algoritmos/` e `resultados_*` com um working tree divergente (v1 reorganizada como `pipeline/`, `data/`, `models/`); um add amplo arrastaria essa divergencia da v1 congelada. Nao tocar na v1.
 
 ## 7. Rigor científico (inegociável)
 

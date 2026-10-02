@@ -3,7 +3,7 @@
 Objetivo: tentar superar o B3 com um modelo residual (prevê r_h = vol(t+h) − B3(t)), avaliar onde
 importa (seca e pré-episódio) e, por fim, abrir o teste. Código: `pipeline_v2/02b_analise_exp3.py`,
 `analise_exp3.py`, `02c_lstm.py`, `lstm_v2.py`, `02d_antecedencia_pareada.py`, `03_congelar_e_testar.py`,
-`03b_teste_diagnostico.py`. Figuras/CSVs em `reports/v2/resultados/` e `reports/v2/final/`.
+`03b_teste_diagnostico.py`. Figuras/CSVs em `reports_v2/resultados/` e `reports_v2/final/`.
 
 ## Validação (régua = skill vs B3)
 - Residual XGBRes vs B3 (skill_B3 médio): h30 −0,004; h60 +0,018; h90 +0,016. RidgeRes pior.

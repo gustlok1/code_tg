@@ -39,7 +39,7 @@ python pipeline_v2/00_download_dados.py --all     # 1. coleta SAR + ERA5 + NASA 
 python pipeline_v2/01_build_dataset_v2.py         # 2. dataset diario, features e episodios
 python pipeline_v2/run_all.py                     # 3. experimentos de validacao (Exp 0/1/2/3/4 + LSTM)
 # congelamento e teste (o teste abre uma unica vez):
-python pipeline_v2/03_congelar_e_testar.py        #    grava reports/v2/final/congelamento.json
+python pipeline_v2/03_congelar_e_testar.py        #    grava reports_v2/final/congelamento.json
 python pipeline_v2/03_congelar_e_testar.py --abrir-teste
 # aplicacao web:
 streamlit run app_v2/Home.py
@@ -67,11 +67,11 @@ python -m pytest pipeline_v2/tests -q
 ```
 
 ## Onde ficam figuras e relatorios
-- Figuras finais do capitulo 4: `reports/v2/final/figuras/` (300 dpi) com `indice_figuras.md`.
-- Rascunho do capitulo 4: `reports/v2/final/capitulo4_rascunho.md`. Valores da metodologia:
-  `reports/v2/final/valores_capitulo3.md` e `ficha_tecnica.md`.
-- Resultados por experimento: `reports/v2/resultados/`, `reports/v2/sintetico/`, `reports/v2/eda/`,
-  `reports/v2/exp0/`, `reports/v2/exp4/`.
+- Figuras finais do capitulo 4: `reports_v2/final/figuras/` (300 dpi) com `indice_figuras.md`.
+- Rascunho do capitulo 4: `reports_v2/final/capitulo4_rascunho.md`. Valores da metodologia:
+  `reports_v2/final/valores_capitulo3.md` e `ficha_tecnica.md`.
+- Resultados por experimento: `reports_v2/resultados/`, `reports_v2/sintetico/`, `reports_v2/eda/`,
+  `reports_v2/exp0/`, `reports_v2/exp4/`.
 - Decisoes de projeto: `DECISOES.md`. Regras e backlog: `CLAUDE.md`.
 
 ## O que e o legado_v1/

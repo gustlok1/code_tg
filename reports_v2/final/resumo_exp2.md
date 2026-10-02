@@ -2,7 +2,7 @@
 
 Objetivo: medir, com validação honesta (janela crescente, 4 folds, purga, baselines), se o clima
 sozinho ou somado ao estado do reservatório prevê o volume. Código: `pipeline_v2/02_treino_v2.py`,
-`modelagem_v2.py`. Figuras/CSVs em `reports/v2/resultados/`.
+`modelagem_v2.py`. Figuras/CSVs em `reports_v2/resultados/`.
 
 ## Regressão do volume — skill contra a persistência (B1), média dos folds
 | conjunto / modelo | h30 | h60 | h90 |

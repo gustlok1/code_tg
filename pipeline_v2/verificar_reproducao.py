@@ -4,7 +4,7 @@
 verificar_reproducao.py — Reproducibilidade (item 12). Recomputa, no ambiente atual, as
 escolhas do congelamento (configs e thresholds) e as metricas do teste, e compara com os
 valores JA COMMITADOS. NAO sobrescreve o modelo congelado nem reabre nada de forma a muda-lo.
-Saida: reports/v2/final/reproducao.md.
+Saida: reports_v2/final/reproducao.md.
 """
 import json
 import logging
@@ -20,7 +20,7 @@ import analise_exp3 as ax
 
 ROOT = Path(__file__).resolve().parents[1]
 CFGP = Path(__file__).resolve().parent / "config.yaml"
-FINAL = ROOT / "reports" / "v2" / "final"
+FINAL = ROOT / "reports_v2" / "final"
 
 
 def main():

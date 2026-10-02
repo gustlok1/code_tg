@@ -22,7 +22,7 @@ Autores: Victor Ribeiro Cunha e Gustavo Henrique Moises Martins. Orientador: Pro
 - Modelo: XGBoost que prevê o resíduo sobre um baseline forte (persistência + variação sazonal, B3).
   Validação com janela crescente e purga; teste de 2023 em diante aberto uma única vez, após o
   congelamento das escolhas.
-- Detalhes completos em reports/v2/final/ficha_tecnica.md.
+- Detalhes completos em reports_v2/final/ficha_tecnica.md.
 
 ## Resultado, em uma frase
 O estado do reservatório é o preditor decisivo; o clima agrega pouco na validação (empata com o B3),

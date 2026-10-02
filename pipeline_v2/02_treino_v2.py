@@ -5,7 +5,7 @@
 de previsão do volume do Cantareira, com SPI/SPEI ajustados dentro de cada fold.
 
 O período de TESTE (2023+) permanece INTOCÁVEL por padrão. Só é avaliado com a flag
---abrir-teste, que grava a data/hora da abertura em reports/v2/resultados/teste_aberto.log.
+--abrir-teste, que grava a data/hora da abertura em reports_v2/resultados/teste_aberto.log.
 
 Uso:
   python pipeline_v2/02_treino_v2.py

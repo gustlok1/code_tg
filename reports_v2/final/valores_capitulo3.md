@@ -1,7 +1,7 @@
 # Valores para o capitulo 3 (Metodologia)
 
 Valores exatos que o capitulo de metodologia precisa citar. Todos vem de arquivos gerados pelo
-pipeline. Para a ficha completa, ver `reports/v2/final/ficha_tecnica.md`.
+pipeline. Para a ficha completa, ver `reports_v2/final/ficha_tecnica.md`.
 
 ## Testes automaticos
 - Numero final de testes (pytest, `pipeline_v2/tests/`): 26, todos passando.

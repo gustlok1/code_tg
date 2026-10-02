@@ -7,12 +7,12 @@ Rigor (CLAUDE.md seção 7): o teste (2023-01-01 em diante) só é aberto uma ve
 congelamento. Fluxo em duas fases:
 
   1) python pipeline_v2/03_congelar_e_testar.py
-     Grava reports/v2/final/congelamento.json (conjuntos, modelos, hiperparâmetros e
+     Grava reports_v2/final/congelamento.json (conjuntos, modelos, hiperparâmetros e
      thresholds escolhidos na VALIDAÇÃO, para B3 e XGBRes, limiares 40 e 30). NÃO abre o teste.
      -> em seguida faça commit do congelamento.json.
 
   2) python pipeline_v2/03_congelar_e_testar.py --abrir-teste
-     Lê o congelamento, abre o teste UMA vez (registra em reports/v2/final/teste_aberto.log),
+     Lê o congelamento, abre o teste UMA vez (registra em reports_v2/final/teste_aberto.log),
      treina com o treino purgado (< 2023) e avalia no teste (>= 2023). Relatório com destaque
      para a crise de 2025-26. Não altera nenhuma escolha depois de aberto.
 """
@@ -33,7 +33,7 @@ import modelagem_v2 as mv
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG = Path(__file__).resolve().parent / "config.yaml"
-FINAL = ROOT / "reports" / "v2" / "final"
+FINAL = ROOT / "reports_v2" / "final"
 CONGELAMENTO = FINAL / "congelamento.json"
 
 

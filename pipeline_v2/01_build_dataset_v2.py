@@ -18,7 +18,7 @@ Saídas:
   data/processed_v2/episodios_crise40.csv          (limiar 40)
   data/processed_v2/buracos_calendario.csv
   data/processed_v2/ausentes_por_ano.csv
-  reports/v2/eda/{volume_faixas.png, chuva_anual_fontes.png, ausentes_por_ano.png}
+  reports_v2/eda/{volume_faixas.png, chuva_anual_fontes.png, ausentes_por_ano.png}
 """
 import logging
 import re

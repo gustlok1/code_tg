@@ -26,7 +26,7 @@ import transformadores as tr        # noqa: E402
 from xgboost import XGBRegressor    # noqa: E402
 
 CONFIG = PIPE / "config.yaml"
-CONGELAMENTO = ROOT / "reports" / "v2" / "final" / "congelamento.json"
+CONGELAMENTO = ROOT / "reports_v2" / "final" / "congelamento.json"
 
 FAIXAS = [("Normal", 60, 100, "#2ca02c"), ("Atenção", 40, 60, "#bcbd22"),
           ("Alerta", 30, 40, "#ff7f0e"), ("Restrição", 20, 30, "#d62728"),

@@ -3,7 +3,7 @@
 Objetivo: em ambiente controlado, mostrar (a) que o pipeline recupera um sinal conhecido, (b) que o ML
 só supera o B3 quando a chuva futura tem componente previsível do passado, e (c) como o desempenho
 muda com o número de crises N. Código: `pipeline_v2/sintetico_v2.py`, `04_experimento_sintetico.py`,
-`04b_sintetico_ajuste.py`. Figuras em `reports/v2/sintetico/` (todas com marca "DADOS SINTÉTICOS").
+`04b_sintetico_ajuste.py`. Figuras em `reports_v2/sintetico/` (todas com marca "DADOS SINTÉTICOS").
 
 ## Calibração com o real
 φ real (persistência efetiva da chuva mensal) = 0,0129; σ real = 0,6944. O Cantareira real está em

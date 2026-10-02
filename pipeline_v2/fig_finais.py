@@ -3,7 +3,7 @@
 """
 fig_finais.py — Figuras finais para o texto (capitulo 4), estilo uniforme, 300 dpi,
 rotulos em portugues, titulo que diz o achado, numeradas na ordem do capitulo.
-Saida: reports/v2/final/figuras/ (fig_01..fig_14) + indice_figuras.md.
+Saida: reports_v2/final/figuras/ (fig_01..fig_14) + indice_figuras.md.
 Le dos CSVs/parquets ja gerados; o teste nao e reaberto (usa o congelamento).
 """
 import json
@@ -20,15 +20,28 @@ from sklearn.model_selection import TimeSeriesSplit
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+from matplotlib.ticker import ScalarFormatter
 
 import analise_exp3 as ax
 
+
+class _FmtVirgula(ScalarFormatter):
+    """Formata os ticks como o padrao do matplotlib, mas com virgula decimal,
+    sem depender do locale do sistema."""
+    def __call__(self, x, pos=None):
+        return super().__call__(x, pos).replace(".", ",")
+
+
+def _virg(x, nd):
+    """Numero com virgula decimal para rotulos de texto (nd casas)."""
+    return f"{x:.{nd}f}".replace(".", ",")
+
 ROOT = Path(__file__).resolve().parents[1]
-FIG = ROOT / "reports" / "v2" / "final" / "figuras"
-RES = ROOT / "reports" / "v2" / "resultados"
-SINT = ROOT / "reports" / "v2" / "sintetico"
-EXP4 = ROOT / "reports" / "v2" / "exp4"
-FINAL = ROOT / "reports" / "v2" / "final"
+FIG = ROOT / "reports_v2" / "final" / "figuras"
+RES = ROOT / "reports_v2" / "resultados"
+SINT = ROOT / "reports_v2" / "sintetico"
+EXP4 = ROOT / "reports_v2" / "exp4"
+FINAL = ROOT / "reports_v2" / "final"
 DF_DAILY = ROOT / "legado_v1" / "data" / "features" / "inmet_sp_daily.parquet"
 DF_FEAT = ROOT / "legado_v1" / "data" / "features" / "inmet_sp_daily_features.parquet"
 DF_LAB = ROOT / "legado_v1" / "data" / "features" / "inmet_sp_daily_labels.parquet"
@@ -52,6 +65,10 @@ def estilo():
 
 
 def salvar(fig, num, nome, titulo, leitura):
+    # virgula decimal nos ticks do eixo y (numerico em todas as figuras); o eixo x
+    # categorico ou de datas fica intocado.
+    for a in fig.axes:
+        a.yaxis.set_major_formatter(_FmtVirgula())
     arq = f"fig_{num:02d}_{nome}.png"
     fig.tight_layout(); fig.savefig(FIG / arq, dpi=300); plt.close(fig)
     INDICE.append((num, arq, titulo, leitura))
@@ -126,7 +143,7 @@ def fig04():
         ax_.axhline(0.5, color="#999", ls="--"); ax_.set_title(f"y{h}"); ax_.set_ylim(0, 1)
         ax_.tick_params(axis="x", rotation=30)
         for i, v in enumerate(vals):
-            ax_.text(i, v + 0.02, f"{v:.2f}", ha="center", fontsize=8)
+            ax_.text(i, v + 0.02, _virg(v, 2), ha="center", fontsize=8)
     axs[0].set_ylabel("AUC-ROC (teste)")
     fig.suptitle("v1: uma regra de limiar sobre o SPI30 supera os modelos em AUC-ROC", fontweight="bold")
     salvar(fig, 4, "v1_spi_vs_modelos", "Regra do SPI contra os modelos da v1",
@@ -191,11 +208,12 @@ def fig07():
             ax_.scatter(s.phi_ef, s.skill_90, c=c, s=40, alpha=0.8, edgecolor="k", lw=0.3, label=f"N={N}")
     ax_.axhspan(band[0], band[1], color="#d62728", alpha=0.12)
     ax_.axhline(band[2], color="#d62728", lw=1.2, label="skill real (Exp 2/3, h=90)")
-    ax_.axvline(cal.phi_real, color="black", ls="--", lw=1.5, label=f"phi real = {cal.phi_real:.2f}")
+    ax_.axvline(cal.phi_real, color="black", ls="--", lw=1.5, label=f"phi real = {_virg(cal.phi_real, 2)}")
     ax_.scatter(gem.phi_ef_medio, gem.skill_90_medio, marker="*", s=360, c="#9467bd", edgecolor="k",
                 lw=0.6, zorder=6, label="gêmeo calibrado")
     ax_.axhline(0, color="#555", ls=":", lw=0.8)
     ax_.set_xlabel("phi_ef (persistência efetiva da chuva)"); ax_.set_ylabel("skill vs B3 (h=90)")
+    ax_.xaxis.set_major_formatter(_FmtVirgula())  # eixo x numerico (phi_ef) tambem com virgula
     ax_.legend(fontsize=8, loc="upper left")
     ax_.set_title("Sintético: o ganho sobre o B3 cresce com a persistência da chuva (phi_ef) e com N")
     salvar(fig, 7, "sintetico_skill_phief", "Skill sintético por persistência efetiva",
@@ -211,7 +229,7 @@ def fig08():
     ax_.bar(nomes, vals, color=["#2ca02c", "#7f7f7f", "#9467bd"])
     ax_.axhline(0, color="#d62728", ls="--")
     for i, v in enumerate(vals):
-        ax_.text(i, v + (0.01 if v >= 0 else -0.03), f"{v:.3f}", ha="center")
+        ax_.text(i, v + (0.01 if v >= 0 else -0.03), _virg(v, 3), ha="center")
     ax_.set_ylabel("skill vs B3 (h=90)")
     ax_.set_title("Sintético: embaralhado zera o skill;\no oráculo (chuva futura) o maximiza")
     salvar(fig, 8, "sintetico_sanidade", "Sanidade do sintético",
@@ -264,8 +282,8 @@ def fig11():
     ax_.errorbar(d.horizonte, d.mediana_dif, yerr=yerr, marker="o", capsize=5, color="#1f77b4", lw=2)
     ax_.axhline(0, color="#d62728", ls="--")
     for _, r in d.iterrows():
-        ax_.annotate(f"p={r.wilcoxon_p:g}", (r.horizonte, r.mediana_dif), textcoords="offset points",
-                     xytext=(8, 8), fontsize=9)
+        ax_.annotate(f"p={format(r.wilcoxon_p, 'g').replace('.', ',')}", (r.horizonte, r.mediana_dif),
+                     textcoords="offset points", xytext=(8, 8), fontsize=9)
     ax_.set_xlabel("Horizonte (dias)"); ax_.set_ylabel("Antecedência XGBRes - B3 (dias)"); ax_.set_xticks([30, 60, 90])
     ax_.set_title("Exp 3: o XGBRes antecipa o alerta mais que o B3 (limiar 40),\n"
                   "com significância em h30 e h60")

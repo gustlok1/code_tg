@@ -6,7 +6,7 @@
 TODOS os números aqui são PÓS-HOC e NÃO ALTERAM o modelo congelado (congelamento.json).
 O teste já foi aberto pelo 03; estes diagnósticos apenas caracterizam o resultado.
 
-Produz (reports/v2/final/teste_diagnostico.csv):
+Produz (reports_v2/final/teste_diagnostico.csv):
   - IC95% do skill vs B3 no teste, por horizonte (bootstrap em blocos de 90 dias);
   - skill vs B3 separado em 2023-2024 e 2025-2026;
   - antecedência e falso-alarme no teste, limiares 40 e 30 (inclui o episódio jun-set/2026);
@@ -28,7 +28,7 @@ import modelagem_v2 as mv
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG = Path(__file__).resolve().parent / "config.yaml"
-FINAL = ROOT / "reports" / "v2" / "final"
+FINAL = ROOT / "reports_v2" / "final"
 CONGELAMENTO = FINAL / "congelamento.json"
 
 

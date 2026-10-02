@@ -7,7 +7,7 @@ chuva futura tem componente previsível a partir do passado (eixo φ); (c) como 
 desempenho varia com o nº de crises N. Calibra φ/σ com o real para marcar onde o
 Cantareira está. NÃO abre o teste real; nenhuma mistura com dados reais.
 
-Tudo marcado como sintético: saídas em data/sintetico/ e reports/v2/sintetico/, com
+Tudo marcado como sintético: saídas em data/sintetico/ e reports_v2/sintetico/, com
 marca d'água "DADOS SINTÉTICOS" em toda figura.
 
 Uso: python pipeline_v2/04_experimento_sintetico.py
@@ -32,7 +32,7 @@ import sintetico_v2 as sv
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG = Path(__file__).resolve().parent / "config.yaml"
-REPORTS = ROOT / "reports" / "v2" / "sintetico"
+REPORTS = ROOT / "reports_v2" / "sintetico"
 PHIS = [0.0, 0.5, 0.8, 0.95]
 NS = [3, 10, 30]
 SEEDS = [0, 1, 2]

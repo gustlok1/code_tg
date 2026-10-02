@@ -1,7 +1,7 @@
 # Capitulo 4 — Analise e Resultados (rascunho)
 
-Rascunho para integracao ao texto. Numeros vem dos CSVs em reports/v2/. Figuras em
-reports/v2/final/figuras/ (ver indice_figuras.md). A regua de comparacao e o baseline B3
+Rascunho para integracao ao texto. Numeros vem dos CSVs em reports_v2/. Figuras em
+reports_v2/final/figuras/ (ver indice_figuras.md). A regua de comparacao e o baseline B3
 (persistencia mais variacao sazonal). O teste (2023 em diante) foi aberto uma unica vez,
 apos o congelamento das escolhas; nada mudou depois.
 

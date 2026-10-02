@@ -1,7 +1,7 @@
 # Exp 0 — Diagnóstico da v1
 
 Objetivo: mostrar, com os próprios dados da v1, por que o resultado anterior falhou. Base do
-`RELATORIO_ESTADO_ATUAL.md`. Código: `pipeline_v2/exp0_diagnostico_v1.py`. Figuras em `reports/v2/exp0/`.
+`RELATORIO_ESTADO_ATUAL.md`. Código: `pipeline_v2/exp0_diagnostico_v1.py`. Figuras em `reports_v2/exp0/`.
 
 ## Achados (todos com número vindo dos dados)
 1. Estações empilhadas e chuva somada (`chuva_vs_estacoes.png`): a "chuva anual" vai de 3.438 mm

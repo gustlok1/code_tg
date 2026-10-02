@@ -17,7 +17,7 @@ com estado de sessao (o HTML estatico traz so o cabecalho), ao contrario do
 /sar0/MedicaoCantareira que e renderizado no servidor. Caminhos para depois: endpoint AJAX
 interno, Claude-in-Chrome dirigindo a pagina, ou dados abertos da ONS. Ver DECISOES.md.
 
-Saidas: reports/v2/exp4/ (skill por reservatorio + figura).
+Saidas: reports_v2/exp4/ (skill por reservatorio + figura).
 """
 import logging
 import sys
@@ -36,7 +36,7 @@ import modelagem_v2 as mv
 import transformadores as tr
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / "reports" / "v2" / "exp4"
+OUT = ROOT / "reports_v2" / "exp4"
 SAR = ROOT / "data" / "raw_v2" / "sar_cantareira_diario.csv"
 ERA5 = ROOT / "data" / "raw_v2" / "openmeteo_pontos_diario.csv"
 HORIZONTES = [30, 60, 90]

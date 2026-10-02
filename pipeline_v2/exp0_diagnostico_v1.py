@@ -9,7 +9,7 @@ Mostra, com números vindos dos próprios dados da v1 (modo leitura, sem alterar
   (c) folds do TimeSeriesSplit sem positivos (4 de 5 folds com zero positivos);
   (d) a regra de limiar sobre o SPI contra os modelos da v1 (a regra ganha em AUC-ROC).
 
-Saídas: reports/v2/exp0/ (4 PNG + exp0_numeros.csv).
+Saídas: reports_v2/exp0/ (4 PNG + exp0_numeros.csv).
 """
 import glob
 import logging
@@ -26,7 +26,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / "reports" / "v2" / "exp0"
+OUT = ROOT / "reports_v2" / "exp0"
 DAILY = ROOT / "legado_v1" / "data" / "features" / "inmet_sp_daily.parquet"
 FEAT = ROOT / "legado_v1" / "data" / "features" / "inmet_sp_daily_features.parquet"
 LABELS = ROOT / "legado_v1" / "data" / "features" / "inmet_sp_daily_labels.parquet"

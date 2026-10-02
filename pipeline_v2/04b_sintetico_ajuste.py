@@ -32,8 +32,8 @@ import sintetico_v2 as sv
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG = Path(__file__).resolve().parent / "config.yaml"
-REPORTS = ROOT / "reports" / "v2" / "sintetico"
-RESULT = ROOT / "reports" / "v2" / "resultados"
+REPORTS = ROOT / "reports_v2" / "sintetico"
+RESULT = ROOT / "reports_v2" / "resultados"
 PHIS = [0.0, 0.5, 0.8, 0.95]
 SEEDS3 = [0, 1, 2]
 

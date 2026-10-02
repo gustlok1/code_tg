@@ -28,7 +28,7 @@ Thumbs.db
 *.log
 *.tmp
 # exceção: o registro de abertura do teste é auditoria e deve ser versionado
-!reports/v2/final/teste_aberto.log
+!reports_v2/final/teste_aberto.log
 
 # Dados brutos do pipeline_v2 (coleta SAR/ANA + Open-Meteo) — não versionar
 data/raw_v2/

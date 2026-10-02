@@ -86,7 +86,7 @@ Seleção pela média dos 4 folds de validação.
 - RidgeRes: alpha ∈ {10, 100}.
 - XGBRes: {max_depth ∈ {2,3}, n_estimators 400, lr 0,03, reg_lambda ∈ {10,20}, subsample 0,8,
   colsample_bytree 0,8, min_child_weight 5}.
-- Valores CONGELADOS (XGBRes, `reports/v2/final/congelamento.json`):
+- Valores CONGELADOS (XGBRes, `reports_v2/final/congelamento.json`):
   - h30: max_depth 3, n_estimators 400, lr 0,03, reg_lambda 20, subsample 0,8, colsample 0,8, min_child_weight 5.
   - h60: igual a h30.
   - h90: max_depth 2, n_estimators 400, lr 0,03, reg_lambda 10, subsample 0,8, colsample 0,8, min_child_weight 5.
@@ -150,7 +150,7 @@ Seleção pela média dos 4 folds de validação.
 
 ## 14. Rastreabilidade (hashes dos commits)
 - Congelamento (conjunto, modelos, hiperparâmetros e thresholds): commit `f65b9aaa`
-  (arquivo `reports/v2/final/congelamento.json`).
-- Abertura do teste (uma única vez): commit `0e89bd50` (registro em `reports/v2/final/teste_aberto.log`).
-- Diagnósticos pós-hoc do teste: commit `5254a394` (`reports/v2/final/teste_diagnostico.csv`).
+  (arquivo `reports_v2/final/congelamento.json`).
+- Abertura do teste (uma única vez): commit `0e89bd50` (registro em `reports_v2/final/teste_aberto.log`).
+- Diagnósticos pós-hoc do teste: commit `5254a394` (`reports_v2/final/teste_diagnostico.csv`).
 - Branch: `tg2-v2`.

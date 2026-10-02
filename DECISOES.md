@@ -74,7 +74,7 @@ Formato: data, decisão, motivo, alternativa descartada.
   (política de retirada variável, transferências entre bacias, dinâmica de múltiplos reservatórios).
   Consequência para o texto: o sintético prova que o pipeline recupera sinal quando ele existe
   (objetivo do Exp 1), mas NÃO é um substituto do real para medir a dificuldade da previsão. Também
-  deve constar no resumo do Exp 1 (reports/v2/final/resumo_exp1.md). Não investir mais tempo no gerador.
+  deve constar no resumo do Exp 1 (reports_v2/final/resumo_exp1.md). Não investir mais tempo no gerador.
 
 ## 2026-10-02 — Versionamento
 - Decisão: branch `tg2-v2`; `.gitignore` exclui `data/raw_v2/`, `data/processed_v2/`, `data/sintetico/`,
@@ -86,7 +86,7 @@ Formato: data, decisão, motivo, alternativa descartada.
   do Gustavo). Não são tocados; a remoção do `.venv` do índice fica para o item 8 (higiene).
 
 ## 2026-10-02 — Congelamento e abertura do teste (03)
-- Decisão: duas fases. Fase 1 grava `reports/v2/final/congelamento.json` (conjunto CLIMA_ESTADO +
+- Decisão: duas fases. Fase 1 grava `reports_v2/final/congelamento.json` (conjunto CLIMA_ESTADO +
   SPI/SPEI + anomalias; XGBRes por horizonte; thresholds de alerta B3/XGBRes nos limiares 40 e 30,
   escolhidos por F1 na validação) e é commitada ANTES de abrir o teste. Fase 2 (`--abrir-teste`) abre
   o teste 2023+ uma única vez, registra em `teste_aberto.log`, e nada mais muda.
@@ -94,7 +94,7 @@ Formato: data, decisão, motivo, alternativa descartada.
 - Alternativa descartada: 03 abrir o teste direto sem flag; menos auditável.
 
 ## 2026-10-02 — Resultado do teste (2023+), modelos congelados
-- Fato (arquivos `reports/v2/final/metricas_teste.csv` e `antecedencia_teste.csv`):
+- Fato (arquivos `reports_v2/final/metricas_teste.csv` e `antecedencia_teste.csv`):
   - Regressão do volume: o XGBRes SUPERA o B3 no teste, skill_B3 = +0,240 (h30), +0,229 (h60),
     +0,167 (h90). MAE XGBRes 2,24 / 3,75 / 5,22 vs B3 2,95 / 4,87 / 6,27.
   - PR-AUC de entrada (limiar 40): B3 0,98 / 0,98 / 0,98; XGBRes 0,97 / 0,91 / 0,95 (ambos altos).
@@ -110,7 +110,7 @@ Formato: data, decisão, motivo, alternativa descartada.
   folds, 10 episódios); o teste é realização única e confirma a direção.
 
 ## 2026-10-02 — Diagnósticos pós-hoc do teste (03b; NÃO altera o modelo congelado)
-- Arquivo: `reports/v2/final/teste_diagnostico.csv`. Todos os números são pós-hoc.
+- Arquivo: `reports_v2/final/teste_diagnostico.csv`. Todos os números são pós-hoc.
 - IC95% do skill vs B3 no teste (bootstrap em blocos de 90 d): h30 = 0,240 [0,132; 0,372] e
   h60 = 0,229 [0,079; 0,420] são SIGNIFICATIVOS (IC acima de zero); h90 = 0,167 [-0,052; 0,378]
   NÃO é significativo (cruza zero). Ou seja, a vantagem do XGBRes no teste se sustenta em 30 e 60 dias.
@@ -134,7 +134,7 @@ Formato: data, decisão, motivo, alternativa descartada.
   `ExportarExcel` e stateful (erro 500 "source null") e `GraficoVolume` tambem e AJAX. Caminhos para
   depois (registrados): endpoint AJAX interno, Claude-in-Chrome dirigindo a pagina, ou dados abertos
   da ONS. O harness `exp4_outros_reservatorios.py` ja aceita qualquer reservatorio; falta so a coleta.
-- Resultado (reports/v2/exp4/exp4_skill.csv), skill vs B3 na validacao (h30/60/90):
+- Resultado (reports_v2/exp4/exp4_skill.csv), skill vs B3 na validacao (h30/60/90):
   - Jaguari-Jacarei: +0,113 / +0,049 / +0,005 (o maior; positivo, como o sistema agregado).
   - Cachoeira: -0,032 / +0,043 / +0,006 (empate).
   - Atibainha: -0,409 / -0,431 / -0,300 (pior que o B3).
@@ -152,7 +152,7 @@ Formato: data, decisão, motivo, alternativa descartada.
 ## 2026-10-02 — Reprodutibilidade e regra de git (item 12, fechamento)
 - Decisao do Victor: o item 12 fica encerrado pela reproducao 33/33 (venv limpo a partir do
   requirements.txt reproduz exatamente as configs, thresholds e metricas do teste). Nao relancar o
-  run_all. A reproducao foi registrada em reports/v2/final/teste_aberto.log como REPRODUCAO do
+  run_all. A reproducao foi registrada em reports_v2/final/teste_aberto.log como REPRODUCAO do
   resultado congelado, sem nova abertura do teste (o modelo congelado nao muda).
 - Estado do repo (herdado, pre-existente): o HEAD do Gustavo versiona a v1 sob `algoritmos/` e
   `resultados_*`, com um working tree divergente (v1 como `pipeline/`, `data/`, `models/`). Isso nao foi
@@ -164,7 +164,7 @@ Formato: data, decisão, motivo, alternativa descartada.
 
 ## 2026-10-02 — Saneamento antes do merge (organizacao e nomes, sem mudar logica)
 - Escopo: so organizacao e nomes; nenhuma mudanca de logica ou de numero. Portao: as saidas de
-  reports/v2/final/ e do Exp 0 tinham de bater sha256 antes e depois.
+  reports_v2/final/ e do Exp 0 tinham de bater sha256 antes e depois.
 - v1 consolidada em legado_v1/: pipeline/, models/, app/, reports/v1_threshold_padrao ->
   legado_v1/reports/threshold_padrao, reports/v2_threshold_otimizado -> legado_v1/reports/threshold_otimizado,
   e data/{events,features,interim,raw} -> legado_v1/data/. legado_v1/data/ entrou no .gitignore (dados
@@ -180,7 +180,7 @@ Formato: data, decisão, motivo, alternativa descartada.
   requirements-lock.txt, .gitignore e as pastas pipeline_v2/, app_v2/, reports/, legado_v1/, docs/.
   RELATORIO_ESTADO_ATUAL.md movido para docs/. Nenhum nome de arquivo com espaco ou acento.
 - PORTAO (passo 7) bateu 100%: 26 testes verdes; Exp 0 identico; reproducao do congelamento e do teste
-  33/33; e os 37 arquivos de reports/v2/final e reports/v2/exp0 batem sha256 antes/depois (0 divergencia).
+  33/33; e os 37 arquivos de reports_v2/final e reports_v2/exp0 batem sha256 antes/depois (0 divergencia).
 - Regra de git reafirmada ate o merge: so git add com caminhos explicitos; nunca -A nem -a.
 
 ## 2026-10-02 — Atibainha: explicacao do -106,8% e leitura da cascata (item 14)
@@ -204,7 +204,7 @@ Formato: data, decisão, motivo, alternativa descartada.
   Cantareira seria preciso obter as vazoes de tunel/transferencia (dados de operacao da Sabesp/ANA).
 
 ## 2026-10-02 — Caveat de reproducao: shuffle da sanidade sintetica nao e bit a bit
-- Achado (no portao do saneamento): reports/v2/sintetico/sanidade_sintetico.csv tem a linha `shuffle`
+- Achado (no portao do saneamento): reports_v2/sintetico/sanidade_sintetico.csv tem a linha `shuffle`
   nao reprodutivel bit a bit entre execucoes (skill oscilou de -0,0014 para -0,0224; pr_auc de 0,772
   para 0,737). As linhas `normal` e `oraculo` sao estaveis.
 - Causa: o modo shuffle do sintetico deriva a semente da permutacao de `hash(nome_do_fold)`, e o

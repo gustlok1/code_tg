@@ -33,9 +33,9 @@ split:
 caminhos:
   raw_v2: "data/raw_v2"
   processed_v2_dataset: "data/processed_v2/dataset_diario.parquet"
-  resultados_v2: "reports/v2/resultados"
+  resultados_v2: "reports_v2/resultados"
   processed_v2: "data/processed_v2"
-  reports_eda: "reports/v2/eda"
+  reports_eda: "reports_v2/eda"
   sar_sistema: "data/raw_v2/sar_cantareira_sistema_diario.csv"
   era5_pontos: "data/raw_v2/openmeteo_pontos_diario.csv"
   power_pontos: "data/raw_v2/nasapower_pontos_diario.csv"

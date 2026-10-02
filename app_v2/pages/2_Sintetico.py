@@ -7,7 +7,7 @@ import pandas as pd
 import streamlit as st
 
 ROOT = Path(__file__).resolve().parents[2]
-SINT = ROOT / "reports" / "v2" / "sintetico"
+SINT = ROOT / "reports_v2" / "sintetico"
 
 st.set_page_config(page_title="Sintético", layout="wide")
 st.markdown("<div style='background:#7f0000;color:white;padding:8px 14px;border-radius:6px;"

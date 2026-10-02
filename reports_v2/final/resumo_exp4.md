@@ -1,7 +1,7 @@
 # Exp 4 — O mesmo pipeline em outros reservatórios (H4)
 
 Objetivo: mostrar que o arcabouço roda inalterado em reservatórios distintos. Código:
-`pipeline_v2/exp4_outros_reservatorios.py`. Saídas em `reports/v2/exp4/`.
+`pipeline_v2/exp4_outros_reservatorios.py`. Saídas em `reports_v2/exp4/`.
 
 ## O que foi feito
 O pipeline (B3 + XGBRes residual, folds + purga, SPI no treino) rodou nos 4 reservatórios INDIVIDUAIS
