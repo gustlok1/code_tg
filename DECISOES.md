@@ -202,3 +202,18 @@ Formato: data, decisão, motivo, alternativa descartada.
   transferencias entre os 4 reservatorios sao internas e se cancelam, sobrando o balanco liquido do
   sistema. Implicacao para o texto e para trabalho futuro: para modelar reservatorios individuais do
   Cantareira seria preciso obter as vazoes de tunel/transferencia (dados de operacao da Sabesp/ANA).
+
+## 2026-10-02 — Caveat de reproducao: shuffle da sanidade sintetica nao e bit a bit
+- Achado (no portao do saneamento): reports/v2/sintetico/sanidade_sintetico.csv tem a linha `shuffle`
+  nao reprodutivel bit a bit entre execucoes (skill oscilou de -0,0014 para -0,0224; pr_auc de 0,772
+  para 0,737). As linhas `normal` e `oraculo` sao estaveis.
+- Causa: o modo shuffle do sintetico deriva a semente da permutacao de `hash(nome_do_fold)`, e o
+  `hash()` de string do Python e randomizado por processo (PYTHONHASHSEED). So o embaralhamento depende
+  disso; o modelo congelado, o teste e os demais numeros nao usam `hash()` e sao deterministicos (por
+  isso a verificacao de reproducao bateu 33/33).
+- Decisao: NAO corrigir agora. Trocar a derivacao da semente seria mudanca de logica (fora do escopo
+  do saneamento) e mudaria o numero commitado do shuffle. A conclusao da sanidade (shuffle leva o skill
+  a ~0) se mantem em qualquer execucao; so o valor exato varia. Mantida a versao commitada
+  (shuffle skill -0,0014). O working tree foi restaurado a essa versao.
+- Para trabalho futuro: fixar a semente do shuffle por indice do fold (sem `hash()`) para reproducao
+  bit a bit. Registrar como limitacao na secao 4.3 do capitulo 4.
