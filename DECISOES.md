@@ -68,6 +68,13 @@ Formato: data, decisão, motivo, alternativa descartada.
   o volume sintético é função quase determinística da afluência (mesmo com ruído), enquanto o volume
   real é governado também por operação (retiradas por política, transferências, múltiplos reservatórios)
   não dirigida pela chuva recente. Reportado como é (rigor científico, seção 7).
+- LIMITAÇÃO ACEITA (decisão do Victor, 2026-10-02): o resultado do gêmeo é aceito como está
+  (supera o B3 em h30 e h60, empata em h90). Fica registrado como LIMITAÇÃO do gerador: o volume
+  sintético é previsível demais a partir da chuva recente porque não modela a operação do sistema
+  (política de retirada variável, transferências entre bacias, dinâmica de múltiplos reservatórios).
+  Consequência para o texto: o sintético prova que o pipeline recupera sinal quando ele existe
+  (objetivo do Exp 1), mas NÃO é um substituto do real para medir a dificuldade da previsão. Também
+  deve constar no resumo do Exp 1 (reports/v2/final/resumo_exp1.md). Não investir mais tempo no gerador.
 
 ## 2026-10-02 — Versionamento
 - Decisão: branch `tg2-v2`; `.gitignore` exclui `data/raw_v2/`, `data/processed_v2/`, `data/sintetico/`,
@@ -99,3 +106,20 @@ Formato: data, decisão, motivo, alternativa descartada.
   B3 e antecipa mais. Não é contradição do plano: a validação robusta (20 anos) mostrou empate; o teste
   (um período) mostrou vantagem na crise recente. Caveat honesto: é uma única realização de teste; não
   reabrir nem re-selecionar nada (teste já gasto). H1/H2 recebem apoio parcial no teste.
+- Enquadramento aprovado pelo Victor (2026-10-02): a evidência principal é a validação (20 anos, 4
+  folds, 10 episódios); o teste é realização única e confirma a direção.
+
+## 2026-10-02 — Diagnósticos pós-hoc do teste (03b; NÃO altera o modelo congelado)
+- Arquivo: `reports/v2/final/teste_diagnostico.csv`. Todos os números são pós-hoc.
+- IC95% do skill vs B3 no teste (bootstrap em blocos de 90 d): h30 = 0,240 [0,132; 0,372] e
+  h60 = 0,229 [0,079; 0,420] são SIGNIFICATIVOS (IC acima de zero); h90 = 0,167 [-0,052; 0,378]
+  NÃO é significativo (cruza zero). Ou seja, a vantagem do XGBRes no teste se sustenta em 30 e 60 dias.
+- Skill por período: a vantagem aparece tanto em 2023-2024 (calmo) quanto em 2025-2026 (crise):
+  h30 0,242 vs 0,237; h60 0,258 vs 0,188; h90 0,164 vs 0,170. NÃO é artefato de um único evento.
+- Diagnóstico do B3: o B3 congelado usa a variação sazonal de 1984-2022, misturando regras de operação
+  pré e pós-Resolução 925 (2017). Um B3 ajustado SÓ em 2017-2022 melhora um pouco (MAE menor), mas
+  explica apenas 12% a 25% da vantagem do XGBRes (h30 25%, h60 22%, h90 12%). Conclusão: a maior parte
+  do ganho do XGBRes no teste é real, não é só efeito do baseline sazonal antigo. (Diagnóstico; o B3
+  congelado continua sendo o oficial do teste.)
+- Antecedência e falso-alarme no teste (limiares 40 e 30, inclui o episódio jun-set/2026) também em
+  teste_diagnostico.csv.

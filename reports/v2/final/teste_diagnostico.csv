@@ -1,0 +1,58 @@
+categoria,horizonte,chave,valor,ic95_lo,ic95_hi,obs
+skill_ci,30,XGBRes_vs_B3,0.2397,0.1324,0.3718,n=1340; pos-hoc
+skill_periodo,30,2023-2024,0.2419,,,n=731; pos-hoc
+skill_periodo,30,2025-2026,0.2369,,,n=609; pos-hoc
+falso_alarme,30,B3_limiar40,0.0,,,episodios; pos-hoc
+antecedencia,30,B3_limiar40_2025-08-06,19.0,,,dias; pos-hoc
+antecedencia,30,B3_limiar40_2026-06-02,120.0,,,dias; pos-hoc
+falso_alarme,30,XGBRes_limiar40,0.0,,,episodios; pos-hoc
+antecedencia,30,XGBRes_limiar40_2025-08-06,25.0,,,dias; pos-hoc
+antecedencia,30,XGBRes_limiar40_2026-06-02,120.0,,,dias; pos-hoc
+falso_alarme,30,B3_limiar30,1.0,,,episodios; pos-hoc
+antecedencia,30,B3_limiar30_2025-09-19,17.0,,,dias; pos-hoc
+falso_alarme,30,XGBRes_limiar30,0.0,,,episodios; pos-hoc
+antecedencia,30,XGBRes_limiar30_2025-09-19,17.0,,,dias; pos-hoc
+b3_diagnostico,30,MAE_B3_congelado_1984_2022,2.949,,,pos-hoc
+b3_diagnostico,30,MAE_B3_2017_2022,2.771,,,pos-hoc
+b3_diagnostico,30,MAE_XGBRes,2.242,,,pos-hoc
+b3_diagnostico,30,vantagem_XGBRes_sobre_B3congelado_pp,0.707,,,pos-hoc
+b3_diagnostico,30,explicado_por_B3_2017_pp,0.178,,,pos-hoc
+b3_diagnostico,30,fracao_da_vantagem_explicada_por_B3_2017,0.251,,,pos-hoc
+skill_ci,60,XGBRes_vs_B3,0.2292,0.079,0.4196,n=1310; pos-hoc
+skill_periodo,60,2023-2024,0.2579,,,n=731; pos-hoc
+skill_periodo,60,2025-2026,0.1877,,,n=579; pos-hoc
+falso_alarme,60,B3_limiar40,0.0,,,episodios; pos-hoc
+antecedencia,60,B3_limiar40_2025-08-06,40.0,,,dias; pos-hoc
+antecedencia,60,B3_limiar40_2026-06-02,120.0,,,dias; pos-hoc
+falso_alarme,60,XGBRes_limiar40,2.0,,,episodios; pos-hoc
+antecedencia,60,XGBRes_limiar40_2025-08-06,48.0,,,dias; pos-hoc
+antecedencia,60,XGBRes_limiar40_2026-06-02,120.0,,,dias; pos-hoc
+falso_alarme,60,B3_limiar30,0.0,,,episodios; pos-hoc
+antecedencia,60,B3_limiar30_2025-09-19,19.0,,,dias; pos-hoc
+falso_alarme,60,XGBRes_limiar30,0.0,,,episodios; pos-hoc
+antecedencia,60,XGBRes_limiar30_2025-09-19,22.0,,,dias; pos-hoc
+b3_diagnostico,60,MAE_B3_congelado_1984_2022,4.866,,,pos-hoc
+b3_diagnostico,60,MAE_B3_2017_2022,4.619,,,pos-hoc
+b3_diagnostico,60,MAE_XGBRes,3.75,,,pos-hoc
+b3_diagnostico,60,vantagem_XGBRes_sobre_B3congelado_pp,1.115,,,pos-hoc
+b3_diagnostico,60,explicado_por_B3_2017_pp,0.247,,,pos-hoc
+b3_diagnostico,60,fracao_da_vantagem_explicada_por_B3_2017,0.221,,,pos-hoc
+skill_ci,90,XGBRes_vs_B3,0.1668,-0.0519,0.3782,n=1280; pos-hoc
+skill_periodo,90,2023-2024,0.1643,,,n=731; pos-hoc
+skill_periodo,90,2025-2026,0.1704,,,n=549; pos-hoc
+falso_alarme,90,B3_limiar40,0.0,,,episodios; pos-hoc
+antecedencia,90,B3_limiar40_2025-08-06,64.0,,,dias; pos-hoc
+antecedencia,90,B3_limiar40_2026-06-02,120.0,,,dias; pos-hoc
+falso_alarme,90,XGBRes_limiar40,0.0,,,episodios; pos-hoc
+antecedencia,90,XGBRes_limiar40_2025-08-06,75.0,,,dias; pos-hoc
+antecedencia,90,XGBRes_limiar40_2026-06-02,120.0,,,dias; pos-hoc
+falso_alarme,90,B3_limiar30,0.0,,,episodios; pos-hoc
+antecedencia,90,B3_limiar30_2025-09-19,39.0,,,dias; pos-hoc
+falso_alarme,90,XGBRes_limiar30,0.0,,,episodios; pos-hoc
+antecedencia,90,XGBRes_limiar30_2025-09-19,63.0,,,dias; pos-hoc
+b3_diagnostico,90,MAE_B3_congelado_1984_2022,6.267,,,pos-hoc
+b3_diagnostico,90,MAE_B3_2017_2022,6.137,,,pos-hoc
+b3_diagnostico,90,MAE_XGBRes,5.221,,,pos-hoc
+b3_diagnostico,90,vantagem_XGBRes_sobre_B3congelado_pp,1.045,,,pos-hoc
+b3_diagnostico,90,explicado_por_B3_2017_pp,0.13,,,pos-hoc
+b3_diagnostico,90,fracao_da_vantagem_explicada_por_B3_2017,0.124,,,pos-hoc
