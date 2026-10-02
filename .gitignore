@@ -1,0 +1,46 @@
+# Ambientes virtuais
+.venv/
+venv/
+env/
+ENV/
+
+# Cache Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Editores / IDEs
+.vscode/
+.idea/
+*.swp
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Logs e temporários
+*.log
+*.tmp
+
+# Dados brutos do pipeline_v2 (coleta SAR/ANA + Open-Meteo) — não versionar
+data/raw_v2/
+
+# Dados sintéticos (Exp 1) — não versionar
+data/sintetico/
+
+# Dados processados do pipeline_v2 (dataset diário derivado) — não versionar
+data/processed_v2/
+
+# Auditoria temporária (venv de trabalho, reproduções) — não versionar
+_auditoria_tmp/
+
+# Segredos
+.env
+.env.*
+

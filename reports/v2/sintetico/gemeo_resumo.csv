@@ -1,0 +1,2 @@
+phi_ef_medio,sigma_anom_cal,sigma_mult_afluencia,tau_dias,chuva_mensal_media_real,chuva_mensal_media_gemeo,chuva_mensal_std_real,chuva_mensal_std_gemeo,skill_30_medio,skill_30_min,skill_30_max,prauc_30_medio,skill_60_medio,skill_60_min,skill_60_max,prauc_60_medio,skill_90_medio,skill_90_min,skill_90_max,prauc_90_medio
+0.0222,0.25,0.6266,24,124.37,121.6,87.84,84.69,0.2676,0.2113,0.3114,0.9178,0.1397,0.0844,0.2007,0.8591,0.0642,-0.0647,0.1252,0.7709

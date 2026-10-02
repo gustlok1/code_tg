@@ -1,0 +1,1 @@
+LSTM SUPEROU o XGBRes na validação (skill_B3 geral médio: LSTM=0.0219 vs XGBRes=0.0211). completo=True tempo=409.4s (hidden=32, seeds=[0, 1, 2], stride=5).

@@ -1,0 +1,4 @@
+,skill,pr_auc_entrada,prevalencia
+normal,0.3315,0.8826,0.1577
+shuffle,-0.0014,0.7721,0.1577
+oraculo,0.6165,0.9758,0.1577
