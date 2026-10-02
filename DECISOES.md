@@ -162,6 +162,27 @@ Formato: data, decisão, motivo, alternativa descartada.
   explicitos da v2. Evita arrastar a divergencia da v1 para os commits. (Registrada tambem no CLAUDE.md
   secao 6.)
 
+## 2026-10-02 — Saneamento antes do merge (organizacao e nomes, sem mudar logica)
+- Escopo: so organizacao e nomes; nenhuma mudanca de logica ou de numero. Portao: as saidas de
+  reports/v2/final/ e do Exp 0 tinham de bater sha256 antes e depois.
+- v1 consolidada em legado_v1/: pipeline/, models/, app/, reports/v1_threshold_padrao ->
+  legado_v1/reports/threshold_padrao, reports/v2_threshold_otimizado -> legado_v1/reports/threshold_otimizado,
+  e data/{events,features,interim,raw} -> legado_v1/data/. legado_v1/data/ entrou no .gitignore (dados
+  pesados do INMET); git rm --cached dos orfaos rastreados (algoritmos/, resultados_*), sem reescrita de
+  historico. README do legado_v1 com a fonte (INMET/BDMEP), periodo 2003-2024 e como regenerar.
+- Exp 0 usa a v1 do working tree (data/features, reports/v2_threshold_otimizado), nao a cópia orfã
+  algoritmos/. Ajustei so os caminhos da v1 no exp0_diagnostico_v1.py e no fig_finais.py (os dois
+  scripts que leem a v1); nenhuma logica mudou.
+- "00 download dados.py" da raiz descartado (rascunho v2 antigo, com Sabesp). Busca read-only: nenhum
+  script/relatorio da v2 usa dados da Sabesp (unica mencao e texto no DECISOES.md). O canonico e
+  pipeline_v2/00_download_dados.py, que NAO deve receber a parte da Sabesp (decisao do Victor).
+- Raiz limpa: README.md (porta de entrada reescrita), CLAUDE.md, DECISOES.md, requirements.txt,
+  requirements-lock.txt, .gitignore e as pastas pipeline_v2/, app_v2/, reports/, legado_v1/, docs/.
+  RELATORIO_ESTADO_ATUAL.md movido para docs/. Nenhum nome de arquivo com espaco ou acento.
+- PORTAO (passo 7) bateu 100%: 26 testes verdes; Exp 0 identico; reproducao do congelamento e do teste
+  33/33; e os 37 arquivos de reports/v2/final e reports/v2/exp0 batem sha256 antes/depois (0 divergencia).
+- Regra de git reafirmada ate o merge: so git add com caminhos explicitos; nunca -A nem -a.
+
 ## 2026-10-02 — Atibainha: explicacao do -106,8% e leitura da cascata (item 14)
 - Fato (data/raw_v2/sar_cantareira_diario.csv): o minimo de volume util do Atibainha e -106,8% em
   2014-12-29, correspondente a volume util de -102,81 hm3 (capacidade util ~100 hm3). Nao e artefato de
