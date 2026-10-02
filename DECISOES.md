@@ -143,3 +143,8 @@ Formato: data, decisão, motivo, alternativa descartada.
   depende da dinamica: empata/supera o B3 nos maiores e mais estaveis, e fica abaixo nos pequenos e
   volateis. Nota de dado: o "volume util %" dos pequenos vai a valores extremos (Atibainha min -106,8%),
   o que torna a serie ruidosa e dificil; vale tratar/entender esse % antes de usar esses reservatorios.
+- ENCERRAMENTO (decisao do Victor, 2026-10-02): o Exp 4 fica encerrado como esta. Rodar o pipeline em
+  reservatorios FORA do Cantareira (Nordeste e SIN do SAR, ou outros sistemas da Grande SP) fica como
+  TRABALHO FUTURO: a coleta depende de acessar os endpoints AJAX/sessao do SAR (via endpoint interno,
+  Claude-in-Chrome ou dados abertos da ONS). O harness exp4_outros_reservatorios.py ja aceita qualquer
+  reservatorio; falta so a coleta.

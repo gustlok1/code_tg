@@ -71,6 +71,9 @@ Execute em sequência, sem pedir confirmação entre os itens.
    - um resumo em Markdown por experimento (`reports/v2/final/resumo_expN.md`), com números, figuras e interpretação;
    - o dicionário de dados.
 8. Higiene: `run_all.py`, README da v2 e remoção do `.venv` do índice do git.
+9. Figuras finais para o texto, em `reports/v2/final/figuras/`: PNG a 300 dpi, rótulos em português, título que diz o achado, mesmo estilo em todas, numeradas na ordem do capítulo 4. Inclua um `indice_figuras.md` com número, arquivo, título e uma frase de leitura de cada uma.
+10. Rascunho do capítulo 4 (Análise e Resultados) em `reports/v2/final/capitulo4_rascunho.md`: 4.1 Diagnóstico da v1 (Exp 0); 4.2 Compreensão dos dados (EDA); 4.3 Experimento sintético (Exp 1, com a limitação do gêmeo); 4.4 Clima contra clima e estado (Exp 2); 4.5 Modelos contra a régua B3 (Exp 3: geral, condicional, LSTM, antecedência pareada); 4.6 Resultado no teste e diagnósticos pós-hoc; 4.7 Generalização (Exp 4); 4.8 Aplicação web. Cada subseção: o que foi feito, figura ou tabela, números exatos dos CSVs e interpretação. Resultado negativo contado como é, com leitura em três frentes (estatística, hidrológica, metodológica) quando um modelo falha. Português, sem travessão, frases curtas.
+11. `reports/v2/final/valores_capitulo3.md` com os valores exatos da metodologia: número final de testes, pontos da bacia e coordenadas, grades e hiperparâmetros escolhidos por modelo e horizonte, parâmetros do LSTM, versões das bibliotecas, hashes dos commits de congelamento e de abertura do teste.
 
 ## 5. Autonomia
 
