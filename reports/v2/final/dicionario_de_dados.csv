@@ -1,0 +1,73 @@
+coluna,descricao,unidade,fonte,janela,causal
+data,Data (calendário diário contínuo),data,—,—,sim
+vol_util_hm3_sistema,Volume útil do sistema,hm³,ANA/SAR,instantâneo,sim
+capacidade_hm3_sistema,Capacidade útil do sistema,hm³,ANA/SAR,instantâneo,sim
+vol_util_pct_sistema,Volume útil do sistema,%,ANA/SAR,instantâneo,sim
+afluencia_m3s_sistema,Afluência total do sistema,m³/s,ANA/SAR,instantâneo,sim
+defluencia_m3s_sistema,Defluência total do sistema,m³/s,ANA/SAR,instantâneo,sim
+n_reservatorios,Nº de reservatórios com dado no dia,contagem,ANA/SAR,instantâneo,sim
+era5_precip_mm,Chuva diária (média da bacia) — média dos pontos,mm,ERA5 (Open-Meteo),1 d,sim
+era5_et0_mm,Evapotranspiração de referência ET0 — média dos pontos,mm,ERA5 (Open-Meteo),1 d,sim
+era5_tmean_c,Temperatura média — média dos pontos,°C,ERA5 (Open-Meteo),1 d,sim
+era5_tmax_c,Temperatura máxima — média dos pontos,°C,ERA5 (Open-Meteo),1 d,sim
+era5_tmin_c,Temperatura mínima — média dos pontos,°C,ERA5 (Open-Meteo),1 d,sim
+era5_rad_mj,Radiação de ondas curtas — média dos pontos,MJ/m²,ERA5 (Open-Meteo),1 d,sim
+power_precip_mm,Chuva diária (média da bacia) — média dos pontos,mm,NASA POWER,1 d,sim
+power_tmean_c,Temperatura média — média dos pontos,°C,NASA POWER,1 d,sim
+power_tmax_c,Temperatura máxima — média dos pontos,°C,NASA POWER,1 d,sim
+power_tmin_c,Temperatura mínima — média dos pontos,°C,NASA POWER,1 d,sim
+power_rad_mj,Radiação de ondas curtas — média dos pontos,MJ/m²,NASA POWER,1 d,sim
+power_rh_pct,Umidade relativa — média dos pontos,%,NASA POWER,1 d,sim
+power_wind_ms,Velocidade do vento 2 m — média dos pontos,m/s,NASA POWER,1 d,sim
+power_pressure_kpa,Pressão à superfície — média dos pontos,kPa,NASA POWER,1 d,sim
+et0_acc7,ET0 acumulada,mm,ERA5 (Open-Meteo),7 d,sim
+et0_acc30,ET0 acumulada,mm,ERA5 (Open-Meteo),30 d,sim
+et0_acc90,ET0 acumulada,mm,ERA5 (Open-Meteo),90 d,sim
+et0_acc180,ET0 acumulada,mm,ERA5 (Open-Meteo),180 d,sim
+et0_acc365,ET0 acumulada,mm,ERA5 (Open-Meteo),365 d,sim
+era5_precip_acc7,Chuva acumulada,mm,ERA5 (Open-Meteo),7 d,sim
+era5_bal_acc7,Balanço hídrico acumulado (chuva − ET0; ET0 do ERA5),mm,ERA5 (Open-Meteo) + ERA5(ET0),7 d,sim
+era5_precip_acc30,Chuva acumulada,mm,ERA5 (Open-Meteo),30 d,sim
+era5_bal_acc30,Balanço hídrico acumulado (chuva − ET0; ET0 do ERA5),mm,ERA5 (Open-Meteo) + ERA5(ET0),30 d,sim
+era5_precip_acc90,Chuva acumulada,mm,ERA5 (Open-Meteo),90 d,sim
+era5_bal_acc90,Balanço hídrico acumulado (chuva − ET0; ET0 do ERA5),mm,ERA5 (Open-Meteo) + ERA5(ET0),90 d,sim
+era5_precip_acc180,Chuva acumulada,mm,ERA5 (Open-Meteo),180 d,sim
+era5_bal_acc180,Balanço hídrico acumulado (chuva − ET0; ET0 do ERA5),mm,ERA5 (Open-Meteo) + ERA5(ET0),180 d,sim
+era5_precip_acc365,Chuva acumulada,mm,ERA5 (Open-Meteo),365 d,sim
+era5_bal_acc365,Balanço hídrico acumulado (chuva − ET0; ET0 do ERA5),mm,ERA5 (Open-Meteo) + ERA5(ET0),365 d,sim
+power_precip_acc7,Chuva acumulada,mm,NASA POWER,7 d,sim
+power_bal_acc7,Balanço hídrico acumulado (chuva − ET0; ET0 do ERA5),mm,NASA POWER + ERA5(ET0),7 d,sim
+power_precip_acc30,Chuva acumulada,mm,NASA POWER,30 d,sim
+power_bal_acc30,Balanço hídrico acumulado (chuva − ET0; ET0 do ERA5),mm,NASA POWER + ERA5(ET0),30 d,sim
+power_precip_acc90,Chuva acumulada,mm,NASA POWER,90 d,sim
+power_bal_acc90,Balanço hídrico acumulado (chuva − ET0; ET0 do ERA5),mm,NASA POWER + ERA5(ET0),90 d,sim
+power_precip_acc180,Chuva acumulada,mm,NASA POWER,180 d,sim
+power_bal_acc180,Balanço hídrico acumulado (chuva − ET0; ET0 do ERA5),mm,NASA POWER + ERA5(ET0),180 d,sim
+power_precip_acc365,Chuva acumulada,mm,NASA POWER,365 d,sim
+power_bal_acc365,Balanço hídrico acumulado (chuva − ET0; ET0 do ERA5),mm,NASA POWER + ERA5(ET0),365 d,sim
+era5_tmean_ma7,Temperatura média (média móvel),°C,ERA5 (Open-Meteo),7 d,sim
+era5_tmean_ma30,Temperatura média (média móvel),°C,ERA5 (Open-Meteo),30 d,sim
+power_tmean_ma7,Temperatura média (média móvel),°C,NASA POWER,7 d,sim
+power_tmean_ma30,Temperatura média (média móvel),°C,NASA POWER,30 d,sim
+vol_pct,Volume útil do sistema em t,%,ANA/SAR,instantâneo,sim
+vol_var7,Variação do volume útil em 7 dias,p.p.,ANA/SAR,7 d,sim
+vol_var30,Variação do volume útil em 30 dias,p.p.,ANA/SAR,30 d,sim
+aflu_ma7,Afluência média,m³/s,ANA/SAR,7 d,sim
+aflu_ma30,Afluência média,m³/s,ANA/SAR,30 d,sim
+aflu_ma90,Afluência média,m³/s,ANA/SAR,90 d,sim
+deflu_ma30,Defluência média,m³/s,ANA/SAR,30 d,sim
+doy_sin,Dia do ano (seno),—,calendário,1 d,sim
+doy_cos,Dia do ano (cosseno),—,calendário,1 d,sim
+pos_2017,Indicador: vigência da Resolução ANA/DAEE 925 (≥ 2017-05-29),0/1,regulatório,—,sim
+vol_pct_t30,ALVO: volume útil do sistema em t+30,%,ANA/SAR,t+30,não (futuro)
+vol_var_t30,ALVO: variação de volume de t a t+30,p.p.,ANA/SAR,t+30,não (futuro)
+crise_30,ALVO: crise (vol<30%) em t+30,0/1,ANA/SAR,t+30,não (futuro)
+crise40_30,ALVO: crise (vol<40%) em t+30,0/1,ANA/SAR,t+30,não (futuro)
+vol_pct_t60,ALVO: volume útil do sistema em t+60,%,ANA/SAR,t+60,não (futuro)
+vol_var_t60,ALVO: variação de volume de t a t+60,p.p.,ANA/SAR,t+60,não (futuro)
+crise_60,ALVO: crise (vol<30%) em t+60,0/1,ANA/SAR,t+60,não (futuro)
+crise40_60,ALVO: crise (vol<40%) em t+60,0/1,ANA/SAR,t+60,não (futuro)
+vol_pct_t90,ALVO: volume útil do sistema em t+90,%,ANA/SAR,t+90,não (futuro)
+vol_var_t90,ALVO: variação de volume de t a t+90,p.p.,ANA/SAR,t+90,não (futuro)
+crise_90,ALVO: crise (vol<30%) em t+90,0/1,ANA/SAR,t+90,não (futuro)
+crise40_90,ALVO: crise (vol<40%) em t+90,0/1,ANA/SAR,t+90,não (futuro)
