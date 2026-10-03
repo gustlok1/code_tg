@@ -8,15 +8,14 @@ import plotly.graph_objects as go
 import streamlit as st
 import utils_v2 as u
 
-st.set_page_config(page_title="Backtest", layout="wide")
-st.title("Backtest das crises conhecidas (validação)")
+st.title("Retrospectiva das crises conhecidas (validação)")
 st.caption("Previsões fora da amostra (out-of-fold) do XGBRes residual contra o real e o B3, "
            "nas crises históricas. Tudo da validação (2003-2022); o teste 2023+ não entra aqui.")
 
 h = st.selectbox("Horizonte", [90, 60, 30], index=0)
 
 
-@st.cache_data(show_spinner="Calculando backtest...")
+@st.cache_data(show_spinner="Calculando a retrospectiva...")
 def _oof(h):
     return u.backtest_oof(u.carregar_dataset(), h)
 

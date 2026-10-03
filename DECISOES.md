@@ -254,3 +254,22 @@ Formato: data, decisão, motivo, alternativa descartada.
   unica; README com `.venv` no lugar de `.venv_local` e o app documentado como
   `.venv\Scripts\python.exe -m streamlit run app_v2\Home.py`.
 - Alternativa descartada: manter o projeto aninhado em `code_tg`; sem ganho e com um nivel a mais.
+
+## 2026-10-03 — Navegacao e nomes do app (so interface)
+- Decisao: o app passa a usar `st.navigation`/`st.Page` (Streamlit 1.64) com `app_v2\Home.py` so
+  como ponto de entrada (o comando do README nao muda). As paginas ganham nome em portugues sem
+  numero na frente, em `app_v2\paginas\`: `situacao_atual.py` (pagina inicial, conteudo que estava
+  no Home), `retrospectiva.py` (antes `1_Backtest.py`), `experimento_sintetico.py` (antes
+  `2_Sintetico.py`) e `sobre.py` (antes `3_Sobre.py`). Titulos e url_path: Situacao atual
+  (`situacao-atual`, default), Retrospectiva das crises (`retrospectiva`), Experimento sintetico
+  (`experimento-sintetico`), Sobre (`sobre`). Titulo da aba: "Crise hidrica no Cantareira".
+- Texto: "Backtest" vira "Retrospectiva" em todo texto visivel (titulo da pagina, spinner e o Sobre);
+  o nome de codigo `backtest_oof` em utils_v2 fica. No Sobre, "Detalhes completos em
+  reports_v2/final/ficha_tecnica.md" vira "Detalhes completos no texto do trabalho." e foi incluida
+  a secao "Versao anterior" com o diagnostico da v1 (quatro problemas), antes de "Resultado, em uma frase".
+- Motivo: navegacao mais clara e rotulos em portugues; nenhum numero, modelo ou dado muda. Nao ha
+  pagina de legado nem conteudo da v1 no app alem do paragrafo do Sobre.
+- Verificacao: 27 testes verdes; app sobe sem erro (sem excecao no log); as quatro URLs retornam 200
+  e a raiz serve a pagina inicial. Por ser mudanca de tela, a validacao visual final fica com o Victor.
+- Alternativa descartada: manter a descoberta automatica da pasta `pages/` com arquivos numerados;
+  o `st.navigation` da controle explicito de ordem, titulo e url_path.
