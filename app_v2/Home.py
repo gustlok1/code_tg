@@ -9,7 +9,7 @@ import streamlit as st
 import utils_v2 as u
 
 st.set_page_config(page_title="Crise hídrica Cantareira (v2)", layout="wide")
-st.title("Previsão de crise hídrica — Sistema Cantareira")
+st.title("Previsão de crise hídrica no Sistema Cantareira")
 st.caption("Volume útil do sistema (SAR/ANA) e previsão em 30, 60 e 90 dias. "
            "Modelo congelado (XGBRes residual sobre o B3). Fonte climática: ERA5-Land e NASA POWER.")
 

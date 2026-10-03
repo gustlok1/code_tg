@@ -49,3 +49,6 @@ legado_v1/data/
 .env
 .env.*
 
+# Documentos em edição (entram no git só na entrega; ainda vão mudar)
+docs/TG2_Previsao_Crises_Hidricas.docx
+

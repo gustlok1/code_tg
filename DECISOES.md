@@ -79,7 +79,8 @@ Formato: data, decisão, motivo, alternativa descartada.
 ## 2026-10-02 — Versionamento
 - Decisão: branch `tg2-v2`; `.gitignore` exclui `data/raw_v2/`, `data/processed_v2/`, `data/sintetico/`,
   `_auditoria_tmp/`, `.venv/`, `.env`. `CLAUDE.md` copiado para dentro do repo (`code_tg/CLAUDE.md`)
-  para ficar versionado com a v2; o original em `C:\Dev\TG\CLAUDE.md` permanece.
+  para ficar versionado com a v2; a cópia original em `C:\Dev\TG\CLAUDE.md` foi apagada e a versão
+  versionada no repositório passa a ser a única.
 - Motivo: a v2 nunca tinha sido commitada; o primeiro commit em `tg2-v2` consolida o pipeline_v2 já
   construído (Exp 1 a 3 + LSTM) mais o sintético concluído.
 - Nota: `data/`, `models/` e `reports/v1_*`/`v2_threshold_otimizado/` pesados já estão no HEAD (commits
@@ -236,3 +237,20 @@ Formato: data, decisão, motivo, alternativa descartada.
   (duas chamadas dao o mesmo skill; mudar shuffle_seed_base muda o resultado). 27 testes verdes.
 - Nota: isto nao reabre o teste de 2023+ nem altera o congelamento (que nao usam `hash()`); a
   verificacao de reproducao do congelamento segue valida.
+
+## 2026-10-03 — Pasta unica e ambiente 3.13
+- Decisao: o repositorio deixa de viver em `C:\Dev\TG\code_tg` e passa a ser a propria raiz
+  `C:\Dev\TG`. Todo o conteudo (inclusive `.git` e `.gitignore`) foi movido um nivel acima e a
+  pasta `code_tg` foi esvaziada. O `.venv` antigo (Python 3.9, da maquina do Gustavo) e o
+  `.pytest_cache` foram apagados; recriado `.venv` local com Python 3.13 a partir do
+  `requirements.txt`.
+- Motivo: eliminar o aninhamento desnecessario (`TG\code_tg`) depois que `C:\Dev\TG` passou a
+  conter so o projeto, e ter um ambiente que roda nesta maquina (o `.venv` versionado apontava
+  para outra maquina e nao executava).
+- Documentos: `docs/TG1_Victor_Gustavo.pdf` (1,2 MB) entra no git; `docs/TG2_Previsao_Crises_Hidricas.docx`
+  fica no `.gitignore` ate a entrega, porque o texto ainda muda.
+- Textos corrigidos: titulo da Home sem travessao; a linha deste arquivo sobre o `CLAUDE.md` passou
+  a registrar que a copia original em `C:\Dev\TG\CLAUDE.md` foi apagada e a versao versionada e a
+  unica; README com `.venv` no lugar de `.venv_local` e o app documentado como
+  `.venv\Scripts\python.exe -m streamlit run app_v2\Home.py`.
+- Alternativa descartada: manter o projeto aninhado em `code_tg`; sem ganho e com um nivel a mais.

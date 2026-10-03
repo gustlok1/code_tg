@@ -2,7 +2,7 @@
 # Versoes EXATAS do ambiente que gerou os resultados (reproducibilidade, item 12).
 # Para o conjunto completo e travado (todas as transitivas), ver requirements-lock.txt.
 # Python 3.13. Recrie um venv limpo e instale com:
-#   python -m venv .venv_local && .venv_local\Scripts\activate
+#   py -3.13 -m venv .venv && .venv\Scripts\activate
 #   pip install -r requirements.txt
 #   pip install torch==2.14.1 --index-url https://download.pytorch.org/whl/cpu
 

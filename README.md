@@ -20,11 +20,11 @@ congelamento das escolhas. O diagnostico da v1 esta em docs/RELATORIO_ESTADO_ATU
 - Resultado negativo e reportado como e; o teste foi aberto uma unica vez, apos o congelamento.
 
 ## Como instalar
-Python 3.13. O `.venv` versionado antigo nao roda; crie o seu a partir do `requirements.txt`.
+Python 3.13. O `.venv` versionado antigo foi removido (apontava para outra maquina); crie o seu a partir do `requirements.txt`.
 
 ```
-python -m venv .venv_local
-.venv_local\Scripts\activate
+py -3.13 -m venv .venv
+.venv\Scripts\activate
 pip install -r requirements.txt
 pip install torch==2.14.1 --index-url https://download.pytorch.org/whl/cpu
 ```
@@ -42,7 +42,7 @@ python pipeline_v2/run_all.py                     # 3. experimentos de validacao
 python pipeline_v2/03_congelar_e_testar.py        #    grava reports_v2/final/congelamento.json
 python pipeline_v2/03_congelar_e_testar.py --abrir-teste
 # aplicacao web:
-streamlit run app_v2/Home.py
+.venv\Scripts\python.exe -m streamlit run app_v2\Home.py
 # testes:
 python -m pytest pipeline_v2/tests -q
 ```
