@@ -273,3 +273,26 @@ Formato: data, decisão, motivo, alternativa descartada.
   e a raiz serve a pagina inicial. Por ser mudanca de tela, a validacao visual final fica com o Victor.
 - Alternativa descartada: manter a descoberta automatica da pasta `pages/` com arquivos numerados;
   o `st.navigation` da controle explicito de ordem, titulo e url_path.
+
+## 2026-10-03 — Retrospectiva mostra a crise de 2025-26 (so exibicao)
+- Decisao: na pagina Retrospectiva, a crise de 2025-26 passa a usar o MESMO calculo da figura 16
+  (`ax.testar_residual` com a config congelada do `congelamento.json`), via novo helper
+  `utils_v2.teste_congelado(df, h)`, no horizonte escolhido, rotulada "teste, modelo congelado". As
+  crises de 2003-04, 2013-16 e 2021-22 seguem com o out-of-fold da validacao, rotuladas "validacao".
+  O titulo da pagina perde o "(validacao)" e a legenda explica as duas origens. Nenhum numero novo,
+  nenhuma escolha refeita; o teste nao e reaberto (a config ja esta congelada e e a mesma da fig16).
+- Primeiro alerta (limiar 40%) abaixo do grafico, lido de CSV ja gravado, sem calcular nada novo:
+  2025-26 de `reports_v2/final/antecedencia_teste.csv` (data do primeiro alerta e antecedencia em dias,
+  de XGBRes e B3); validacao de `reports_v2/resultados/antecedencia_pareada_por_episodio.csv` (so a
+  antecedencia em dias de XGBRes e B3, sem data, porque esse arquivo nao traz a data). Episodio sem
+  linha no CSV mostra "sem registro". A legenda deixa claras as duas origens.
+- Escolha do CSV da validacao (aprovada pelo Victor): a antecedencia pareada por episodio, por ser a
+  unica com XGBRes e B3 no limiar 40 (os modelos e o limiar do grafico). A alternativa
+  `antecedencia_por_episodio.csv` tem a data, mas e do XGBClf no limiar 30; descartada por nao bater
+  com o grafico.
+- Verificacao: teste_congelado(h=90) bate com a fig16 (max|dif| = 0 em 1280 linhas, XGBRes/B3/real);
+  27 testes verdes; reproducao 33/33; app sobe sem excecao e as quatro URLs respondem. Travessoes
+  removidos de todo o app_v2 (titulo do grafico, selo de dado sintetico e docstring do utils_v2). Por
+  ser mudanca de tela, a validacao visual final fica com o Victor.
+- Alternativa descartada: manter o aviso "fora da validacao" em 2025-26; contradizia o texto (4.8) e
+  a figura 16, que dizem que a Retrospectiva mostra 2025-26.

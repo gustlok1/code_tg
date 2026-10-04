@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-utils_v2.py — Suporte do app Streamlit v2. Usa o MODELO CONGELADO (congelamento.json:
+utils_v2.py: suporte do app Streamlit v2. Usa o MODELO CONGELADO (congelamento.json:
 XGBRes residual sobre o B3) para prever o volume util do Sistema Cantareira em t+30/60/90,
 com faixa de incerteza a partir dos residuos. Sem mencao a estacao A701.
 
@@ -121,6 +121,18 @@ def backtest_oof(df, h=90):
     _, oof = ax.validar_residual(df, c, h, src="era5")
     oof = oof.copy(); oof["data"] = pd.to_datetime(oof["data"])
     return oof[["data", "real", "B3", "XGBRes"]].sort_values("data")
+
+
+def teste_congelado(df, h):
+    """Previsoes do XGBRes CONGELADO no teste (>= teste_inicio), o MESMO calculo da figura 16
+    (ax.testar_residual com a config gravada em congelamento.json). Nao reabre o teste nem refaz
+    escolhas: a config ja esta congelada. Retorna data/real/vol_t/B3/XGBRes."""
+    c = cfg()
+    cong = congelamento()
+    config = cong["modelos"]["XGBRes"].get(str(h), {}).get("config", {})
+    oof = ax.testar_residual(df, c, h, config)
+    oof = oof.copy(); oof["data"] = pd.to_datetime(oof["data"])
+    return oof.sort_values("data")
 
 
 def atualizar_por_api():

@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[2]
 SINT = ROOT / "reports_v2" / "sintetico"
 
 st.markdown("<div style='background:#7f0000;color:white;padding:8px 14px;border-radius:6px;"
-            "font-weight:bold;display:inline-block'>DADOS SINTÉTICOS — não são dados reais</div>",
+            "font-weight:bold;display:inline-block'>DADOS SINTÉTICOS: não são dados reais</div>",
             unsafe_allow_html=True)
 st.title("Experimento sintético (Exp 1)")
 st.caption("Ambiente controlado para provar que o pipeline recupera um sinal conhecido e para medir "
