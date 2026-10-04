@@ -14,8 +14,8 @@ CSV_VALIDACAO = RAIZ / "reports_v2" / "resultados" / "antecedencia_pareada_por_e
 
 st.title("Retrospectiva das crises conhecidas")
 st.caption("As crises de 2003-04, 2013-16 e 2021-22 usam previsões fora da amostra (out-of-fold) da "
-           "validação. A crise de 2025-26 usa o teste com o modelo congelado (o mesmo cálculo da "
-           "figura 16). Em todos os casos é o XGBRes residual contra o real e o B3.")
+           "validação. A crise de 2025-26 usa o período de teste com o modelo congelado. Em todos os "
+           "casos é o XGBRes residual contra o real e o B3.")
 
 h = st.selectbox("Horizonte", [90, 60, 30], index=0)
 
@@ -70,13 +70,26 @@ if eh_teste:
     if sel.empty:
         st.write("sem registro")
     else:
-        disp = sel.sort_values(["episodio_inicio", "modelo"])[
-            ["episodio_inicio", "modelo", "primeiro_alerta", "antecedencia_dias"]].copy()
-        disp["episodio_inicio"] = disp["episodio_inicio"].dt.strftime("%Y-%m-%d")
-        disp = disp.rename(columns={"episodio_inicio": "Episódio (entrada)", "modelo": "Modelo",
-                                    "primeiro_alerta": "Primeiro alerta",
-                                    "antecedencia_dias": "Antecedência (dias)"})
+        s = sel.sort_values(["episodio_inicio", "modelo"]).copy()
+        # 120 e o teto da janela de busca da antecedencia (03_congelar_e_testar.py, 120 dias antes do
+        # inicio do episodio). Quando bate no teto, o alerta ja estava ligado desde a crise anterior:
+        # nao e antecedencia medida. So texto de tela; CSV e calculo ficam intactos.
+        continuo = s["antecedencia_dias"] == 120
+        alerta = s["primeiro_alerta"].astype(str)
+        dias = s["antecedencia_dias"].astype("Int64").astype(str)
+        alerta = alerta.mask(continuo, "alerta contínuo desde a crise anterior")
+        dias = dias.mask(continuo, "")
+        disp = pd.DataFrame({
+            "Episódio (entrada)": s["episodio_inicio"].dt.strftime("%Y-%m-%d").values,
+            "Modelo": s["modelo"].values,
+            "Primeiro alerta": alerta.values,
+            "Antecedência (dias)": dias.values,
+        })
         st.dataframe(disp, hide_index=True, use_container_width=True)
+        if bool(continuo.any()):
+            st.caption("120 dias é o teto da janela de busca da antecedência (120 dias antes do "
+                       "início do episódio). Quando a antecedência bate nesse teto, o alerta já "
+                       "estava ligado desde a crise anterior, então não é antecedência medida.")
     st.caption("Data do primeiro alerta e antecedência do teste (modelo congelado), lidas de "
                "reports_v2/final/antecedencia_teste.csv.")
 else:

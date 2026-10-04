@@ -296,3 +296,17 @@ Formato: data, decisão, motivo, alternativa descartada.
   ser mudanca de tela, a validacao visual final fica com o Victor.
 - Alternativa descartada: manter o aviso "fora da validacao" em 2025-26; contradizia o texto (4.8) e
   a figura 16, que dizem que a Retrospectiva mostra 2025-26.
+
+## 2026-10-03 — Retrospectiva: teto de 120 dias e legenda (so texto de tela)
+- Decisao: na Retrospectiva, em 2025-26, quando a antecedencia e igual a 120 (teto da janela de busca
+  de `_antecedencia` em `03_congelar_e_testar.py`, 120 dias antes do inicio do episodio) o app mostra
+  "alerta continuo desde a crise anterior" no lugar da data e dos dias, com uma nota curta explicando
+  o teto. Isso atinge o episodio de 2026-06-02 (XGBRes e B3, nos tres horizontes), que nao e
+  antecedencia medida: o alerta ja vinha ligado da crise anterior. Nao muda CSV nem calculo.
+- Item da passada: tirei a mencao "o mesmo calculo da figura 16" da legenda de tela; e referencia
+  interna do texto do TG, sem sentido para quem usa o app. A legenda agora diz "usa o periodo de
+  teste com o modelo congelado".
+- Verificacao: 27 testes verdes; app sobe sem excecao e as quatro URLs respondem. Episodio de
+  2025-08-06 segue com data e dias (h90 XGBRes 2025-05-23/75, B3 2025-06-03/64). Mudanca de tela:
+  validacao visual final com o Victor.
+- Alternativa descartada: deixar 120 d como se fosse antecedencia; enganaria a leitura.
