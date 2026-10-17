@@ -20,7 +20,8 @@ from sklearn.model_selection import TimeSeriesSplit
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-from matplotlib.ticker import ScalarFormatter
+import matplotlib.patches as mpatches
+from matplotlib.ticker import ScalarFormatter, FuncFormatter
 
 import analise_exp3 as ax
 
@@ -42,6 +43,7 @@ RES = ROOT / "reports_v2" / "resultados"
 SINT = ROOT / "reports_v2" / "sintetico"
 EXP4 = ROOT / "reports_v2" / "exp4"
 FINAL = ROOT / "reports_v2" / "final"
+MALHA_SP = Path(__file__).resolve().parent / "assets" / "sp_malha_ibge.geojson"
 DF_DAILY = ROOT / "legado_v1" / "data" / "features" / "inmet_sp_daily.parquet"
 DF_FEAT = ROOT / "legado_v1" / "data" / "features" / "inmet_sp_daily_features.parquet"
 DF_LAB = ROOT / "legado_v1" / "data" / "features" / "inmet_sp_daily_labels.parquet"
@@ -73,6 +75,113 @@ def salvar(fig, num, nome, titulo, leitura):
     fig.tight_layout(); fig.savefig(FIG / arq, dpi=300); plt.close(fig)
     INDICE.append((num, arq, titulo, leitura))
     logging.info(f"  {arq}")
+
+
+def _salvar_simples(fig, num, nome, titulo, leitura):
+    """Como salvar(), mas sem forcar virgula no eixo y (mapa usa formatadores de grau)."""
+    arq = f"fig_{num:02d}_{nome}.png"
+    fig.tight_layout(); fig.savefig(FIG / arq, dpi=300); plt.close(fig)
+    INDICE.append((num, arq, titulo, leitura))
+    logging.info(f"  {arq}")
+
+
+# ---------------- 4.0 Area de estudo ----------------
+RESERV = [("Jaguari-Jacareí", -22.9246, -46.4270),
+          ("Cachoeira",       -23.0511, -46.3200),
+          ("Atibainha",       -23.1757, -46.3936),
+          ("Paiva Castro",    -23.3300, -46.6795)]
+CAPITAL = ("São Paulo (capital)", -23.5505, -46.6333)
+
+
+def _poligonos_sp():
+    gj = json.loads(MALHA_SP.read_text(encoding="utf-8"))
+    polys = []
+    for feat in gj["features"]:
+        g = feat["geometry"]
+        if g["type"] == "Polygon":
+            polys.append(g["coordinates"])
+        elif g["type"] == "MultiPolygon":
+            polys.extend(g["coordinates"])
+    return polys
+
+
+def _fmt_lon(x, _):
+    return f"{_virg(abs(x), 1)}°O" if x < 0 else f"{_virg(abs(x), 1)}°L"
+
+
+def _fmt_lat(y, _):
+    return f"{_virg(abs(y), 1)}°S" if y < 0 else f"{_virg(abs(y), 1)}°N"
+
+
+def _barra_escala(ax_, lon0, lat0, km, lat_ref):
+    graus = km / (111.32 * np.cos(np.radians(lat_ref)))
+    ax_.plot([lon0, lon0 + graus], [lat0, lat0], color="black", lw=2.5, solid_capstyle="butt")
+    for lx in (lon0, lon0 + graus):
+        ax_.plot([lx, lx], [lat0, lat0 + graus * 0.08], color="black", lw=2.5)
+    ax_.text(lon0 + graus / 2, lat0 + graus * 0.12, f"{km:g} km",
+             ha="center", va="bottom", fontsize=8)
+
+
+def _desenhar_sp(ax_, polys, lw_ext):
+    for poly in polys:
+        ext = np.array(poly[0])
+        ax_.fill(ext[:, 0], ext[:, 1], facecolor="#eef3f8", edgecolor="#4a6785", lw=lw_ext, zorder=1)
+        for hole in poly[1:]:
+            h = np.array(hole)
+            ax_.fill(h[:, 0], h[:, 1], facecolor="white", edgecolor="#4a6785", lw=0.5, zorder=1)
+
+
+def fig00():
+    polys = _poligonos_sp()
+    lons = [r[2] for r in RESERV]; lats = [r[1] for r in RESERV]
+    mlon = (min(lons) - 0.12, max(lons) + 0.12); mlat = (min(lats) - 0.12, max(lats) + 0.12)
+    fig, ax_ = plt.subplots(figsize=(9, 7.2))
+    ax_.grid(True, alpha=0.25, ls=":")
+    _desenhar_sp(ax_, polys, 1.1)
+    ax_.scatter([CAPITAL[2]], [CAPITAL[1]], marker="*", s=240, c="#d62728", edgecolor="k", lw=0.5, zorder=5)
+    ax_.annotate(CAPITAL[0], (CAPITAL[2], CAPITAL[1]), textcoords="offset points",
+                 xytext=(6, -12), fontsize=9, color="#7a1418")
+    ax_.add_patch(mpatches.Rectangle((mlon[0], mlat[0]), mlon[1] - mlon[0], mlat[1] - mlat[0],
+                                     fill=False, edgecolor="#1f3b73", lw=1.4, zorder=4))
+    ax_.scatter(lons, lats, s=36, c="#1f77b4", edgecolor="k", lw=0.4, zorder=5)
+    ax_.annotate("Sistema\nCantareira", (mlon[1], mlat[1]), textcoords="offset points",
+                 xytext=(10, 10), fontsize=9, color="#1f3b73", fontweight="bold")
+    ax_.set_xlim(-53.4, -43.9); ax_.set_ylim(-25.5, -19.6)
+    ax_.set_aspect(1 / np.cos(np.radians(-23)))
+    ax_.xaxis.set_major_formatter(FuncFormatter(_fmt_lon))
+    ax_.yaxis.set_major_formatter(FuncFormatter(_fmt_lat))
+    ax_.set_xlabel("Longitude"); ax_.set_ylabel("Latitude")
+    _barra_escala(ax_, -53.0, -25.15, 100, -23)
+    ax_.annotate("N", xy=(-44.6, -20.1), xytext=(-44.6, -20.9), ha="center", va="center",
+                 fontsize=11, fontweight="bold",
+                 arrowprops=dict(arrowstyle="-|>", color="black", lw=1.5))
+    # inset: detalhe dos 4 reservatorios rotulados (canto noroeste, longe do cluster real)
+    axin = ax_.inset_axes([0.02, 0.53, 0.40, 0.44])
+    _desenhar_sp(axin, polys, 0.8)
+    axin.scatter([CAPITAL[2]], [CAPITAL[1]], marker="*", s=130, c="#d62728", edgecolor="k", lw=0.4, zorder=5)
+    axin.annotate("São Paulo", (CAPITAL[2], CAPITAL[1]), textcoords="offset points",
+                  xytext=(4, -10), fontsize=7.5, color="#7a1418")
+    axin.scatter(lons, lats, s=42, c="#1f77b4", edgecolor="k", lw=0.4, zorder=5)
+    off = {"Jaguari-Jacareí": (6, 4), "Cachoeira": (6, -2), "Atibainha": (6, -3),
+           "Paiva Castro": (-6, -10)}
+    for nome, la, lo in RESERV:
+        ha = "right" if off[nome][0] < 0 else "left"
+        axin.annotate(nome, (lo, la), textcoords="offset points", xytext=off[nome],
+                      fontsize=7.5, ha=ha, color="#13315c")
+    axin.set_xlim(mlon[0] - 0.05, mlon[1] + 0.2); axin.set_ylim(mlat[0] - 0.12, mlat[1] + 0.05)
+    axin.set_aspect(1 / np.cos(np.radians(-23)))
+    axin.xaxis.set_major_formatter(FuncFormatter(_fmt_lon))
+    axin.yaxis.set_major_formatter(FuncFormatter(_fmt_lat))
+    axin.tick_params(labelsize=6.5); axin.grid(True, alpha=0.3, ls=":")
+    _barra_escala(axin, mlon[0] - 0.02, mlat[0] - 0.095, 20, -23)
+    axin.set_title("Detalhe do Sistema Cantareira", fontsize=8)
+    ax_.indicate_inset_zoom(axin, edgecolor="#555")
+    ax_.set_title("Área de estudo: Sistema Cantareira (4 reservatórios) no leste de São Paulo")
+    ax_.text(0.0, -0.10, "Fontes: malha estadual do IBGE; reservatórios SAR/ANA (coordenadas dos pontos de clima ERA5-Land).",
+             transform=ax_.transAxes, fontsize=8, color="#555")
+    _salvar_simples(fig, 0, "area_estudo", "Mapa da área de estudo",
+                    "Os 4 reservatórios do Cantareira formam um cluster a nordeste da capital; as coordenadas "
+                    "rotuladas são os pontos de clima (ERA5-Land) usados no pipeline.")
 
 
 # ---------------- 4.1 Exp 0 ----------------
@@ -178,12 +287,15 @@ def fig06():
     fig, ax_ = plt.subplots(figsize=(11, 4.6)); x = np.arange(len(g)); w = 0.4
     ax_.bar(x - w / 2, g["ERA5"], w, label="ERA5", color="#1f77b4")
     ax_.bar(x + w / 2, g["POWER"], w, label="NASA POWER", color="#ff7f0e")
-    ax_.set_xticks(x); ax_.set_xticklabels(g.index, rotation=90, fontsize=7)
-    ax_.set_ylabel("Chuva anual média da bacia (mm)"); ax_.set_xlabel("Ano"); ax_.legend()
+    # anos de 5 em 5 (multiplos de 5), fonte maior e sem rotacao
+    passos = [i for i, ano in enumerate(g.index) if ano % 5 == 0]
+    ax_.set_xticks([x[i] for i in passos]); ax_.set_xticklabels([g.index[i] for i in passos], fontsize=10)
+    ax_.set_ylabel("Chuva anual média da bacia (mm)", fontsize=12); ax_.set_xlabel("Ano", fontsize=12)
+    ax_.tick_params(axis="y", labelsize=10); ax_.legend(fontsize=11)
     if 1999 in g.index:
         xi = list(g.index).index(1999)
         ax_.annotate("anomalia POWER 1999", xy=(xi, g.loc[1999, "POWER"]), xytext=(xi, g["POWER"].max()),
-                     arrowprops=dict(arrowstyle="->", color="#d62728"), color="#d62728", fontsize=9)
+                     arrowprops=dict(arrowstyle="->", color="#d62728"), color="#d62728", fontsize=10)
     ax_.set_title("Chuva anual da bacia: ERA5 contra NASA POWER (anomalia do POWER em 1999)")
     salvar(fig, 6, "eda_chuva_era5_vs_power", "Chuva anual ERA5 contra POWER",
            "As fontes concordam, menos em 1999, quando o POWER tem um pico anômalo (~3.380 mm vs ~1.600 do ERA5).")
@@ -212,9 +324,11 @@ def fig07():
     ax_.scatter(gem.phi_ef_medio, gem.skill_90_medio, marker="*", s=360, c="#9467bd", edgecolor="k",
                 lw=0.6, zorder=6, label="gêmeo calibrado")
     ax_.axhline(0, color="#555", ls=":", lw=0.8)
-    ax_.set_xlabel("phi_ef (persistência efetiva da chuva)"); ax_.set_ylabel("skill vs B3 (h=90)")
+    ax_.set_xlabel("phi_ef (persistência efetiva da chuva)", fontsize=12)
+    ax_.set_ylabel("skill vs B3 (h=90)", fontsize=12)
+    ax_.tick_params(axis="both", labelsize=10)
     ax_.xaxis.set_major_formatter(_FmtVirgula())  # eixo x numerico (phi_ef) tambem com virgula
-    ax_.legend(fontsize=8, loc="upper left")
+    ax_.legend(fontsize=10, loc="upper left")
     ax_.set_title("Sintético: o ganho sobre o B3 cresce com a persistência da chuva (phi_ef) e com N")
     salvar(fig, 7, "sintetico_skill_phief", "Skill sintético por persistência efetiva",
            "DADOS SINTÉTICOS. O Cantareira real está em phi ~ 0; o gêmeo calibrado (estrela) ainda supera "
@@ -224,7 +338,7 @@ def fig07():
 def fig08():
     san = pd.read_csv(SINT / "sanidade_sintetico.csv", index_col=0)
     fig, ax_ = plt.subplots(figsize=(7, 5))
-    nomes = ["real (modelo)", "embaralhado", "oráculo"]
+    nomes = ["modelo (alvo verdadeiro)", "embaralhado", "oráculo"]
     vals = [san.loc["normal", "skill"], san.loc["shuffle", "skill"], san.loc["oraculo", "skill"]]
     ax_.bar(nomes, vals, color=["#2ca02c", "#7f7f7f", "#9467bd"])
     ax_.axhline(0, color="#d62728", ls="--")
@@ -241,16 +355,21 @@ def fig08():
 def fig09():
     r = pd.read_csv(RES / "resumo_regressao.csv")
     hs = [30, 60, 90]
-    series = [("CLIMA_ESTADO", "XGBReg", "#2ca02c", "-"), ("CLIMA", "XGBReg", "#1f77b4", "-"),
-              ("CLIMA_ESTADO", "B3_persist_sazonal", "#ff7f0e", ":")]
+    # marcador e traco distintos por serie: CLIMA_ESTADO/XGBoost e CLIMA_ESTADO/B3 tem
+    # skill quase igual e se sobrepoem; diferenciados por marcador, traco e preenchimento.
+    series = [("CLIMA_ESTADO", "XGBReg", "#2ca02c", "-", "o", 2.2, True),
+              ("CLIMA", "XGBReg", "#1f77b4", "-", "^", 1.6, True),
+              ("CLIMA_ESTADO", "B3_persist_sazonal", "#ff7f0e", "--", "s", 1.8, False)]
     fig, ax_ = plt.subplots(figsize=(8.5, 5))
-    for conj, mod, cor, ls in series:
+    for conj, mod, cor, ls, mk, lw, cheio in series:
         ys = [r[(r.conjunto == conj) & (r.modelo == mod) & (r.horizonte == h)]["skill_B1"].mean() for h in hs]
-        rot = {"B3_persist_sazonal": "B3"}.get(mod, mod)
-        ax_.plot(hs, ys, marker="o", color=cor, ls=ls, label=f"{conj}/{rot}")
+        rot = {"B3_persist_sazonal": "B3", "XGBReg": "XGBoost"}.get(mod, mod)
+        ax_.plot(hs, ys, marker=mk, color=cor, ls=ls, lw=lw, markersize=9,
+                 markerfacecolor=(cor if cheio else "white"), markeredgecolor=cor,
+                 markeredgewidth=1.6, label=f"{conj}/{rot}")
     ax_.axhline(0, color="#d62728", ls="--", label="B1 (persistência)")
     ax_.set_xlabel("Horizonte (dias)"); ax_.set_ylabel("skill vs B1 (persistência)"); ax_.set_xticks(hs)
-    ax_.legend()
+    ax_.legend(fontsize=10)
     ax_.set_title("Exp 2: clima sozinho não prevê o nível; com o estado, empata com o B3")
     salvar(fig, 9, "exp2_skill_horizonte", "Clima contra clima e estado (Exp 2)",
            "CLIMA sozinho tem skill negativo; CLIMA_ESTADO fica junto do B3 (skill vs B1 ~0,3), sem superá-lo.")
@@ -364,7 +483,7 @@ def main():
             pass
     FIG.mkdir(parents=True, exist_ok=True); estilo()
     logging.info("Gerando figuras finais (300 dpi)...")
-    for f in [fig01, fig02, fig03, fig04, fig05, fig06, fig07, fig08, fig10, fig11, fig12, fig13, fig14]:
+    for f in [fig00, fig01, fig02, fig03, fig04, fig05, fig06, fig07, fig08, fig10, fig11, fig12, fig13, fig14]:
         try:
             f()
         except Exception as e:  # noqa: BLE001

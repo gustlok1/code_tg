@@ -2,6 +2,7 @@
 
 | Nº | Arquivo | Titulo | Leitura |
 |---|---|---|---|
+| 0 | `fig_00_area_estudo.png` | Mapa da área de estudo | Os 4 reservatórios do Cantareira formam um cluster a nordeste da capital; as coordenadas rotuladas são os pontos de clima (ERA5-Land) usados no pipeline. |
 | 1 | `fig_01_v1_chuva_vs_estacoes.png` | Chuva agregada da v1 contra número de estações | A chuva somada vai de 3.438 mm (3,9 estações, 2003) a 50.476 mm (41,5 estações, 2019): média um artefato de agregação, não o clima. |
 | 2 | `fig_02_v1_rad_zerada.png` | Radiação zerada no teste da v1 | Por troca de grafia da coluna, RAD_SUM vale zero em 2020-2024 (teste) e fica inflada no treino. |
 | 3 | `fig_03_v1_folds_sem_positivo.png` | Folds sem positivo na v1 | Os positivos por fold são [0,0,0,15,0]: o threshold degenera e o F1 do CV é zero. |
@@ -16,5 +17,3 @@
 | 12 | `fig_12_teste_skill_ic.png` | Resultado do teste com IC95% e por período | Skill +0,240 [0,132;0,372] (h30) e +0,229 [0,079;0,420] (h60) significativos; h90 cruza zero. A vantagem aparece em 2023-2024 e 2025-2026. |
 | 13 | `fig_13_teste_backtest_2025_26.png` | Previsão no teste da crise de 2025-26 | No teste, a 90 dias, o XGBRes acompanha a queda melhor que o B3; antecipa o alerta em ~11 dias. |
 | 14 | `fig_14_exp4_reservatorios.png` | Generalização para outros reservatórios (Exp 4) | O pipeline roda inalterado. Skill vs B3: Jaguari +0,11 (h30), Cachoeira ~0, Atibainha -0,41, Paiva Castro -0,18. |
-| 15 | `fig_15_app_situacao_atual.png` | Aplicação: situação atual e previsão | Renderização da tela inicial do app. Volume em 2026-10-01 de 40.9% (faixa Atenção); previsão 40,8%/44,4%/48,7% com faixa de incerteza. |
-| 16 | `fig_16_app_retrospectiva_2025_26.png` | Aplicação: retrospectiva da crise de 2025-26 | Renderização da página de retrospectiva. A 90 dias, o XGBRes acompanha a queda melhor que o B3 e antecipa o alerta da crise de 2025-26 (teste, modelo congelado). |

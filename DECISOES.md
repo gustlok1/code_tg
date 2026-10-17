@@ -310,3 +310,36 @@ Formato: data, decisão, motivo, alternativa descartada.
   2025-08-06 segue com data e dias (h90 XGBRes 2025-05-23/75, B3 2025-06-03/64). Mudanca de tela:
   validacao visual final com o Victor.
 - Alternativa descartada: deixar 120 d como se fosse antecedencia; enganaria a leitura.
+
+## 2026-10-17 — Rodada de verificacoes e figuras para a versao do orientador
+- Escopo: so leitura e apresentacao. Nenhum CSV de resultado alterado; o teste nao foi reaberto; o
+  03 nao foi rodado. Mudaram codigo de figura, PNGs, indice e arquivos novos.
+- Verificacoes (relatorio em `reports_v2/final/verificacoes_orientador.md`, com arquivo de origem de
+  cada numero). Dois achados que podem tocar o texto:
+  1. Sintetico (1g): o skill medio por N nao cresce de forma monotonica. Media dos horizontes por N
+     (de `grade_phief.csv`): N0 0,448; N3 0,394; N10 0,416; N30 0,498. N=3 e N=10 ficam abaixo de
+     N=0; so N=30 e o maior. A frase "o ganho cresceu com o numero de secas" nao se sustenta como
+     monotonica; o sintetico mostra com nitidez o ganho com a persistencia (phi_ef). Reescrita do
+     texto fica com o Victor.
+  2. PR-AUC do B3 a 30 d (1d): 0,748 e a media das 4 rodadas (`resumo_classificacao.csv`); 0,805
+     (0,8047) e a agregada out-of-fold com IC bootstrap (`prauc_entrada_ic.csv`). Confirmado pela
+     estrutura e pelos valores. Ressalva: nenhum script atual regenera `prauc_entrada_ic.csv`.
+- Paiva Castro (1e): tem volume desde 1984-01-01 (14.153 dias), igual aos outros; nao houve fold sem
+  treino. O Exp 4 ja reserva os primeiros 40% como treino minimo e pula fold com < 200 linhas de
+  treino; Paiva Castro completou os 4 folds (skill vs B3 negativo).
+- Figura nova `fig_00_area_estudo.png`: contorno de SP pela malha do IBGE (API v3, qualidade
+  intermediaria), cacheada em `pipeline_v2/assets/sp_malha_ibge.geojson` (12 KB, sem geopandas, so
+  json + matplotlib) para reproduzir offline. Os 4 reservatorios rotulados nas coordenadas do pipeline
+  (pontos do ERA5), capital marcada, eixos em grau, duas escalas (100 km no mapa, 20 km no detalhe),
+  seta norte e inset de zoom do cluster. Fonte: IBGE e SAR/ANA. Entrou no indice.
+- Tabela nova `reports_v2/final/tabela_antecedencia_por_episodio.csv` e `.md` (limiar 40): antecedencia
+  do XGBRes e do B3 e a diferenca por episodio, validacao (10 episodios, de
+  `antecedencia_pareada_por_episodio.csv`) e teste (2 episodios, de `antecedencia_teste.csv`), com
+  "alerta continuo" onde bate o teto de 120 d. Indica que os 10 episodios da validacao sao os do
+  Wilcoxon; no teste ha so 1 episodio informativo (2025-08-06) e 1 continuo (2026-06-02), sem Wilcoxon.
+- Ajustes de apresentacao (so PNG) em `fig_finais.py`: fig_09 "XGBReg" vira "XGBoost" e as linhas
+  CLIMA_ESTADO/XGBoost e CLIMA_ESTADO/B3 ganham marcador e traco distintos (circulo cheio vs quadrado
+  vazado, solido vs tracejado) para nao se sobreporem; fig_08 "real (modelo)" vira "modelo (alvo
+  verdadeiro)"; fig_06 e fig_07 com fonte maior em eixos e legenda, e a fig_06 com anos de 5 em 5.
+- Alternativa descartada no mapa: desenhar os 4 reservatorios so no mapa estadual cheio; a 0,4 grau de
+  distancia os rotulos se sobrepoem. Por isso o inset de detalhe com escala propria.
