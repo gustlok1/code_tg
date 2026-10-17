@@ -12,6 +12,9 @@ reconstroi tudo: alvo objetivo, dados por fonte aberta (SAR, ERA5-Land, NASA POW
 janela crescente e purga, baselines sempre reportados e um teste que so abre uma vez, depois do
 congelamento das escolhas. O diagnostico da v1 esta em docs/RELATORIO_ESTADO_ATUAL.md.
 
+Para navegar toda a documentacao (texto do TG, resumos por experimento, figuras, verificacoes,
+reproducao e decisoes), use o indice em [docs/README.md](docs/README.md).
+
 ## Resultado principal
 - O estado do reservatorio e o preditor decisivo; o clima agregado mais ML empata com o baseline forte
   B3 (persistencia mais variacao sazonal) na validacao de 20 anos.
@@ -54,14 +57,13 @@ python -m pytest pipeline_v2/tests -q
 │   ├── 00_download_dados.py, 01_build_dataset_v2.py, 02_*, 03_*, 04_*, exp0/exp4, run_all.py
 │   ├── dataset_v2.py, modelagem_v2.py, analise_exp3.py, lstm_v2.py, sintetico_v2.py, transformadores.py
 │   ├── config.yaml
-│   └── tests/          26 testes (pytest)
+│   └── tests/          29 testes (pytest)
 ├── app_v2/             aplicacao Streamlit v2 (previsao, backtest, sintetico, sobre)
-├── reports/
-│   └── v2/             saidas da v2: eda/, resultados/, sintetico/, exp0/, exp4/, final/
-│       └── final/      congelamento, metricas do teste, ficha tecnica, rascunho do capitulo 4,
-│                       figuras finais (300 dpi) em final/figuras/ com indice_figuras.md
+├── reports_v2/         saidas da v2: eda/, resultados/, sintetico/, exp0/, exp4/, final/
+│                       final/ tem congelamento, metricas do teste, ficha tecnica, rascunho do
+│                       capitulo 4 e figuras finais (300 dpi) em final/figuras/ com indice_figuras.md
 ├── legado_v1/          versao do TG1, congelada, base do Exp 0 (ver legado_v1/README.md)
-├── docs/               RELATORIO_ESTADO_ATUAL.md (auditoria da v1)
+├── docs/               documentacao navegavel (docs/README.md) e RELATORIO_ESTADO_ATUAL.md (auditoria da v1)
 ├── data/               dados locais, fora do git (raw_v2/, processed_v2/, sintetico/)
 ├── README.md, CLAUDE.md, DECISOES.md, requirements.txt, requirements-lock.txt, .gitignore
 ```

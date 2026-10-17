@@ -4,12 +4,13 @@ Valores exatos que o capitulo de metodologia precisa citar. Todos vem de arquivo
 pipeline. Para a ficha completa, ver `reports_v2/final/ficha_tecnica.md`.
 
 ## Testes automaticos
-- Numero final de testes (pytest, `pipeline_v2/tests/`): 26, todos passando.
+- Numero final de testes (pytest, `pipeline_v2/tests/`): 29, todos passando.
 - Cobrem: causalidade das features, purga (nenhum treino com t+h dentro da validacao), calendario sem
   duplicatas, alvos iguais a vol(t+h), SPI/SPEI e anomalias ajustados so no treino, escalonador do LSTM
   so no treino, janela do LSTM termina em t, reconstrucao B3 + residual, baselines B1/B2/B3, gerador
   sintetico reprodutivel, conservacao de massa do balanco, gemeo dentro de 10% do real, schema igual
-  ao real, e todo caminho de saida sintetico contendo "sintetico".
+  ao real, todo caminho de saida sintetico contendo "sintetico", determinismo da PR-AUC de entrada
+  (IC por bootstrap) e a faixa de incerteza do app vinda do erro fora da amostra da validacao.
 
 ## Pontos da bacia (clima = media entre os pontos)
 Quatro reservatorios do Sistema Cantareira:
