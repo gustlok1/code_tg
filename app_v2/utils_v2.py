@@ -68,9 +68,21 @@ def _features(df, mask_fit):
     return X, cols
 
 
-def treinar_e_prever(df, h, config):
+def faixa_incerteza_validacao(df, h, pct=80):
+    """Faixa de incerteza = percentil 'pct' do ERRO ABSOLUTO das previsoes FORA DA AMOSTRA
+    da validacao (OOF, 1984-2022) do XGBRes, por horizonte. Vem do caminho da validacao
+    (ax.validar_residual, janela crescente em 4 folds com purga), NAO dos residuos de treino
+    e NAO do periodo de teste (2023+). E essa a faixa honesta de incerteza do operacional."""
+    _, oof = ax.validar_residual(df, cfg(), h, src="era5")
+    err = np.abs(oof["real"].values - oof["XGBRes"].values)
+    return float(np.percentile(err, pct))
+
+
+def treinar_e_prever(df, h, config, banda):
     """Treina o XGBRes congelado em todo o historico com alvo valido e preve as ultimas datas
-    (onde t+h ainda nao existe). Retorna (previsoes_df, faixa_incerteza_pp)."""
+    (onde t+h ainda nao existe). A 'banda' (faixa de incerteza) e calculada FORA, a partir do
+    erro OOF da validacao (faixa_incerteza_validacao), e so viaja junto para o grafico.
+    Retorna (previsoes_df, banda)."""
     alvo = f"vol_pct_t{h}"
     mask_fit = df[alvo].notna().values & df["vol_pct"].notna().values
     X, cols = _features(df, mask_fit)
@@ -81,9 +93,6 @@ def treinar_e_prever(df, h, config):
     r_tr = df.loc[tr_ok, alvo].values - b3_tr
     mod = XGBRegressor(**(config or {}), random_state=42, n_jobs=-1, objective="reg:squarederror")
     mod.fit(X[tr_ok], r_tr)
-    # incerteza: percentis dos residuos de treino
-    resid = df.loc[tr_ok, alvo].values - (b3_tr + mod.predict(X[tr_ok]))
-    banda = float(np.percentile(np.abs(resid), 80))
     # prever as ultimas datas com features validas mas alvo ainda inexistente (futuro)
     prev_mask = ok & df[alvo].isna().values & df["vol_pct"].notna().values
     dprev = df[prev_mask].copy()
@@ -98,20 +107,22 @@ def treinar_e_prever(df, h, config):
 
 
 def previsao_atual(df):
-    """Para a ultima observacao, devolve vol atual e previsao em 30/60/90 com faixa."""
+    """Para a ultima observacao, devolve vol atual e previsao em 30/60/90 com faixa.
+    A faixa de incerteza por horizonte vem do erro OOF da validacao (fora da amostra)."""
     cong = congelamento()
     atual_data = df.loc[df["vol_pct"].notna(), "data"].max()
     vol_atual = float(df.loc[df["data"] == atual_data, "vol_pct"].iloc[0])
     linhas = []
     for h in (30, 60, 90):
         config = cong["modelos"]["XGBRes"].get(str(h), {}).get("config", {})
-        prev, banda = treinar_e_prever(df, h, config)
+        banda = faixa_incerteza_validacao(df, h)
+        prev, _ = treinar_e_prever(df, h, config, banda)
         if len(prev):
             ult = prev.iloc[-1]
             v = float(ult["vol_previsto"])
             linhas.append({"horizonte": h, "data_alvo": pd.Timestamp(ult["data_alvo"]),
                            "vol_previsto": v, "lo": v - banda, "hi": v + banda,
-                           "faixa": faixa_ana(v)[0]})
+                           "banda": banda, "faixa": faixa_ana(v)[0]})
     return atual_data, vol_atual, pd.DataFrame(linhas)
 
 

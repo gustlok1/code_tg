@@ -371,3 +371,22 @@ Formato: data, decisão, motivo, alternativa descartada.
   `app_v2/paginas/experimento_sintetico.py`, `resumo_exp1.md`, `capitulo4_rascunho.md`. O titulo do
   `skill_vs_phief.png` (mostrado no app) ja era factual ("por persistencia EFETIVA φ_ef").
 - Verificacao: 28 testes verdes (1 novo); reproducao agora 51/51 identicos (33 antigos + 18 do prauc).
+
+## 2026-10-17 — Rodada: faixa de incerteza da "Situacao atual" (app)
+- Problema: a faixa vinha do percentil 80 do erro absoluto nos RESIDUOS DE TREINO (dentro da
+  amostra), subestimando o erro real (±2,3 / ±3,7 / ±6,2 em 30/60/90 dias).
+- Correcao: a faixa passa a ser o percentil 80 do erro absoluto das previsoes FORA DA AMOSTRA da
+  validacao (OOF do XGBRes, 1984-2022), por horizonte, pelo caminho da validacao
+  (`ax.validar_residual`). Nao usa o teste (2023+) nem o reabre. Valores novos (antigos entre
+  parenteses): 30d ±4,07 (±2,3); 60d ±7,23 (±3,7); 90d ±9,29 (±6,2). Coerente com o MAE OOF
+  (2,80 / 4,73 / 6,31) e maior que a faixa de treino. Legenda do app: "percentil 80 do erro
+  absoluto fora da amostra na validacao (1984 a 2022)".
+- `app_v2/utils_v2.py`: nova funcao `faixa_incerteza_validacao(df, h)`; `treinar_e_prever` passa a
+  RECEBER a banda (nao a calcula mais com residuo de treino); `previsao_atual` calcula a banda por
+  horizonte pela validacao. Teste `pipeline_v2/tests/test_app_faixa.py` prova que a faixa vem da OOF
+  (igual ao p80 da validacao) e que difere e supera a de treino.
+- Subtitulo: "Fonte climatica do modelo: ERA5-Land" (o modelo nao usa POWER). Nota junto ao botao de
+  atualizacao: baixa SAR e ERA5-Land (usados pelo modelo) e tambem NASA POWER, este so para
+  conferencia da chuva.
+- Formato brasileiro (virgula decimal) no `st.metric` do volume atual e na tabela de previsao.
+- Verificacao: 29 testes verdes (1 novo); reproducao 51/51; nenhum CSV de resultado alterado.
