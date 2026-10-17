@@ -28,6 +28,29 @@ def test_residual_mais_b3_reconstroi_alvo():
         assert np.allclose(p["r_tr"], p["real_tr"] - p["b3_tr"], atol=1e-12)
 
 
+# -------------------------- PR-AUC de entrada (IC) é determinística e bem formada
+def test_prauc_entrada_ic_horizonte_deterministico():
+    n = 600
+    datas = pd.date_range("2003-01-01", periods=n, freq="D")
+    gen = np.random.default_rng(7)
+    vol_t = gen.uniform(35, 70, n)            # vol(t): parte acima de 40 (recorte de entrada)
+    real = vol_t - gen.uniform(-5, 25, n)     # vol(t+h): às vezes abaixo de 40 (entra em crise)
+    oof = pd.DataFrame({"data": datas, "vol_t": vol_t, "real": real,
+                        "B3": real + gen.normal(0, 3, n),
+                        "XGBRes": real + gen.normal(0, 2, n)})
+    ent = vol_t > 40
+    y = real[ent] < 40
+    assert y.any() and (~y).any()             # há as duas classes no recorte de entrada
+    r1 = ax.prauc_entrada_ic_horizonte(oof, 30, np.random.default_rng(0), n_boot=200)
+    r2 = ax.prauc_entrada_ic_horizonte(oof, 30, np.random.default_rng(0), n_boot=200)
+    assert r1 == r2                           # mesmo rng + mesmo oof -> saída idêntica
+    assert [r["modelo"] for r in r1] == ["B3", "XGBRes"]
+    for row in r1:
+        assert 0.0 < row["prevalencia"] <= 1.0
+        assert row["ic95_lo"] <= row["ic95_hi"]
+        assert row["horizonte"] == 30
+
+
 # -------------------------- anomalias usam só a climatologia do treino
 def test_anomalias_usam_so_climatologia_do_treino():
     datas = pd.date_range("1990-01-01", periods=4000, freq="D")

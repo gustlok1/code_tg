@@ -47,6 +47,16 @@ caminhos:
 sintetico:
   shuffle_seed_base: 12345
 
+# PR-AUC de entrada (limiar 40) com IC95% por bootstrap em blocos de 90 dias, na validacao
+# OOF. Um unico RNG (semente abaixo), compartilhado na ordem h30->h60->h90 e B3->XGBRes:
+# e essa ordem com estado continuo que reproduz o prauc_entrada_ic.csv historico. Gera-se com
+# 02e_prauc_entrada_ic.py e confere-se em verificar_reproducao.py. So validacao.
+prauc_entrada_ic:
+  seed: 0
+  n_boot: 2000
+  bloco: 90
+  limiar: 40
+
 # Faixas operacionais indicativas do Sistema Cantareira (volume útil %), usadas
 # apenas para sombrear a figura de EDA. Valores aproximados das bandas ANA/DAEE.
 faixas_ana_daee:

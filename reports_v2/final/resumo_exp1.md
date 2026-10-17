@@ -17,8 +17,10 @@ muda com o número de crises N. Código: `pipeline_v2/sintetico_v2.py`, `04_expe
   não o algoritmo. O valor do embaralhamento agora é reprodutível bit a bit (semente fixa derivada do
   índice do fold, `sintetico.shuffle_seed_base` no config; antes vinha de `hash()` randomizado por
   processo).
-- Persistência efetiva (`skill_vs_phief.png`): o skill vs B3 cresce com φ_ef e com N. φ_param=0 com N=0
-  dá φ_ef = 0,015 (≈ real); as secas injetadas inflam φ_ef (N=30 → 0,37). O ganho salta em φ alto
+- Persistência efetiva (`skill_vs_phief.png`): o skill vs B3 cresce com φ_ef. φ_param=0 com N=0
+  dá φ_ef = 0,015 (≈ real); as secas injetadas inflam φ_ef (N=30 → 0,37). O número de secas, por si só,
+  não dá ganho monotônico: o skill médio por N (mesmas φ e sementes) é N0 0,45; N3 0,39; N10 0,42;
+  N30 0,50, ou seja o ganho vem da persistência, não do número de secas. O ganho salta em φ alto
   (φ=0,95 → skill ~0,43 em h=90).
 - Gêmeo calibrado (φ e τ reais, N=0, 10 seeds): τ = 24 d, ruído de afluência σ = 0,63, σ da anomalia
   calibrado = 0,25. Chuva mensal dentro de 10% do real (média −2,2%, desvio −3,6%). Skill vs B3:

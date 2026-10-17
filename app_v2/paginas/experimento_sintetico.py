@@ -17,8 +17,8 @@ st.caption("Ambiente controlado para provar que o pipeline recupera um sinal con
            "onde o ML supera o B3. Nada aqui é dado real do Cantareira.")
 
 st.markdown(
-    "- O skill do ML sobre o B3 cresce com a persistência efetiva da chuva (φ_ef) e com o número de "
-    "crises N.\n"
+    "- O skill do ML sobre o B3 cresce com a persistência efetiva da chuva (φ_ef). O número de crises "
+    "N atua elevando φ_ef; sozinho não é monotônico e só ajuda com clareza no extremo (N=30).\n"
     "- Com o alvo embaralhado o skill vai a zero; com a chuva futura (oráculo) o skill dispara: o "
     "limite é a informação, não o algoritmo.\n"
     "- O Cantareira real está em φ ≈ 0,013 (chuva sem persistência mensal)."

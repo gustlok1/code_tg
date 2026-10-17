@@ -3,8 +3,14 @@
 """
 fig_finais.py — Figuras finais para o texto (capitulo 4), estilo uniforme, 300 dpi,
 rotulos em portugues, titulo que diz o achado, numeradas na ordem do capitulo.
-Saida: reports_v2/final/figuras/ (fig_01..fig_14) + indice_figuras.md.
+Saida: reports_v2/final/figuras/ (fig_00..fig_14) + indice_figuras.md.
 Le dos CSVs/parquets ja gerados; o teste nao e reaberto (usa o congelamento).
+
+fig_00 (mapa da area de estudo): o contorno de Sao Paulo vem da malha estadual do IBGE,
+cacheada em pipeline_v2/assets/sp_malha_ibge.geojson. API de malhas territoriais do IBGE:
+  https://servicodados.ibge.gov.br/api/v3/malhas/estados/35?formato=application/vnd.geo+json&qualidade=intermediaria
+(35 = codigo da UF Sao Paulo). Acesso em 2026-10-17. Para atualizar a malha, rebaixe desse
+URL e regrave o geojson; o resto da figura nao depende de rede.
 """
 import json
 import logging
@@ -151,34 +157,31 @@ def fig00():
     ax_.xaxis.set_major_formatter(FuncFormatter(_fmt_lon))
     ax_.yaxis.set_major_formatter(FuncFormatter(_fmt_lat))
     ax_.set_xlabel("Longitude"); ax_.set_ylabel("Latitude")
-    _barra_escala(ax_, -53.0, -25.15, 100, -23)
+    _barra_escala(ax_, -48.8, -25.35, 100, -23)  # escala no sul, fora do estado, longe do inset
     ax_.annotate("N", xy=(-44.6, -20.1), xytext=(-44.6, -20.9), ha="center", va="center",
                  fontsize=11, fontweight="bold",
                  arrowprops=dict(arrowstyle="-|>", color="black", lw=1.5))
-    # inset: detalhe dos 4 reservatorios rotulados (canto noroeste, longe do cluster real)
-    axin = ax_.inset_axes([0.02, 0.53, 0.40, 0.44])
+    # inset: detalhe dos 4 reservatorios rotulados, no canto inferior esquerdo (area vazia,
+    # fora do contorno de SP) para nao cobrir o cluster real, que fica a leste.
+    axin = ax_.inset_axes([0.015, 0.02, 0.38, 0.40])
     _desenhar_sp(axin, polys, 0.8)
     axin.scatter([CAPITAL[2]], [CAPITAL[1]], marker="*", s=130, c="#d62728", edgecolor="k", lw=0.4, zorder=5)
     axin.annotate("São Paulo", (CAPITAL[2], CAPITAL[1]), textcoords="offset points",
-                  xytext=(4, -10), fontsize=7.5, color="#7a1418")
+                  xytext=(6, 5), fontsize=7.5, ha="left", color="#7a1418")
     axin.scatter(lons, lats, s=42, c="#1f77b4", edgecolor="k", lw=0.4, zorder=5)
-    off = {"Jaguari-Jacareí": (6, 4), "Cachoeira": (6, -2), "Atibainha": (6, -3),
-           "Paiva Castro": (-6, -10)}
+    off = {"Jaguari-Jacareí": (6, 3), "Cachoeira": (6, -2), "Atibainha": (6, -3),
+           "Paiva Castro": (7, -2)}
     for nome, la, lo in RESERV:
-        ha = "right" if off[nome][0] < 0 else "left"
         axin.annotate(nome, (lo, la), textcoords="offset points", xytext=off[nome],
-                      fontsize=7.5, ha=ha, color="#13315c")
-    axin.set_xlim(mlon[0] - 0.05, mlon[1] + 0.2); axin.set_ylim(mlat[0] - 0.12, mlat[1] + 0.05)
+                      fontsize=7.5, ha="left", color="#13315c")
+    axin.set_xlim(-46.82, -46.08); axin.set_ylim(-23.64, -22.74)
     axin.set_aspect(1 / np.cos(np.radians(-23)))
     axin.xaxis.set_major_formatter(FuncFormatter(_fmt_lon))
     axin.yaxis.set_major_formatter(FuncFormatter(_fmt_lat))
     axin.tick_params(labelsize=6.5); axin.grid(True, alpha=0.3, ls=":")
-    _barra_escala(axin, mlon[0] - 0.02, mlat[0] - 0.095, 20, -23)
+    _barra_escala(axin, -46.40, -23.60, 20, -23)  # escala a direita da capital, sem sobrepor rotulos
     axin.set_title("Detalhe do Sistema Cantareira", fontsize=8)
-    ax_.indicate_inset_zoom(axin, edgecolor="#555")
     ax_.set_title("Área de estudo: Sistema Cantareira (4 reservatórios) no leste de São Paulo")
-    ax_.text(0.0, -0.10, "Fontes: malha estadual do IBGE; reservatórios SAR/ANA (coordenadas dos pontos de clima ERA5-Land).",
-             transform=ax_.transAxes, fontsize=8, color="#555")
     _salvar_simples(fig, 0, "area_estudo", "Mapa da área de estudo",
                     "Os 4 reservatórios do Cantareira formam um cluster a nordeste da capital; as coordenadas "
                     "rotuladas são os pontos de clima (ERA5-Land) usados no pipeline.")
@@ -284,6 +287,7 @@ def fig06():
                              ndias=("era5_precip_mm", "size"), n_e=("era5_precip_mm", "count"),
                              n_p=("power_precip_mm", "count"))
     g = g[(g["n_e"] >= 0.9 * g["ndias"]) & (g["n_p"] >= 0.9 * g["ndias"])]
+    g = g.drop(index=2026, errors="ignore")  # 2026 e ano incompleto (dados ate outubro)
     fig, ax_ = plt.subplots(figsize=(11, 4.6)); x = np.arange(len(g)); w = 0.4
     ax_.bar(x - w / 2, g["ERA5"], w, label="ERA5", color="#1f77b4")
     ax_.bar(x + w / 2, g["POWER"], w, label="NASA POWER", color="#ff7f0e")
@@ -291,11 +295,16 @@ def fig06():
     passos = [i for i, ano in enumerate(g.index) if ano % 5 == 0]
     ax_.set_xticks([x[i] for i in passos]); ax_.set_xticklabels([g.index[i] for i in passos], fontsize=10)
     ax_.set_ylabel("Chuva anual média da bacia (mm)", fontsize=12); ax_.set_xlabel("Ano", fontsize=12)
-    ax_.tick_params(axis="y", labelsize=10); ax_.legend(fontsize=11)
+    ax_.tick_params(axis="y", labelsize=10); ax_.legend(fontsize=11, loc="upper right")
     if 1999 in g.index:
         xi = list(g.index).index(1999)
-        ax_.annotate("anomalia POWER 1999", xy=(xi, g.loc[1999, "POWER"]), xytext=(xi, g["POWER"].max()),
-                     arrowprops=dict(arrowstyle="->", color="#d62728"), color="#d62728", fontsize=10)
+        topo = g.loc[1999, "POWER"]
+        # texto ao lado (a direita) do pico, com a seta apontando para o topo da barra
+        ax_.annotate("anomalia POWER 1999", xy=(xi + 0.2, topo), xytext=(xi + 4, topo * 0.92),
+                     ha="left", va="center", color="#d62728", fontsize=10,
+                     arrowprops=dict(arrowstyle="->", color="#d62728", lw=1.3))
+    ax_.text(0.995, -0.22, "2026 excluído (ano incompleto)", transform=ax_.transAxes,
+             ha="right", va="top", fontsize=8, color="#555")
     ax_.set_title("Chuva anual da bacia: ERA5 contra NASA POWER (anomalia do POWER em 1999)")
     salvar(fig, 6, "eda_chuva_era5_vs_power", "Chuva anual ERA5 contra POWER",
            "As fontes concordam, menos em 1999, quando o POWER tem um pico anômalo (~3.380 mm vs ~1.600 do ERA5).")
@@ -320,18 +329,22 @@ def fig07():
             ax_.scatter(s.phi_ef, s.skill_90, c=c, s=40, alpha=0.8, edgecolor="k", lw=0.3, label=f"N={N}")
     ax_.axhspan(band[0], band[1], color="#d62728", alpha=0.12)
     ax_.axhline(band[2], color="#d62728", lw=1.2, label="skill real (Exp 2/3, h=90)")
-    ax_.axvline(cal.phi_real, color="black", ls="--", lw=1.5, label=f"phi real = {_virg(cal.phi_real, 2)}")
+    ax_.axvline(cal.phi_real, color="black", ls="--", lw=1.5,
+                label=r"$\varphi_{ef}$ real = " + _virg(cal.phi_real, 3))
     ax_.scatter(gem.phi_ef_medio, gem.skill_90_medio, marker="*", s=360, c="#9467bd", edgecolor="k",
                 lw=0.6, zorder=6, label="gêmeo calibrado")
     ax_.axhline(0, color="#555", ls=":", lw=0.8)
-    ax_.set_xlabel("phi_ef (persistência efetiva da chuva)", fontsize=12)
+    ax_.set_xlabel(r"$\varphi_{ef}$ (persistência efetiva da chuva)", fontsize=12)
     ax_.set_ylabel("skill vs B3 (h=90)", fontsize=12)
     ax_.tick_params(axis="both", labelsize=10)
     ax_.xaxis.set_major_formatter(_FmtVirgula())  # eixo x numerico (phi_ef) tambem com virgula
     ax_.legend(fontsize=10, loc="upper left")
-    ax_.set_title("Sintético: o ganho sobre o B3 cresce com a persistência da chuva (phi_ef) e com N")
+    ax_.text(0.985, 0.03, "DADOS SINTÉTICOS", transform=ax_.transAxes, ha="right", va="bottom",
+             fontsize=10, fontweight="bold", color="#7a1418",
+             bbox=dict(boxstyle="round", fc="#fdecea", ec="#7a1418", alpha=0.9))
+    ax_.set_title(r"Sintético: o ganho sobre o B3 cresce com a persistência da chuva ($\varphi_{ef}$)")
     salvar(fig, 7, "sintetico_skill_phief", "Skill sintético por persistência efetiva",
-           "DADOS SINTÉTICOS. O Cantareira real está em phi ~ 0; o gêmeo calibrado (estrela) ainda supera "
+           "DADOS SINTÉTICOS. O Cantareira real está em phi_ef ~ 0; o gêmeo calibrado (estrela) ainda supera "
            "o B3 em h90, limitação discutida no texto.")
 
 
@@ -342,9 +355,17 @@ def fig08():
     vals = [san.loc["normal", "skill"], san.loc["shuffle", "skill"], san.loc["oraculo", "skill"]]
     ax_.bar(nomes, vals, color=["#2ca02c", "#7f7f7f", "#9467bd"])
     ax_.axhline(0, color="#d62728", ls="--")
+    vmax = max(vals)
+    ax_.set_ylim(min(vals) - 0.09, vmax + 0.09)  # folga p/ o rotulo nao encostar no eixo
     for i, v in enumerate(vals):
-        ax_.text(i, v + (0.01 if v >= 0 else -0.03), _virg(v, 3), ha="center")
+        if v >= 0:
+            ax_.text(i, v + 0.025, _virg(v, 3).replace("-", "−"), ha="center", va="bottom")
+        else:
+            ax_.text(i, v - 0.025, _virg(v, 3).replace("-", "−"), ha="center", va="top")
     ax_.set_ylabel("skill vs B3 (h=90)")
+    ax_.text(0.015, 0.97, "DADOS SINTÉTICOS", transform=ax_.transAxes, ha="left", va="top",
+             fontsize=10, fontweight="bold", color="#7a1418",
+             bbox=dict(boxstyle="round", fc="#fdecea", ec="#7a1418", alpha=0.9))
     ax_.set_title("Sintético: embaralhado zera o skill;\no oráculo (chuva futura) o maximiza")
     salvar(fig, 8, "sintetico_sanidade", "Sanidade do sintético",
            "DADOS SINTÉTICOS. Embaralhado skill -0,01; oráculo +0,62: o teto é a informação sobre a chuva "

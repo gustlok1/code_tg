@@ -34,6 +34,12 @@ def main():
     df = pd.read_parquet(ROOT / cfg["caminhos"]["processed_v2_dataset"]); df["data"] = pd.to_datetime(df["data"])
     cong = json.loads((FINAL / "congelamento.json").read_text(encoding="utf-8"))
     met_ref = pd.read_csv(FINAL / "metricas_teste.csv")
+    RES = ROOT / cfg["caminhos"]["resultados_v2"]
+    prauc_ref = pd.read_csv(RES / "prauc_entrada_ic.csv")
+    pb = cfg.get("prauc_entrada_ic", {})
+    # RNG UNICO compartilhado entre horizontes (h30->h60->h90) e modelos (B3->XGBRes):
+    # e essa ordem com estado continuo que reproduz o prauc_entrada_ic.csv historico.
+    rng_prauc = np.random.default_rng(int(pb.get("seed", 0)))
 
     import pandas as _pd
     linhas = []
@@ -57,6 +63,19 @@ def main():
                 tudo_ok &= ok
                 linhas.append({"item": f"thr {modelo} lim{limiar} h{h}", "comprometido": ref,
                                "reproduzido": thr, "igual": ok})
+        # 2b) PR-AUC de entrada (IC95%) reproduz? (validacao OOF, rng compartilhado na ordem h)
+        for r in ax.prauc_entrada_ic_horizonte(oof, h, rng_prauc,
+                                               limiar=int(pb.get("limiar", 40)),
+                                               n_boot=int(pb.get("n_boot", 2000)),
+                                               bloco=int(pb.get("bloco", 90))):
+            rr = prauc_ref[(prauc_ref.horizonte == h) & (prauc_ref.modelo == r["modelo"])].iloc[0]
+            for nome, val, refv in [("prauc_ent", r["pr_auc"], float(rr["pr_auc"])),
+                                    ("prauc_ic_lo", r["ic95_lo"], float(rr["ic95_lo"])),
+                                    ("prauc_ic_hi", r["ic95_hi"], float(rr["ic95_hi"]))]:
+                ok = abs(val - refv) < 1e-9
+                tudo_ok &= ok
+                linhas.append({"item": f"{nome} {r['modelo']} h{h}", "comprometido": refv,
+                               "reproduzido": val, "igual": ok})
         # 3) metricas do teste reproduzem?
         ooft = ax.testar_residual(df, cfg, h, ref_cfg)
         real = ooft["real"].values

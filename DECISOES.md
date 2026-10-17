@@ -343,3 +343,31 @@ Formato: data, decisão, motivo, alternativa descartada.
   verdadeiro)"; fig_06 e fig_07 com fonte maior em eixos e legenda, e a fig_06 com anos de 5 em 5.
 - Alternativa descartada no mapa: desenhar os 4 reservatorios so no mapa estadual cheio; a 0,4 grau de
   distancia os rotulos se sobrepoem. Por isso o inset de detalhe com escala propria.
+
+## 2026-10-17 — Rodada: ajustes de figura e reprodutibilidade (apos c5abfda8)
+- Escopo: apresentacao + reprodutibilidade. Nenhum CSV de resultado alterado; teste nao reaberto; 03
+  nao rodado. prauc_entrada_ic.csv NAO foi reescrito (ja estava correto).
+- prauc_entrada_ic.csv (ressalva da rodada anterior, 1d: sem gerador): descoberto que o arquivo
+  historico (commit d6a9e61a) e reproduzido BIT A BIT por um UNICO np.random.default_rng(0)
+  COMPARTILHADO entre horizontes (h30->h60->h90) e modelos (B3->XGBRes), n_boot=2000, bloco=90,
+  percentis 2,5/97,5. Os 6 pontos (prevalencia, pr_auc) ja batiam; com o rng compartilhado os 6 IC95%
+  tambem batem (6/6). A pista: o h30 reproduzia sozinho com rng reiniciado, mas h60/h90 so com estado
+  continuo (um rng por horizonte dava 0/6; o compartilhado deu 6/6). Criado:
+    - `analise_exp3.prauc_entrada_ic_horizonte` (rng passado de fora, compartilhado; so validacao);
+    - `02e_prauc_entrada_ic.py` (orquestrador; compara por padrao, `--escrever` regrava);
+    - bloco `prauc_entrada_ic` no `config.yaml` (seed 0, n_boot 2000, bloco 90, limiar 40);
+    - verificacao em `verificar_reproducao.py` (18 itens novos: pr_auc + IC95% lo/hi, B3 e XGBRes, 3
+      horizontes), e teste de determinismo em `tests/test_exp3.py`.
+  Fecha a ressalva de reprodutibilidade da rodada anterior.
+- Alternativa descartada: criar um gerador com semente nova (seed documentada) e aceitar IC diferente;
+  descartada porque a reproducao bit a bit do arquivo historico foi encontrada (rng compartilhado).
+- Ajustes de figura (so PNG): fig_07 titulo sem "e com N", φef em mathtext no titulo/eixo/legenda e
+  "φef real = 0,013", selo DADOS SINTETICOS; fig_08 sinal "menos" unicode e rotulo afastado do eixo,
+  selo; fig_00 inset movido p/ o canto inferior esquerdo (fora de SP), um unico retangulo, overlaps
+  corrigidos, linha de fontes retirada de dentro da figura, URL da malha IBGE
+  (api/v3/malhas/estados/35, qualidade intermediaria, acesso 2026-10-17) e data no docstring; fig_06
+  anotacao da anomalia ao lado com seta no topo da barra e 2026 excluido (ano incompleto).
+- Textos alinhados com a 1g (o ganho sintetico vem da persistencia φ_ef, nao do numero de secas):
+  `app_v2/paginas/experimento_sintetico.py`, `resumo_exp1.md`, `capitulo4_rascunho.md`. O titulo do
+  `skill_vs_phief.png` (mostrado no app) ja era factual ("por persistencia EFETIVA φ_ef").
+- Verificacao: 28 testes verdes (1 novo); reproducao agora 51/51 identicos (33 antigos + 18 do prauc).

@@ -1,7 +1,7 @@
 # Reproducao do congelamento e do teste (item 12)
 
 Ambiente: pandas 3.0.6. Comparacao entre os valores commitados e os recomputados.
-Resultado geral: TODOS IGUAIS (33/33 itens identicos).
+Resultado geral: TODOS IGUAIS (51/51 itens identicos).
 
 | item | comprometido | reproduzido | igual |
 |---|---|---|---|
@@ -10,6 +10,12 @@ Resultado geral: TODOS IGUAIS (33/33 itens identicos).
 | thr XGBRes lim40 h30 | 40.0 | 40.0 | sim |
 | thr B3 lim30 h30 | 30.0 | 30.0 | sim |
 | thr XGBRes lim30 h30 | 29.0 | 29.0 | sim |
+| prauc_ent B3 h30 | 0.8047 | 0.8047 | sim |
+| prauc_ic_lo B3 h30 | 0.5835 | 0.5835 | sim |
+| prauc_ic_hi B3 h30 | 0.9827 | 0.9827 | sim |
+| prauc_ent XGBRes h30 | 0.906 | 0.906 | sim |
+| prauc_ic_lo XGBRes h30 | 0.7952 | 0.7952 | sim |
+| prauc_ic_hi XGBRes h30 | 0.969 | 0.969 | sim |
 | teste MAE B3 h30 | 2.949 | 2.949 | sim |
 | teste skill_B3 B3 h30 | 0.0 | 0.0 | sim |
 | teste PR_AUC_entrada40 B3 h30 | 0.989 | 0.989 | sim |
@@ -21,6 +27,12 @@ Resultado geral: TODOS IGUAIS (33/33 itens identicos).
 | thr XGBRes lim40 h60 | 41.0 | 41.0 | sim |
 | thr B3 lim30 h60 | 27.0 | 27.0 | sim |
 | thr XGBRes lim30 h60 | 27.0 | 27.0 | sim |
+| prauc_ent B3 h60 | 0.8561 | 0.8561 | sim |
+| prauc_ic_lo B3 h60 | 0.6736 | 0.6736 | sim |
+| prauc_ic_hi B3 h60 | 0.9737 | 0.9737 | sim |
+| prauc_ent XGBRes h60 | 0.8665 | 0.8665 | sim |
+| prauc_ic_lo XGBRes h60 | 0.6987 | 0.6987 | sim |
+| prauc_ic_hi XGBRes h60 | 0.9621 | 0.9621 | sim |
 | teste MAE B3 h60 | 4.866 | 4.866 | sim |
 | teste skill_B3 B3 h60 | 0.0 | 0.0 | sim |
 | teste PR_AUC_entrada40 B3 h60 | 0.9762 | 0.9762 | sim |
@@ -32,6 +44,12 @@ Resultado geral: TODOS IGUAIS (33/33 itens identicos).
 | thr XGBRes lim40 h90 | 41.0 | 41.0 | sim |
 | thr B3 lim30 h90 | 27.0 | 27.0 | sim |
 | thr XGBRes lim30 h90 | 27.0 | 27.0 | sim |
+| prauc_ent B3 h90 | 0.8438 | 0.8438 | sim |
+| prauc_ic_lo B3 h90 | 0.6335 | 0.6335 | sim |
+| prauc_ic_hi B3 h90 | 0.9712 | 0.9712 | sim |
+| prauc_ent XGBRes h90 | 0.9351 | 0.9351 | sim |
+| prauc_ic_lo XGBRes h90 | 0.8483 | 0.8483 | sim |
+| prauc_ic_hi XGBRes h90 | 0.9757 | 0.9757 | sim |
 | teste MAE B3 h90 | 6.267 | 6.267 | sim |
 | teste skill_B3 B3 h90 | 0.0 | 0.0 | sim |
 | teste PR_AUC_entrada40 B3 h90 | 0.9753 | 0.9753 | sim |

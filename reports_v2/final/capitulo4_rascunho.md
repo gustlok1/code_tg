@@ -49,8 +49,10 @@ Numeros. A chuva real do Cantareira tem persistencia mensal quase nula: phi real
 testes de sanidade confirmam o pipeline: com o alvo embaralhado o skill contra o B3 vai a zero (-0,011)
 e a PR-AUC de entrada cai de 0,88 para 0,77, mas fica acima da prevalencia (0,16) porque a previsao
 ainda e o B3 mais ruido e o proprio B3 ja antecipa a entrada em crise; com a chuva futura (oraculo) o
-skill sobe para 0,62. O ganho do modelo sobre o B3 cresce com a persistencia efetiva da chuva (phi_ef)
-e com N. O valor do embaralhamento e reprodutivel bit a bit (semente fixa por indice do fold).
+skill sobe para 0,62. O ganho do modelo sobre o B3 cresce com a persistencia efetiva da chuva (phi_ef).
+As secas injetadas elevam phi_ef, mas o skill medio por numero de secas nao e monotonico (N0 0,45;
+N3 0,39; N10 0,42; N30 0,50, com as mesmas phi e sementes): o ganho vem da persistencia, nao do numero
+de secas em si. O valor do embaralhamento e reprodutivel bit a bit (semente fixa por indice do fold).
 
 Limitacao do gemeo. Um gemeo calibrado reproduz as propriedades do real: tau do reservatorio 24 dias,
 ruido multiplicativo na afluencia 0,63, phi real, e chuva mensal dentro de 10% do real (media 121,6

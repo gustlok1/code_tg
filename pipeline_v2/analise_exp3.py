@@ -18,7 +18,7 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 from sklearn.linear_model import Ridge
-from sklearn.metrics import f1_score, mean_absolute_error
+from sklearn.metrics import average_precision_score, f1_score, mean_absolute_error
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from xgboost import XGBRegressor
@@ -241,6 +241,46 @@ def skill_condicional(oof_df, episodios40, modelos, h, seed=0):
                 "MAE_B3": round(float(err["B3"][mask].mean()), 3),
                 "skill_B3": base, "ic95_lo": lo, "ic95_hi": hi,
             })
+    return linhas
+
+
+# ============================================================ PR-AUC de entrada (IC)
+def prauc_entrada_ic_horizonte(oof_df, h, rng, limiar=40, modelos=("B3", "XGBRes"),
+                               n_boot=2000, bloco=90):
+    """PR-AUC AGREGADA (out-of-fold) da ENTRADA em crise, por modelo, para UM horizonte,
+    com IC95% por bootstrap em blocos de 'bloco' dias. Recorte 'entrada' = dias com vol(t)
+    acima do limiar; rótulo positivo = volume real em t+h abaixo do limiar; score = -volume
+    previsto. Só validação (oof_df vem de validar_residual).
+
+    O 'rng' é PASSADO de fora e COMPARTILHADO entre horizontes e modelos: o orquestrador cria
+    um np.random.default_rng(seed) e chama esta função na ordem h30 -> h60 -> h90, modelos
+    B3 -> XGBRes. É essa ordem com estado contínuo que reproduz o prauc_entrada_ic.csv
+    histórico (bloco de 90 dias, percentis 2,5/97,5)."""
+    datas = pd.to_datetime(oof_df["data"]).values
+    ent = oof_df["vol_t"].values > limiar
+    ordem = np.argsort(datas[ent])
+    y = (oof_df["real"].values[ent] < limiar).astype(int)[ordem]
+    prev = float(y.mean())
+    N = len(y)
+    pool = np.arange(0, max(1, N - bloco + 1))
+    linhas = []
+    for m in modelos:
+        score = (-oof_df[m].values[ent])[ordem]
+        base = float(average_precision_score(y, score))
+        vals = []
+        for _ in range(n_boot):
+            idx = []
+            while len(idx) < N:
+                s = int(rng.choice(pool)); idx.extend(range(s, min(s + bloco, N)))
+            idx = np.array(idx[:N])
+            yb = y[idx]
+            if yb.sum() == 0 or yb.sum() == len(yb):
+                continue
+            vals.append(average_precision_score(yb, score[idx]))
+        lo, hi = np.nanpercentile(vals, [2.5, 97.5])
+        linhas.append({"horizonte": int(h), "modelo": m, "prevalencia": round(prev, 4),
+                       "pr_auc": round(base, 4), "ic95_lo": round(float(lo), 4),
+                       "ic95_hi": round(float(hi), 4), "lo_acima_prev": bool(lo > prev)})
     return linhas
 
 
