@@ -459,6 +459,21 @@ def imprimir_resumo(man: dict):
     print("=" * 70)
 
 
+def avisar_janela_curta(start: str) -> None:
+    """A capacidade de cada reservatório é estimada pela mediana de volume/percentual DENTRO da
+    janela baixada (_agregar_sistema). Os resultados usam a série completa desde ANO_INICIAL;
+    uma janela que começa depois muda a capacidade e, com ela, o percentual do sistema."""
+    if datetime.fromisoformat(start).date() <= date(ANO_INICIAL, 1, 1):
+        return
+    logging.warning("=" * 70)
+    logging.warning(f"AVISO: janela do SAR começa em {start}, não em {ANO_INICIAL}-01-01.")
+    logging.warning("A capacidade do sistema é estimada pela mediana dentro da janela baixada;")
+    logging.warning(f"os resultados do TG usam a série completa desde {ANO_INICIAL}. Uma janela curta")
+    logging.warning("muda o percentual (set/2026: capacidade 981,53 contra 985,33 hm³, cerca de")
+    logging.warning("+0,16 pp). Não use estes arquivos para reproduzir os resultados.")
+    logging.warning("=" * 70)
+
+
 def main():
     ap = argparse.ArgumentParser(description="Coleta de dados reais do pipeline_v2.")
     ap.add_argument("--openmeteo", action="store_true", help="Baixa o Open-Meteo (ERA5).")
@@ -484,6 +499,7 @@ def main():
     man = carregar_manifest(); man.setdefault("fontes", {})
 
     if fazer_sar:
+        avisar_janela_curta(args.start)
         man["fontes"]["sar_cantareira"] = baixar_sar(args); salvar_manifest(man)
     if fazer_om:
         man["fontes"]["openmeteo"] = baixar_openmeteo(args); salvar_manifest(man)

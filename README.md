@@ -26,7 +26,7 @@ reproducao e decisoes), use o indice em [docs/README.md](docs/README.md).
 Python 3.13. O `.venv` versionado antigo foi removido (apontava para outra maquina); crie o seu a partir do `requirements.txt`.
 
 ```
-py -3.13 -m venv .venv
+python -m venv .venv
 .venv\Scripts\activate
 pip install -r requirements.txt
 pip install torch==2.14.1 --index-url https://download.pytorch.org/whl/cpu

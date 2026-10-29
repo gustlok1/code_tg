@@ -390,3 +390,21 @@ Formato: data, decisão, motivo, alternativa descartada.
   conferencia da chuva.
 - Formato brasileiro (virgula decimal) no `st.metric` do volume atual e na tabela de previsao.
 - Verificacao: 29 testes verdes (1 novo); reproducao 51/51; nenhum CSV de resultado alterado.
+
+## 2026-10-29 — Capacidade do sistema estimada na janela baixada
+- Constatacao (teste de reproducao em clone limpo da main): o `00_download_dados.py` estima a
+  capacidade de cada reservatorio pela mediana de volume/percentual DENTRO da janela baixada
+  (`_agregar_sistema`). Os resultados do TG usam a serie completa de 1984 em diante. Baixar uma
+  janela curta muda a capacidade e o percentual do sistema: com so setembro de 2026 a capacidade
+  saiu 981,53 hm³ contra 985,33 hm³ da serie completa, o percentual subiu cerca de 0,16 pp e
+  18/09/2026 passou de 39,89% para 40,05%, cruzando o limiar de 40%. O volume em hm³ foi identico.
+- Decisao: manter a estimativa pela mediana (nao fixar a capacidade de referencia) e fazer o
+  `00_download_dados.py` emitir um aviso quando o SAR for baixado numa janela que nao comeca em
+  1984-01-01. O professor deve usar o zip dos dados (coleta de 2026-10-02) ou a coleta completa.
+- Motivo: fixar a capacidade nas referencias oficiais (`capacidade_hm3_ref`) mudaria o alvo e todos
+  os resultados congelados; o problema so aparece com janelas curtas, que o pipeline nao usa.
+- Alternativa descartada: fixar a capacidade de referencia (muda o alvo depois do teste aberto).
+- App: o botao "Atualizar por API" roda `--all` sem `--start`, ou seja, a serie completa de 1984
+  ate hoje; a capacidade e a mesma da serie completa. Nenhuma mudanca no app.
+- README e `requirements.txt`: `py -3.13 -m venv .venv` trocado por `python -m venv .venv`, que
+  funciona com o Python do python.org e com o da Microsoft Store (que nao instala o `py`).
