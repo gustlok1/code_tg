@@ -52,3 +52,6 @@ legado_v1/data/
 # Documentos em edição (entram no git só na entrega; ainda vão mudar)
 docs/TG2_Previsao_Crises_Hidricas.docx
 
+
+# Saidas avulsas do Claude, fora do escopo do TG
+Claude outputs/
