@@ -27,7 +27,8 @@ Python 3.13. O `.venv` versionado antigo foi removido (apontava para outra maqui
 
 ```
 python -m venv .venv
-.venv\Scripts\activate
+.venv\Scripts\activate          # Windows
+# source .venv/bin/activate      # Linux/macOS
 pip install -r requirements.txt
 pip install torch==2.14.1 --index-url https://download.pytorch.org/whl/cpu
 ```
@@ -41,6 +42,8 @@ reproducao bit a bit. Nao sao redundantes: o primeiro e para instalar, o segundo
 python pipeline_v2/00_download_dados.py --all     # 1. coleta SAR + ERA5 + NASA POWER (data/raw_v2/)
 python pipeline_v2/01_build_dataset_v2.py         # 2. dataset diario, features e episodios
 python pipeline_v2/run_all.py                     # 3. experimentos de validacao (Exp 0/1/2/3/4 + LSTM)
+#    o passo 3 precisa tambem de legado_v1/data/ (INMET da v1, fora do git; vem no pacote do
+#    projeto). Se faltar entrada, o run_all para e diz qual arquivo falta e de onde ele vem.
 # congelamento e teste (o teste abre uma unica vez):
 python pipeline_v2/03_congelar_e_testar.py        #    grava reports_v2/final/congelamento.json
 python pipeline_v2/03_congelar_e_testar.py --abrir-teste

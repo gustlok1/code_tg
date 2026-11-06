@@ -408,3 +408,17 @@ Formato: data, decisão, motivo, alternativa descartada.
   ate hoje; a capacidade e a mesma da serie completa. Nenhuma mudanca no app.
 - README e `requirements.txt`: `py -3.13 -m venv .venv` trocado por `python -m venv .venv`, que
   funciona com o Python do python.org e com o da Microsoft Store (que nao instala o `py`).
+
+## 2026-11-06 — run_all confere as entradas antes de cada etapa; pacote completo para o professor
+- Constatacao: o professor seguiu o README e o passo 3 (`run_all.py`) quebrou no Exp 0 com
+  `FileNotFoundError` em `legado_v1/data/features/inmet_sp_daily.parquet`. O `legado_v1/data/` esta
+  no .gitignore (arquivos acima de 5 MB) e por isso nao vem num clone.
+- Decisao: o `run_all.py` declara as entradas de cada script (`ENTRADAS`) e, antes de cada etapa,
+  confere se existem; se faltar alguma, para (codigo 2) dizendo qual arquivo falta e de onde ele vem.
+  As entradas externas (dados brutos e dados da v1), que nenhuma etapa gera, sao conferidas ja no
+  inicio, para nao interromper depois de etapas longas. Testes em `tests/test_run_all.py`, inclusive
+  o que garante que o `run_all` padrao nao roda o `03_congelar_e_testar.py`.
+- Entrega: pacote zip com a pasta inteira do projeto, incluindo `data/` e `legado_v1/data/`, e um
+  LEIA-ME.txt (criar o ambiente, nao rodar o passo 1, rodar os passos 2 e 3).
+- Alternativa descartada: versionar `legado_v1/data/` no git (arquivos de ate cerca de 97 MB, contra
+  a regra de nada acima de 5 MB).
